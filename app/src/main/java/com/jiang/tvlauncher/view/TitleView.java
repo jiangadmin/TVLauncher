@@ -126,7 +126,7 @@ public class TitleView extends RelativeLayout {
         tvDate = (TextView) view.findViewById(R.id.title_bar_date);
         imgNetWorkState = (ImageView) view.findViewById(R.id.title_bar_network_state);
         typeface = Typeface.createFromAsset(context.getAssets(),
-                "font/helvetica_neueltpro_thex.otf");
+                "helvetica_neueltpro_thex.otf");
         tvTime.setTypeface(typeface);
         tvDate.setTypeface(typeface);
         timeHandle.post(timeRun);

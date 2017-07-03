@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">TVLauncher</string>
+
+    <string name="setting_1">网络设置</string>
+    <string name="setting_2">蓝牙外设</string>
+    <string name="setting_3">投影设置</string>
+    <string name="setting_4">文件管理</string>
+    <string name="setting_5">系统更新</string>
+    <string name="setting_6">关于本机</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.jiang.tvlauncher.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,10 @@ import android.widget.TextView;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.PwdDialog;
+import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.utils.AnimUtils;
+import com.jiang.tvlauncher.utils.LogUtil;
+import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.view.TitleView;
 
 /**
@@ -20,10 +25,11 @@ import com.jiang.tvlauncher.view.TitleView;
  * on 2017/7/3.
  * Email: www.fangmu@qq.com
  * Phone：186 6120 1018
- * Purpose:TODO
+ * Purpose:TODO 主页
  * update：
  */
 public class Home_Activity extends Base_Activity implements View.OnClickListener, View.OnFocusChangeListener {
+    private static final String TAG = "Home_Activity";
     RelativeLayout toolbar_view;
     LinearLayout back;
     ImageView back_img;
@@ -151,16 +157,26 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
                 break;
             case R.id.home_2:
-                startActivity(new Intent(this, APPList_Activity.class));
+//                startActivity(new Intent(this, APPList_Activity.class));
+                if (Tools.isAppInstalled(this, Const.影视快搜))
+                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(Const.影视快搜)));
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("资源缺失是，请联系服务人员！");
+                    builder.setPositiveButton("好的", null);
+                    builder.show();
+                }
+
                 break;
             case R.id.home_3:
                 //直接启动 HDP直播
                 if (Tools.isAppInstalled(this, Const.HDP直播)) {
                     startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(Const.HDP直播)));
-                } else if (Tools.isAppInstalled(this, Const.超级直播)) {
-                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(Const.超级直播)));
                 } else {
-
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("资源缺失是，请联系服务人员！");
+                    builder.setPositiveButton("好的", null);
+                    builder.show();
                 }
                 break;
             case R.id.home_4:

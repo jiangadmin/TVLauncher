@@ -4,7 +4,6 @@ package com.jiang.tvlauncher.utils;
 import android.app.Activity;
 import android.util.Log;
 
-import com.jacky.common.app.BaseApp;
 import com.jiang.tvlauncher.MyAppliaction;
 
 /**
@@ -44,84 +43,84 @@ public class LogUtil {
      * @param msg
      */
     public static void d(String key, String msg) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.d(key, ">>" + createLog(msg));
         }
     }
 
     public static void i(String key, String msg) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.i(key, ">>" + createLog(msg));
         }
     }
 
     public static void w(String key, String msg) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.w(key, ">>" + createLog(msg));
         }
     }
 
     public static void w(String key, Exception msg) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.w(key, ">>" + createLog(msg.toString()));
         }
     }
 
     public static void w(String key, String msg, Throwable t) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.w(key, ">>" + createLog(msg), t);
         }
     }
 
     public static void wtf(String key, String msg) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.wtf(key, ">>" + createLog(msg));
         }
     }
 
     public static void wtf(String key, String msg, Throwable t) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.wtf(key, ">>" + createLog(msg), t);
         }
     }
 
     public static void e(String key, String msg, Throwable tr) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.e(key, ">>" + createLog(msg));
         }
     }
 
     public static void e(String key, int msg) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.e(key, ">>" + createLog(msg + ""));
         }
     }
 
     public static void e(String key, String msg) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.e(key, ">>" + createLog(msg));
         }
     }
 
     public static void ee(String key, String msg) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.e(key, ">>" + createLog(msg));
         }
     }
 
     public static void e(Activity activity, String msg) {
-        if (BaseApp.LogShow) {
+        if (MyAppliaction.LogShow) {
             getMethodNames(new Throwable().getStackTrace());
             Log.e(activity.toString(), ">>" + createLog(msg));
         }

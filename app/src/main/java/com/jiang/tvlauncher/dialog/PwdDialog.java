@@ -9,6 +9,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jiang.tvlauncher.R;
+/**
+ * Created by  jiang
+ * on 2017/7/3.
+ * Email: www.fangmu@qq.com
+ * Phone：186 6120 1018
+ * Purpose:TODO 密码输入
+ * update：
+ */
 
 public class PwdDialog extends Dialog {
     private static final String TAG = "PwdDialog";

@@ -7,7 +7,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
 
-import com.jiang.launcher.BuildConfig;
+import com.jiang.tvlauncher.BuildConfig;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -90,7 +90,7 @@ public class FileUtils {
             return outStream.toString("UTF-8");
         } catch (IOException e) {
 
-            
+
         }
         return null;
     }
@@ -506,8 +506,7 @@ public class FileUtils {
                     f.createNewFile();
                 }
                 FileOutputStream fost = new FileOutputStream(f, true);
-                BufferedWriter myo = new BufferedWriter(new OutputStreamWriter(
-                        fost, "GBK"));
+                BufferedWriter myo = new BufferedWriter(new OutputStreamWriter(fost, "GBK"));
                 myo.write(sb.toString());
                 myo.close();
             }

@@ -11,4 +11,5 @@ import android.app.Application;
  * update：
  */
 public class MyAppliaction extends Application {
+    public static boolean LogShow = true;
 }
