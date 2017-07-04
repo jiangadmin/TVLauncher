@@ -1,6 +1,10 @@
 package com.jiang.tvlauncher;
 
 import android.app.Application;
+import android.content.Intent;
+
+import com.jiang.tvlauncher.server.MyService;
+import com.jiang.tvlauncher.servlet.Register_Servlet;
 
 /**
  * Created by  jiang
@@ -12,4 +16,11 @@ import android.app.Application;
  */
 public class MyAppliaction extends Application {
     public static boolean LogShow = true;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        new Register_Servlet(this).execute();
+        startService(new Intent(this, MyService.class));
+    }
 }

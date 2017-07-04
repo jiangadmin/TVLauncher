@@ -1,5 +1,6 @@
 package com.jiang.tvlauncher.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -23,13 +24,13 @@ public class PwdDialog extends Dialog {
 
     ImageView pwd1, pwd2, pwd3, pwd4, pwd5, pwd6;
 
-    Context context;
+    Activity activity;
 
     String password = "";
 
-    public PwdDialog(Context context, int theme) {
-        super(context, theme);
-        this.context = context;
+    public PwdDialog(Activity activity, int theme) {
+        super(activity, theme);
+        this.activity = activity;
     }
 
     @Override
@@ -90,8 +91,9 @@ public class PwdDialog extends Dialog {
                 break;
             case 6:
                 pwd6.setImageResource(resid);
-                Toast.makeText(context, password, Toast.LENGTH_SHORT).show();
                 dismiss();
+                if (password.equals("888888"))
+                    activity.finish();
                 break;
         }
     }

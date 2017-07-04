@@ -29,7 +29,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, String> {
         do {
             HttpUtil.doPost(Const.URL + "TurnOn", map);
 
-
         } while (!Tools.ping());
 
         return null;

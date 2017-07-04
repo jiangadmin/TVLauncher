@@ -4,6 +4,7 @@
     tools:ignore="ImpliedTouchscreenHardware,MissingLeanbackLauncher">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".MyAppliaction"
@@ -27,6 +28,8 @@
 
         <activity android:name=".activity.APPList_Activity"/>
         <activity android:name=".activity.Setting_Activity"/>
+
+        <service android:name=".server.MyService"/>
 
     </application>
 
