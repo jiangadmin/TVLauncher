@@ -3,9 +3,11 @@ package com.jiang.tvlauncher.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 
+import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.activity.Home_Activity;
-import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 
 
 /**
@@ -17,6 +19,8 @@ import com.jiang.tvlauncher.servlet.TurnOn_servlet;
  * update：
  */
 public class BootCompletedReceiver extends BroadcastReceiver {
+    private NetReceiver netReceiver = new NetReceiver();
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
@@ -24,9 +28,16 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             Intent start = new Intent(context, Home_Activity.class);
             start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
             context.startActivity(start);
-            //发送请求
-            new TurnOn_servlet().execute();
-
+            //注册广播
+            registerNetworkReceiver();
         }
+    }
+
+    /**
+     * 注册网络广播
+     */
+    private void registerNetworkReceiver() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        MyAppliaction.context.registerReceiver(netReceiver, filter);
     }
 }

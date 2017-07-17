@@ -13,7 +13,7 @@ import com.jiang.tvlauncher.utils.LogUtil;
  * on 2017/7/4.
  * Email: www.fangmu@qq.com
  * Phone：186 6120 1018
- * Purpose:TODO
+ * Purpose:TODO 定时服务
  * update：
  */
 public class MyService extends Service {

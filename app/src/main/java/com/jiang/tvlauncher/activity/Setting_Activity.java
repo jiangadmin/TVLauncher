@@ -21,6 +21,7 @@ import com.jiang.tvlauncher.servlet.Update_Servlet;
  * update：
  */
 public class Setting_Activity extends Base_Activity implements View.OnClickListener {
+    private static final String TAG = "Setting_Activity";
 
     //网络，蓝牙，设置，文件，更新，关于
     LinearLayout setting1, setting2, setting3, setting4, setting5, setting6;
@@ -60,7 +61,8 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
                 break;
             //蓝牙设置
             case R.id.setting_2:
-                startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
+//                startActivity(new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS));//网络设置
+                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage("com.gitvdemo.video")));
                 break;
             //投影设置
             case R.id.setting_3:
@@ -72,11 +74,11 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
             //检测更新
             case R.id.setting_5:
                 Loading.show(this, "检查更新");
-                new Update_Servlet().execute();
+                new Update_Servlet(this).execute();
                 break;
             //关于本机
             case R.id.setting_6:
-                startActivity(new Intent(Settings.ACTION_DEVICE_INFO_SETTINGS));
+                startActivity(new Intent(Settings.ACTION_SETTINGS));
                 break;
         }
     }

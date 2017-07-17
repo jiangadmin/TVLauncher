@@ -52,7 +52,8 @@ public class APPList_Activity extends Base_Activity {
         mAppList = getAppInstance.getLaunchAppList();
         for (int i = 0; i < mAppList.size(); i++) {
             if (packagename.equals("ALL")) {
-                showlist.addAll(mAppList);
+                for (int j = 0; j < 10; j++)
+                    showlist.addAll(mAppList);
                 break;
             }
             if (packagename.contains(mAppList.get(i).getPackageName())) {

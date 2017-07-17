@@ -10,10 +10,14 @@ package com.jiang.tvlauncher.entity;
  */
 public class Const {
 
-    public static String URL = "http://112.74.190.37:8080/feekr_app_api/dev/devInfoController/registDev.do";
+//    public static String URL = "http://112.74.190.37:8080/feekr_app_api/dev/devInfoController/registDev.do";
+    public static String URL = "http://192.168.1.146:8080/feekr_api/";
 
     public static int Timing = 30;
     public static int ID;
+
+    public static int ShowType = 1; //1:图片  2 ：视频
+    public static boolean Nets = true; //网络状态  控制发请求
 
     public static String 芒果TV = "com.hunantv.license";//芒果TV
     public static String 随心听 = "com.xgimi.duobanfm";//随心听

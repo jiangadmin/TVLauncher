@@ -16,7 +16,7 @@
             android:layout_margin="20dp"
             android:descendantFocusability="afterDescendants"
             android:horizontalSpacing="10dp"
-            android:numColumns="4"
+            android:numColumns="5"
             android:scrollbars="none"
             android:verticalSpacing="10dp" />
 

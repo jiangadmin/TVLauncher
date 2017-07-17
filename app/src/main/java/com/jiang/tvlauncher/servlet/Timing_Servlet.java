@@ -32,9 +32,11 @@ public class Timing_Servlet extends AsyncTask<String, Integer, String> {
 
         Map map = new HashMap();
 
-        map.put("text", "定时发送请求");
-        map.put("序列号", "");
-        String res = HttpUtil.doPost(Const.URL + "Timing", map);
+        map.put("devId", "1");
+        map.put("netSpeed", "0");
+        map.put("cpuTemp", "60");
+        map.put("fanSpeed", "1200");
+        String res = HttpUtil.doPost(Const.URL + "dev/devRunStateController/monitorRunState.do", map);
         LogUtil.e(TAG, "定时发送");
 
         return null;

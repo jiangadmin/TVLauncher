@@ -71,11 +71,11 @@ public class AppAdapter extends BaseAdapter {
             mHolder = (Holder) convertView.getTag();
         }
         Random random = new Random();
-        mHolder.bg.setBackgroundResource(drawableIds[random.nextInt(6)]);
+//        mHolder.bg.setBackgroundResource(drawableIds[random.nextInt(6)]);
         AppBean appBean = mAppBeanList.get(position);
         mHolder.icon.setImageDrawable(appBean.getIcon());
         mHolder.name.setText(appBean.getName());
-        mHolder.packagename.setText(appBean.getPackageName());
+//        mHolder.packagename.setText(appBean.getPackageName());
 
         final int pos = position;
         convertView.setOnClickListener(new View.OnClickListener() {

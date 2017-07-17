@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.PwdDialog;
 import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.servlet.Timing_Servlet;
+import com.jiang.tvlauncher.servlet.TurnOn_servlet;
+import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;
@@ -145,6 +148,19 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (toolbar_show) {
+            AnimUtils.animupnum(this, toolbar_view, 0, -42);
+            AnimUtils.animupnum(this, titleview, -42, 0);
+            toolbar_view.setVisibility(View.GONE);
+            toolbar_show = false;
+        }
+
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -154,6 +170,21 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 startActivity(new Intent(this, Setting_Activity.class));
                 break;
             case R.id.home_1:
+                startActivity(new Intent(this,APPList_Activity.class));
+//                if (Tools.isAppInstalled(this, "com.xgimi.wasutv"))
+//                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage("com.xgimi.wasutv")));
+//                if (Tools.isAppInstalled(this, Const.奇异果))
+//                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(Const.奇异果)));
+
+//                else {
+////                    new TurnOn_servlet().execute();
+////                    new Update_Servlet(this).execute();
+//                    new Timing_Servlet(this).execute();
+////                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+////                    builder.setMessage("资源缺失是，请联系服务人员！");
+////                    builder.setPositiveButton("好的", null);
+////                    builder.show();
+//                }
 
                 break;
             case R.id.home_2:
@@ -180,6 +211,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 }
                 break;
             case R.id.home_4:
+                startActivity(new Intent(this, NewsShow_Activity.class));
                 break;
         }
     }

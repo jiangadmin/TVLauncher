@@ -2,8 +2,10 @@ package com.jiang.tvlauncher.servlet;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Register;
 import com.jiang.tvlauncher.utils.HttpUtil;
@@ -56,6 +58,8 @@ public class Register_Servlet extends AsyncTask<Register_Servlet.Info, Integer, 
     @Override
     protected void onPostExecute(Register register) {
         super.onPostExecute(register);
+        Toast.makeText(MyAppliaction.context,"发出注册请求",Toast.LENGTH_SHORT).show();
+
         if (register.getErrorcode()==1000){
             Const.ID =register.getResult().getId();
             PreferencesUtils.putInt(context,"ID",register.getResult().getId());
