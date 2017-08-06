@@ -363,6 +363,7 @@ public final class Tools {
 
     /**
      * 判断APP有没有
+     *
      * @param context
      * @param packagename
      * @return
@@ -386,6 +387,7 @@ public final class Tools {
 
     /**
      * 版本名
+     *
      * @param context
      * @return
      */
@@ -395,6 +397,7 @@ public final class Tools {
 
     /**
      * 版本号
+     *
      * @param context
      * @return
      */
@@ -446,11 +449,25 @@ public final class Tools {
             double latitude = location.getLatitude();//维度
             double longitude = location.getLongitude();//经度
             //
-            LogUtil.e(TAG,"getProvider:"+location.getProvider());
-        }else{
+            LogUtil.e(TAG, "getProvider:" + location.getProvider());
+        } else {
             latLongInfo = "No location found";
         }
     }
 
+    //下面介绍怎么判断手机已安装某程序的方法：
+    public static void isAvilible(Context context, String packageName) {
+        final PackageManager packageManager = context.getPackageManager();//获取packagemanager
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);//获取所有已安装程序的包信息
+        List<String> pName = new ArrayList<String>();//用于存储所有已安装程序的包名
+        //从pinfo中将包名字逐一取出，压入pName list中
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                pName.add(pn);
+            }
+        }
+//        return pName.contains(packageName);//判断pName中是否有目标程序的包名，有TRUE，没有FALSE
+    }
 
 }

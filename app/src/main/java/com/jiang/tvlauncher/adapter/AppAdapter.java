@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.entity.AppBean;
+import com.jiang.tvlauncher.utils.LogUtil;
 
 import java.util.List;
 import java.util.Random;
@@ -23,6 +24,7 @@ import java.util.Random;
  * @since 2016.5.10
  */
 public class AppAdapter extends BaseAdapter {
+    private static final String TAG = "AppAdapter";
 
     private List<AppBean> mAppBeanList;
     private Context mContext;
@@ -76,6 +78,14 @@ public class AppAdapter extends BaseAdapter {
         mHolder.icon.setImageDrawable(appBean.getIcon());
         mHolder.name.setText(appBean.getName());
 //        mHolder.packagename.setText(appBean.getPackageName());
+
+        LogUtil.e(TAG,">>>>>>>>>> "+position+" <<<<<<<<<<");
+        LogUtil.e(TAG, "路  径：   " + appBean.getDataDir());
+        LogUtil.e(TAG, "主页名：  " + appBean.getLauncherName());
+        LogUtil.e(TAG, "软件名：  " + appBean.getName());
+        LogUtil.e(TAG, "包  名：  " + appBean.getPackageName());
+
+
 
         final int pos = position;
         convertView.setOnClickListener(new View.OnClickListener() {

@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 
 import com.jiang.tvlauncher.utils.LogUtil;
 
-
 /**
  * Created by  jiang
  * on 2017/7/4.
