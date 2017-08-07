@@ -12,6 +12,7 @@ import com.jiang.tvlauncher.server.MyService;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.xgimi.xgmapiservice.XGimiApi;
 
+
 /**
  * Created by  jiang
  * on 2017/7/3.
@@ -26,8 +27,6 @@ public class MyAppliaction extends Application {
     public static Context context;
 
     XGimiApi apiManager;
-
-
 
     @Override
     public void onCreate() {
@@ -50,7 +49,20 @@ public class MyAppliaction extends Application {
             apiManager = XGimiApi.Stub.asInterface(iBinder);
 
             try {
-                LogUtil.e(TAG,"序列号："+apiManager.getMachineId());
+
+                LogUtil.e(TAG," 序列号 ："+apiManager.getMachineId());
+                LogUtil.e(TAG,"全局缩放："+apiManager.getZoomValue());
+                LogUtil.e(TAG,"横向缩放："+apiManager.getHorizentalValue());
+                LogUtil.e(TAG,"纵向缩放："+apiManager.getVerticalValue());
+                LogUtil.e(TAG,"标识数据："+apiManager.getMachineSignal());
+                LogUtil.e(TAG,"设备名称："+apiManager.getDeviceName());
+                LogUtil.e(TAG,"亮度模式："+apiManager.getLedMode());
+                LogUtil.e(TAG,"风   速："+apiManager.getWindSpeed());
+                LogUtil.e(TAG,"投影模式："+apiManager.getProjectionMode());
+                LogUtil.e(TAG,"温   度："+apiManager.getTemp());
+                LogUtil.e(TAG," 开机源 ："+apiManager.getBootSource());
+                LogUtil.e(TAG,"上电开机："+apiManager.getPowerOnStartValue());
+
             } catch (RemoteException e) {
                 e.printStackTrace();
                 LogUtil.e(TAG,"连接失败"+e.getMessage());
