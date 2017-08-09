@@ -2,6 +2,9 @@ package com.jiang.tvlauncher.servlet;
 
 import android.os.AsyncTask;
 
+import com.google.gson.Gson;
+import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.entity.BaseEntity;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.utils.HttpUtil;
 
@@ -17,14 +20,33 @@ import java.util.Map;
  * update：
  */
 
-public class TurnOff_servlet extends AsyncTask<String,Integer,String> {
+public class TurnOff_servlet extends AsyncTask<String, Integer, BaseEntity> {
     @Override
-    protected String doInBackground(String... strings) {
+    protected BaseEntity doInBackground(String... strings) {
         Map map = new HashMap();
-        map.put("text", "关机发送请求");
-        map.put("序列号","");
+        map.put("devId", MyAppliaction.ID);
+        map.put("turnType", "3");
 
-        String res = HttpUtil.doPost(Const.URL + "TurnOff", map);
-        return null;
+        String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOff.do", map);
+        BaseEntity entity;
+        if (res != null) {
+            try {
+                entity = new Gson().fromJson(res, BaseEntity.class);
+            } catch (Exception e) {
+                entity = new BaseEntity();
+                entity.setErrorcode(-2);
+                entity.setErrormsg("数据解析失败");
+            }
+        } else {
+            entity = new BaseEntity();
+            entity.setErrorcode(-1);
+            entity.setErrormsg("连接服务器失败");
+        }
+        return entity;
+    }
+
+    @Override
+    protected void onPostExecute(BaseEntity entity) {
+        super.onPostExecute(entity);
     }
 }

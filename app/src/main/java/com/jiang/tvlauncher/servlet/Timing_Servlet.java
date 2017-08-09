@@ -3,6 +3,9 @@ package com.jiang.tvlauncher.servlet;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.google.gson.Gson;
+import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.entity.BaseEntity;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
@@ -18,7 +21,7 @@ import java.util.Map;
  * Purpose:TODO 定时发送
  * update：
  */
-public class Timing_Servlet extends AsyncTask<String, Integer, String> {
+public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
 
     private static final String TAG = "Timing_Servlet";
     Context context;
@@ -28,23 +31,39 @@ public class Timing_Servlet extends AsyncTask<String, Integer, String> {
     }
 
     @Override
-    protected String doInBackground(String... strings) {
+    protected BaseEntity doInBackground(String... strings) {
 
         Map map = new HashMap();
 
-        map.put("devId", "1");
+        map.put("devId", MyAppliaction.ID);
         map.put("netSpeed", "0");
         map.put("cpuTemp", "60");
         map.put("fanSpeed", "1200");
         String res = HttpUtil.doPost(Const.URL + "dev/devRunStateController/monitorRunState.do", map);
-        LogUtil.e(TAG, "定时发送");
+        BaseEntity entity;
+        if (res!=null){
+            try {
+                entity = new Gson().fromJson(res,BaseEntity.class);
+            }catch (Exception e){
+                entity = new BaseEntity();
+                entity.setErrorcode(-2);
+                entity.setErrormsg("数据解析失败");
+            }
 
-        return null;
+        }else {
+            entity = new BaseEntity();
+            entity.setErrorcode(-1);
+            entity.setErrormsg("连接服务器失败");
+        }
+
+        return entity;
     }
 
 
     @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
+    protected void onPostExecute(BaseEntity entity) {
+        super.onPostExecute(entity);
+
+
     }
 }

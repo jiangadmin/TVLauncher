@@ -61,8 +61,8 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
                 break;
             //蓝牙设置
             case R.id.setting_2:
-//                startActivity(new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS));//网络设置
-                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage("com.gitvdemo.video")));
+                startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));//网络设置
+//                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage("com.gitvdemo.video")));
                 break;
             //投影设置
             case R.id.setting_3:

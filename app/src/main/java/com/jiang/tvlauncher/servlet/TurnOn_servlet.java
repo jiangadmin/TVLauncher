@@ -3,8 +3,10 @@ package com.jiang.tvlauncher.servlet;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.entity.TurnOnEntity;
 import com.jiang.tvlauncher.utils.HttpUtil;
 
 import java.util.HashMap;
@@ -19,24 +21,40 @@ import java.util.Map;
  * update：
  */
 
-public class TurnOn_servlet extends AsyncTask<String, Integer, String> {
+public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
     private static final String TAG = "TurnOn_servlet";
 
     @Override
-    protected String doInBackground(String... strings) {
+    protected TurnOnEntity doInBackground(String... strings) {
         Map map = new HashMap();
 //        map.put("text", "开机发送请求");
-        map.put("serialNum", "1234567");
+        map.put("serialNum", MyAppliaction.ID);
         map.put("turnType", "1");
 
-        HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOn.do", map);
+        String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOn.do", map);
 
-        return null;
+        TurnOnEntity entity;
+
+        if (res != null) {
+            try {
+                entity = new Gson().fromJson(res, TurnOnEntity.class);
+            } catch (Exception e) {
+                entity = new TurnOnEntity();
+                entity.setErrorcode(-2);
+                entity.setErrormsg("数据解析失败");
+            }
+        } else {
+            entity = new TurnOnEntity();
+            entity.setErrorcode(-1);
+            entity.setErrormsg("连接服务器失败");
+        }
+
+        return entity;
     }
 
     @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
+    protected void onPostExecute(TurnOnEntity entity) {
+        super.onPostExecute(entity);
         Const.Nets = false;
 
         Toast.makeText(MyAppliaction.context, "发出开机请求", Toast.LENGTH_SHORT).show();
