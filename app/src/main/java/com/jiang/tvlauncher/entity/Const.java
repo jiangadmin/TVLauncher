@@ -19,6 +19,9 @@ public class Const {
     public static int ShowType = 1; //1:图片  2 ：视频
     public static boolean Nets = true; //网络状态  控制发请求
 
+    public static int seconds = 300;      //间隔时间
+
+
     public static String 芒果TV = "com.hunantv.license";//芒果TV
     public static String 随心听 = "com.xgimi.duobanfm";//随心听
     public static String 沙发管家 = "com.xgimi.duobanfm";//沙发管家

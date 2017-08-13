@@ -2,14 +2,13 @@ package com.jiang.tvlauncher.servlet;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
+import android.os.RemoteException;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Register;
 import com.jiang.tvlauncher.utils.HttpUtil;
-import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.PreferencesUtils;
 
 import java.util.HashMap;
@@ -35,20 +34,25 @@ public class Register_Servlet extends AsyncTask<Register_Servlet.Info, Integer, 
     @Override
     protected Register doInBackground(Info... infos) {
         Map map = new HashMap();
-        map.put("serialNum", "111111");
+        try {
+            map.put("serialNum", MyAppliaction.apiManager.getMachineId());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            this.execute();
+        }
 
-        String res = HttpUtil.doPost(Const.URL,map);
+        String res = HttpUtil.doPost(Const.URL, map);
         Register register;
         if (res != null) {
             try {
-                register = new Gson().fromJson(res,Register.class);
+                register = new Gson().fromJson(res, Register.class);
             } catch (Exception e) {
-                register =new Register();
+                register = new Register();
                 register.setErrorcode(-1);
                 register.setErrormsg("数据解析失败");
             }
         } else {
-            register =new Register();
+            register = new Register();
             register.setErrorcode(-2);
             register.setErrormsg("连接服务器失败");
         }
@@ -58,12 +62,12 @@ public class Register_Servlet extends AsyncTask<Register_Servlet.Info, Integer, 
     @Override
     protected void onPostExecute(Register register) {
         super.onPostExecute(register);
-        Toast.makeText(MyAppliaction.context,"发出注册请求",Toast.LENGTH_SHORT).show();
 
-        if (register.getErrorcode()==1000){
-            Const.ID =register.getResult().getId();
-            PreferencesUtils.putInt(context,"ID",register.getResult().getId());
-        }else {
+
+        if (register.getErrorcode() == 1000) {
+            Const.ID = register.getResult().getId();
+            PreferencesUtils.putInt(context, "ID", register.getResult().getId());
+        } else {
 
         }
     }

@@ -2,6 +2,7 @@ package com.jiang.tvlauncher.servlet;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.RemoteException;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
@@ -24,21 +25,20 @@ import java.util.Map;
 public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
 
     private static final String TAG = "Timing_Servlet";
-    Context context;
-
-    public Timing_Servlet(Context context) {
-        this.context = context;
-    }
 
     @Override
-    protected BaseEntity doInBackground(String... strings) {
+    protected BaseEntity doInBackground(String... infos) {
 
         Map map = new HashMap();
 
         map.put("devId", MyAppliaction.ID);
-        map.put("netSpeed", "0");
-        map.put("cpuTemp", "60");
-        map.put("fanSpeed", "1200");
+        map.put("netSpeed", "1");
+        try {
+            map.put("cpuTemp", MyAppliaction.apiManager.getTemp());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        map.put("fanSpeed", "1");
         String res = HttpUtil.doPost(Const.URL + "dev/devRunStateController/monitorRunState.do", map);
         BaseEntity entity;
         if (res!=null){
@@ -63,7 +63,6 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
     @Override
     protected void onPostExecute(BaseEntity entity) {
         super.onPostExecute(entity);
-
-
     }
+
 }

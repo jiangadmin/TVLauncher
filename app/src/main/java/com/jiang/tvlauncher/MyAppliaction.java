@@ -8,7 +8,8 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
 
-import com.jiang.tvlauncher.server.MyService;
+import com.jiang.tvlauncher.server.TimingService;
+import com.jiang.tvlauncher.servlet.Register_Servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.xgimi.xgmapiservice.XGimiApi;
 
@@ -35,11 +36,14 @@ public class MyAppliaction extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        startService(new Intent(this, MyService.class));
+
+        startService(new Intent(this, TimingService.class));
         context = this;
         LogUtil.e(TAG, "准备连接AIDL");
         ComponentName componentName = new ComponentName("com.xgimi.xgmapiservice", "com.xgimi.xgmapiservice.XGimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);
+
+
 
     }
 
@@ -68,6 +72,8 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, "温   度：" + apiManager.getTemp());
                 LogUtil.e(TAG, " 开机源 ：" + apiManager.getBootSource());
                 LogUtil.e(TAG, "上电开机：" + apiManager.getPowerOnStartValue());
+
+                new Register_Servlet(MyAppliaction.this).execute();
 
             } catch (RemoteException e) {
                 e.printStackTrace();

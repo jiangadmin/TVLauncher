@@ -46,7 +46,7 @@
         <activity android:name=".activity.Setting_Activity"/>
         <activity android:name=".activity.NewsShow_Activity"/>
 
-        <service android:name=".server.MyService"/>
+        <service android:name=".server.TimingService"/>
 
         <!--开机广播接收-->
         <receiver android:name=".receiver.BootCompletedReceiver">
