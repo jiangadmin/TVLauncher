@@ -1,13 +1,15 @@
 package com.jiang.tvlauncher.servlet;
 
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.entity.TurnOnEntity;
 import com.jiang.tvlauncher.utils.HttpUtil;
+import com.jiang.tvlauncher.utils.LogUtil;
+import com.jiang.tvlauncher.utils.SaveUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +36,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOn.do", map);
 
         TurnOnEntity entity;
-
         if (res != null) {
             try {
                 entity = new Gson().fromJson(res, TurnOnEntity.class);
@@ -42,6 +43,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 entity = new TurnOnEntity();
                 entity.setErrorcode(-2);
                 entity.setErrormsg("数据解析失败");
+                LogUtil.e(TAG, e.getMessage());
             }
         } else {
             entity = new TurnOnEntity();
@@ -56,8 +58,17 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
     protected void onPostExecute(TurnOnEntity entity) {
         super.onPostExecute(entity);
         Const.Nets = false;
+        if (entity.getErrorcode()==1000) {
+            Const.ID = entity.getResult().getDevInfo().getId();
+            SaveUtils.setString(Save_Key.ID, String.valueOf(entity.getResult().getDevInfo().getId()));
 
-        Toast.makeText(MyAppliaction.context, "发出开机请求", Toast.LENGTH_SHORT).show();
+            new FindLanunch_Servlet().execute();
+            new FindChannelList_Servlet().execute();
+
+        } else {
+            LogUtil.e(TAG, "失败了" + entity.getErrormsg());
+        }
+
 
 //        new Register_Servlet(MyAppliaction.context).execute();
     }

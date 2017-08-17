@@ -33,11 +33,9 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
 
         map.put("devId", MyAppliaction.ID);
         map.put("netSpeed", "1");
-        try {
-            map.put("cpuTemp", MyAppliaction.apiManager.getTemp());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+
+            map.put("cpuTemp", "10");
+
         map.put("fanSpeed", "1");
         String res = HttpUtil.doPost(Const.URL + "dev/devRunStateController/monitorRunState.do", map);
         BaseEntity entity;

@@ -11,7 +11,7 @@ package com.jiang.tvlauncher.entity;
 public class Const {
 
 //    public static String URL = "http://112.74.190.37:8080/feekr_app_api/dev/devInfoController/registDev.do";
-    public static String URL = "http://192.168.1.146:8080/feekr_api/";
+    public static String URL = "http://feekrs.ngrok.cc/feekr_api/";
 
     public static int Timing = 30;
     public static int ID;

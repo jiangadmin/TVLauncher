@@ -7,11 +7,16 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.text.TextUtils;
 
-import com.jiang.tvlauncher.server.TimingService;
-import com.jiang.tvlauncher.servlet.Register_Servlet;
+import com.jiang.tvlauncher.entity.Save_Key;
+import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
+import com.jiang.tvlauncher.servlet.FindLanunch_Servlet;
+import com.jiang.tvlauncher.servlet.TurnOn_servlet;
+import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
-import com.xgimi.xgmapiservice.XGimiApi;
+import com.jiang.tvlauncher.utils.SaveUtils;
+import com.xgimi.xgimiapiservice.XgimiApiManager;
 
 
 /**
@@ -27,7 +32,7 @@ public class MyAppliaction extends Application {
     public static boolean LogShow = true;
     public static Context context;
 
-    public static XGimiApi apiManager;
+    public static XgimiApiManager apiManager;
 
     public static String ID = "FFFFFF";
     public static String WindSpeed = "FFFFFF";
@@ -37,13 +42,11 @@ public class MyAppliaction extends Application {
     public void onCreate() {
         super.onCreate();
 
-        startService(new Intent(this, TimingService.class));
+//        startService(new Intent(this, TimingService.class));
         context = this;
         LogUtil.e(TAG, "准备连接AIDL");
-        ComponentName componentName = new ComponentName("com.xgimi.xgmapiservice", "com.xgimi.xgmapiservice.XGimiApiService");
+        ComponentName componentName = new ComponentName("com.xgimi.xgimiapiservice", "com.xgimi.xgimiapiservice.XgimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);
-
-
 
     }
 
@@ -53,27 +56,34 @@ public class MyAppliaction extends Application {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             LogUtil.e(TAG, "连接AIDL成功");
             //得到远程服务
-            apiManager = XGimiApi.Stub.asInterface(iBinder);
+            apiManager = XgimiApiManager.Stub.asInterface(iBinder);
 
             try {
-                ID = apiManager.getMachineId();
-                WindSpeed = apiManager.getWindSpeed();
-                Temp = apiManager.getTemp();
-                LogUtil.e(TAG, " 序列号 ：" + apiManager.getMachineId());
-                LogUtil.e(TAG, "全局缩放：" + apiManager.getZoomValue());
-                LogUtil.e(TAG, "全局缩放：" + apiManager.getZoomValue());
-                LogUtil.e(TAG, "横向缩放：" + apiManager.getHorizentalValue());
-                LogUtil.e(TAG, "纵向缩放：" + apiManager.getVerticalValue());
-                LogUtil.e(TAG, "标识数据：" + apiManager.getMachineSignal());
-                LogUtil.e(TAG, "设备名称：" + apiManager.getDeviceName());
-                LogUtil.e(TAG, "亮度模式：" + apiManager.getLedMode());
-                LogUtil.e(TAG, "风   速：" + apiManager.getWindSpeed());
-                LogUtil.e(TAG, "投影模式：" + apiManager.getProjectionMode());
-                LogUtil.e(TAG, "温   度：" + apiManager.getTemp());
-                LogUtil.e(TAG, " 开机源 ：" + apiManager.getBootSource());
-                LogUtil.e(TAG, "上电开机：" + apiManager.getPowerOnStartValue());
+                ID = apiManager.get("getMachineId", null, null);
+                WindSpeed = apiManager.get("getWindSpeed", null, null);
+                Temp = apiManager.get("getTemp", null, null);
+                LogUtil.e(TAG, " 序列号 ：" + apiManager.get("getMachineId", null, null));
 
-                new Register_Servlet(MyAppliaction.this).execute();
+                LogUtil.e(TAG, "全局缩放：" + apiManager.get("getZoomValue", null, null));
+                LogUtil.e(TAG, "横向缩放：" + apiManager.get("getHorizentalValue", null, null));
+                LogUtil.e(TAG, "纵向缩放：" + apiManager.get("getVerticalValue", null, null));
+                LogUtil.e(TAG, "标识数据：" + apiManager.get("getMachineSignal", null, null));
+                LogUtil.e(TAG, "设备名称：" + apiManager.get("getDeviceName", null, null));
+                LogUtil.e(TAG, "亮度模式：" + apiManager.get("getLedMode", null, null));
+                LogUtil.e(TAG, "风   速：" + apiManager.get("getWindSpeed", null, null));
+                LogUtil.e(TAG, "投影模式：" + apiManager.get("getProjectionMode", null, null));
+                LogUtil.e(TAG, "温   度：" + apiManager.get("getTemp", null, null));
+                LogUtil.e(TAG, " 开机源 ：" + apiManager.get("getBootSource", null, null));
+                LogUtil.e(TAG, "上电开机：" + apiManager.get("getPowerOnStartValue", null, null));
+                LogUtil.e(TAG, "上电开机：" + apiManager.get("getKeyStoneData", null, null));
+
+
+                if (!TextUtils.isEmpty(ID))
+                    SaveUtils.setString(Save_Key.SerialNum, ID);
+//                new Register_Servlet(MyAppliaction.this).execute();
+                new TurnOn_servlet().execute();
+
+//                new Update_Servlet().execute();
 
             } catch (RemoteException e) {
                 e.printStackTrace();

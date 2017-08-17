@@ -2,7 +2,6 @@ package com.jiang.tvlauncher.servlet;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.RemoteException;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
@@ -34,12 +33,8 @@ public class Register_Servlet extends AsyncTask<Register_Servlet.Info, Integer, 
     @Override
     protected Register doInBackground(Info... infos) {
         Map map = new HashMap();
-        try {
-            map.put("serialNum", MyAppliaction.apiManager.getMachineId());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            this.execute();
-        }
+
+        map.put("serialNum", MyAppliaction.ID);
 
         String res = HttpUtil.doPost(Const.URL, map);
         Register register;
@@ -66,7 +61,6 @@ public class Register_Servlet extends AsyncTask<Register_Servlet.Info, Integer, 
 
         if (register.getErrorcode() == 1000) {
             Const.ID = register.getResult().getId();
-            PreferencesUtils.putInt(context, "ID", register.getResult().getId());
         } else {
 
         }

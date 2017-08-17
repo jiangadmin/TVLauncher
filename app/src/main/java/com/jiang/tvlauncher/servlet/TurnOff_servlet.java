@@ -48,5 +48,6 @@ public class TurnOff_servlet extends AsyncTask<String, Integer, BaseEntity> {
     @Override
     protected void onPostExecute(BaseEntity entity) {
         super.onPostExecute(entity);
+
     }
 }

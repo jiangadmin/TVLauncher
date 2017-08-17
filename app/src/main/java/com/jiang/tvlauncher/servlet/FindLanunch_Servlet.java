@@ -6,7 +6,9 @@ import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindLanunch;
+import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.HttpUtil;
+import com.jiang.tvlauncher.utils.SaveUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +28,7 @@ public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch>
     @Override
     protected FindLanunch doInBackground(String... strings) {
         Map map = new HashMap();
-        map.put("devId ", MyAppliaction.ID);
+        map.put("devId",SaveUtils.getString(Save_Key.ID));
         String res = HttpUtil.doPost(Const.URL + "cms/launchController/findLaunchList.do", map);
         FindLanunch lanunch;
         if (res != null) {

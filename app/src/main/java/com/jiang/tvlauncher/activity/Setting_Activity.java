@@ -74,7 +74,7 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
             //检测更新
             case R.id.setting_5:
                 Loading.show(this, "检查更新");
-                new Update_Servlet(this).execute();
+                new Update_Servlet().execute();
                 break;
             //关于本机
             case R.id.setting_6:

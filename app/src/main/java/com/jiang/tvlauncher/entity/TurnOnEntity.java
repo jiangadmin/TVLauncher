@@ -11,7 +11,7 @@ public class TurnOnEntity extends BaseEntity {
 
     /**
      * errorcode : 1000
-     * result : {"devInfo":{"createAuthor":"system","createTime":"2017-06-28 17:53:43","id":4,"isDelete":0,"merchantId":0,"modelNum":"ZR极光","roomId":0,"serialNum":"7897689","updateAuthor":"system","updateTime":"2017-07-10 14:03:48","useState":0},"launch":[{"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案2","launchType":1,"mediaType":1,"mediaUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/F4594CF749FE8A4B6091B17E66F6591A.png","updateAuthor":"","updateTime":"2017-07-06 13:08:30"}]}
+     * result : {"devInfo":{"createAuthor":"system","createTime":"2017-08-17 22:43:10","id":14,"isDelete":0,"merchantId":0,"modelNum":"智米投影","roomId":0,"serialNum":"DC26HMF33TSH","updateAuthor":"system","updateTime":"2017-08-17 22:43:10","useState":0},"launch":[{"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案2","launchType":1,"mediaType":2,"mediaUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/F4594CF749FE8A4B6091B17E66F6591A.png","updateAuthor":"","updateTime":"2017-07-06 13:08:30"}]}
      */
 
     private ResultBean result;
@@ -26,8 +26,8 @@ public class TurnOnEntity extends BaseEntity {
 
     public static class ResultBean {
         /**
-         * devInfo : {"createAuthor":"system","createTime":"2017-06-28 17:53:43","id":4,"isDelete":0,"merchantId":0,"modelNum":"ZR极光","roomId":0,"serialNum":"7897689","updateAuthor":"system","updateTime":"2017-07-10 14:03:48","useState":0}
-         * launch : [{"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案2","launchType":1,"mediaType":1,"mediaUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/F4594CF749FE8A4B6091B17E66F6591A.png","updateAuthor":"","updateTime":"2017-07-06 13:08:30"}]
+         * devInfo : {"createAuthor":"system","createTime":"2017-08-17 22:43:10","id":14,"isDelete":0,"merchantId":0,"modelNum":"智米投影","roomId":0,"serialNum":"DC26HMF33TSH","updateAuthor":"system","updateTime":"2017-08-17 22:43:10","useState":0}
+         * launch : [{"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案2","launchType":1,"mediaType":2,"mediaUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/F4594CF749FE8A4B6091B17E66F6591A.png","updateAuthor":"","updateTime":"2017-07-06 13:08:30"}]
          */
 
         private DevInfoBean devInfo;
@@ -52,15 +52,15 @@ public class TurnOnEntity extends BaseEntity {
         public static class DevInfoBean {
             /**
              * createAuthor : system
-             * createTime : 2017-06-28 17:53:43
-             * id : 4
+             * createTime : 2017-08-17 22:43:10
+             * id : 14
              * isDelete : 0
              * merchantId : 0
-             * modelNum : ZR极光
+             * modelNum : 智米投影
              * roomId : 0
-             * serialNum : 7897689
+             * serialNum : DC26HMF33TSH
              * updateAuthor : system
-             * updateTime : 2017-07-10 14:03:48
+             * updateTime : 2017-08-17 22:43:10
              * useState : 0
              */
 
@@ -174,7 +174,7 @@ public class TurnOnEntity extends BaseEntity {
              * isDelete : 0
              * launchName : 开机方案2
              * launchType : 1
-             * mediaType : 1
+             * mediaType : 2
              * mediaUrl : http://7xkcno.com2.z0.glb.qiniucdn.com/F4594CF749FE8A4B6091B17E66F6591A.png
              * updateAuthor :
              * updateTime : 2017-07-06 13:08:30

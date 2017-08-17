@@ -23,12 +23,6 @@ import java.util.Map;
 public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
     private static final String TAG = "Update_Servlet";
 
-    Activity activity;
-
-    public Update_Servlet(Activity activity) {
-        this.activity = activity;
-    }
-
     @Override
     protected UpdateEntity doInBackground(String... strings) {
         Map map = new HashMap();
