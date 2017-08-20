@@ -62,6 +62,8 @@ public class MyAppliaction extends Application {
             //得到远程服务
             apiManager = XgimiApiManager.Stub.asInterface(iBinder);
 
+            SaveUtils.setString(Save_Key.NewVideoUrl,"http://v.cctv.com/flash/mp4video6/TMS/2011/01/05/cf752b1c12ce452b3040cab2f90bc265_h264818000nero_aac32-1.mp4");
+
             try {
                 ID = apiManager.get("getMachineId", null, null);
                 WindSpeed = apiManager.get("getWindSpeed", null, null);

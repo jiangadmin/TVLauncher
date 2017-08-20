@@ -57,6 +57,7 @@ public class Welcome_Activity extends Base_Activity {
         else if (SaveUtils.getBoolean(Save_Key.NewVideo)) {
             LogUtil.e(TAG,"有视频 "+SaveUtils.getString(Save_Key.NewVideoUrl));
             videoView.setVisibility(View.VISIBLE);
+           videoView.setZOrderOnTop(true);
             videoView.setVideoURI(Uri.parse(SaveUtils.getString(Save_Key.NewVideoUrl)));
             videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override

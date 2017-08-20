@@ -25,9 +25,9 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             //example:启动程序
-            Intent start = new Intent(context, Home_Activity.class);
-            start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
-            context.startActivity(start);
+//            Intent start = new Intent(context, Home_Activity.class);
+//            start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
+//            context.startActivity(start);
             //注册广播
             registerNetworkReceiver();
         }
