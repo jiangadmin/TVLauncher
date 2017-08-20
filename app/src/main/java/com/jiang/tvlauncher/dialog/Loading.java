@@ -25,8 +25,7 @@ public class Loading {
 
     private static LoadingDialog progressDialog;
 
-    public static void show(Context context, String message) {
-        Activity activity = (Activity) context;
+    public static void show(Activity activity, String message) {
         if (activity != null) {
             if (!activity.isFinishing()) {
 
@@ -43,8 +42,8 @@ public class Loading {
     }
 
 
-    public static void showmessage(Context context, String message) {
-        Activity activity = (Activity) context;
+    public static void showmessage(Activity activity, String message) {
+
         if (activity != null) {
             if (!activity.isFinishing()) {
 

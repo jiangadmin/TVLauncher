@@ -14,7 +14,7 @@ import com.jiang.tvlauncher.R;
  * on 2017/7/3.
  * Email: www.fangmu@qq.com
  * Phone：186 6120 1018
- * Purpose:TODO
+ * Purpose:TODO 公共
  * update：
  */
 public class Base_Activity extends Activity {

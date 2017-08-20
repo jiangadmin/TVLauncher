@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">软件名</string>
+    <string name="app_name">Feekr</string>
 
     <string name="setting_1">网络设置</string>
     <string name="setting_2">蓝牙外设</string>

@@ -12,12 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.PwdDialog;
 import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.Timing_Servlet;
-import com.jiang.tvlauncher.servlet.TurnOn_servlet;
-import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;
@@ -45,6 +45,9 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     TitleView titleview;
 
     RelativeLayout home1, home2, home3, home4;
+    ImageView home1bg,home2bg,home3bg,home4bg;
+    ImageView icon1,icon2,icon3,icon4;
+    TextView name1,name2,name3,name4;
 
     boolean toolbar_show = false;
 
@@ -62,6 +65,21 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         home2 = (RelativeLayout) findViewById(R.id.home_2);
         home3 = (RelativeLayout) findViewById(R.id.home_3);
         home4 = (RelativeLayout) findViewById(R.id.home_4);
+
+        home1bg = (ImageView) findViewById(R.id.home_1_bg);
+        home2bg = (ImageView) findViewById(R.id.home_2_bg);
+        home3bg = (ImageView) findViewById(R.id.home_3_bg);
+        home4bg = (ImageView) findViewById(R.id.home_4_bg);
+
+        icon1 = (ImageView) findViewById(R.id.home_1_icon);
+        icon2 = (ImageView) findViewById(R.id.home_2_icon);
+        icon3 = (ImageView) findViewById(R.id.home_3_icon);
+        icon4 = (ImageView) findViewById(R.id.home_4_icon);
+
+        name1 = (TextView) findViewById(R.id.home_1_name);
+        name2 = (TextView) findViewById(R.id.home_2_name);
+        name3 = (TextView) findViewById(R.id.home_3_name);
+        name4 = (TextView) findViewById(R.id.home_4_name);
 
         toolbar_view = (RelativeLayout) findViewById(R.id.toolbar_view);
         back = (LinearLayout) findViewById(R.id.back);
@@ -107,6 +125,8 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         back.setOnFocusChangeListener(this);
         setting.setOnFocusChangeListener(this);
+
+        new FindChannelList_Servlet().execute();
 
     }
 
@@ -170,16 +190,17 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 startActivity(new Intent(this, Setting_Activity.class));
                 break;
             case R.id.home_1:
-                startActivity(new Intent(this,APPList_Activity.class));
-//                if (Tools.isAppInstalled(this, "com.xgimi.wasutv"))
+//                startActivity(new Intent(this,APPList_Activity.class));
+
+//                if (Tools.isAppInstalled(this, MyAppliaction.channelList.getResult().get(0).get))
 //                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage("com.xgimi.wasutv")));
 //                if (Tools.isAppInstalled(this, Const.奇异果))
 //                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(Const.奇异果)));
-
+//
 //                else {
 ////                    new TurnOn_servlet().execute();
 ////                    new Update_Servlet(this).execute();
-//                    new Timing_Servlet(this).execute();
+//                    new Timing_Servlet().execute();
 ////                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 ////                    builder.setMessage("资源缺失是，请联系服务人员！");
 ////                    builder.setPositiveButton("好的", null);

@@ -49,6 +49,8 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
 
     @Override
     protected void onPostExecute(FindChannelList channelList) {
+
         super.onPostExecute(channelList);
+        MyAppliaction.channelList = channelList;
     }
 }

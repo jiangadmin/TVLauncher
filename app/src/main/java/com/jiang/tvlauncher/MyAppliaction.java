@@ -9,15 +9,17 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
 
+import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
-import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
-import com.jiang.tvlauncher.servlet.FindLanunch_Servlet;
 import com.jiang.tvlauncher.servlet.TurnOn_servlet;
-import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
+import com.jiang.tvlauncher.utils.Tools;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by  jiang
@@ -27,6 +29,7 @@ import com.xgimi.xgimiapiservice.XgimiApiManager;
  * Purpose:TODO
  * update：
  */
+
 public class MyAppliaction extends Application {
     private static final String TAG = "MyAppliaction";
     public static boolean LogShow = true;
@@ -35,15 +38,16 @@ public class MyAppliaction extends Application {
     public static XgimiApiManager apiManager;
 
     public static String ID = "FFFFFF";
-    public static String WindSpeed = "FFFFFF";
     public static String Temp = "FFFFFF";
+    public static String WindSpeed = "FFFFFF";
 
     @Override
     public void onCreate() {
         super.onCreate();
-
 //        startService(new Intent(this, TimingService.class));
         context = this;
+
+        SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
         LogUtil.e(TAG, "准备连接AIDL");
         ComponentName componentName = new ComponentName("com.xgimi.xgimiapiservice", "com.xgimi.xgimiapiservice.XgimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);
@@ -75,14 +79,39 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, "温   度：" + apiManager.get("getTemp", null, null));
                 LogUtil.e(TAG, " 开机源 ：" + apiManager.get("getBootSource", null, null));
                 LogUtil.e(TAG, "上电开机：" + apiManager.get("getPowerOnStartValue", null, null));
-                LogUtil.e(TAG, "上电开机：" + apiManager.get("getKeyStoneData", null, null));
+                LogUtil.e(TAG, "梯形角度：" + apiManager.get("getKeyStoneData", null, null));
 
+                apiManager.set("setKeyStoneByPoint","position0","horizontal","20",null);
+
+                String jsonStr = apiManager.get("getKeyStoneData","position",null);
+
+                apiManager.set("setKeyStoneByPoint","position","horizontal","vertical",null);
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(jsonStr);
+                    String type = (String) jsonObject.get("version");
+                    if(type.equals("angle_keystone")){
+                        JSONArray array = jsonObject.getJSONArray("angle");
+                        LogUtil.e(TAG,array.toString());
+                        //自己的相应读取操作
+                    }else if(type.equals("point_keystone")){
+                        JSONArray array = jsonObject.getJSONArray("point");
+                        LogUtil.e(TAG,array.toString());
+//自己的相应读取操作
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                LogUtil.e(TAG, "左上角：" + apiManager.get("getKeyStoneByPoint", "position", "0"));
 
                 if (!TextUtils.isEmpty(ID))
                     SaveUtils.setString(Save_Key.SerialNum, ID);
 //                new Register_Servlet(MyAppliaction.this).execute();
-                new TurnOn_servlet().execute();
-
+//
+                do {
+                    new TurnOn_servlet(context).execute();
+                } while (!Tools.ping());
 //                new Update_Servlet().execute();
 
             } catch (RemoteException e) {
@@ -98,4 +127,6 @@ public class MyAppliaction extends Application {
         }
     };
 
+
+    public static FindChannelList channelList;
 }

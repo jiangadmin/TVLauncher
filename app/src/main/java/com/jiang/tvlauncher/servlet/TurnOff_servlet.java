@@ -6,7 +6,9 @@ import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.entity.BaseEntity;
 import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.HttpUtil;
+import com.jiang.tvlauncher.utils.SaveUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class TurnOff_servlet extends AsyncTask<String, Integer, BaseEntity> {
     @Override
     protected BaseEntity doInBackground(String... strings) {
         Map map = new HashMap();
-        map.put("devId", MyAppliaction.ID);
+        map.put("devId", SaveUtils.getString(Save_Key.ID));
         map.put("turnType", "3");
 
         String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOff.do", map);

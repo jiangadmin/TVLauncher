@@ -1,12 +1,16 @@
 package com.jiang.tvlauncher.servlet;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.entity.TurnOnEntity;
+import com.jiang.tvlauncher.server.TimingService;
 import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
@@ -25,6 +29,11 @@ import java.util.Map;
 
 public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
     private static final String TAG = "TurnOn_servlet";
+    Context context;
+
+    public TurnOn_servlet(Context context) {
+        this.context = context;
+    }
 
     @Override
     protected TurnOnEntity doInBackground(String... strings) {
@@ -58,18 +67,23 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
     protected void onPostExecute(TurnOnEntity entity) {
         super.onPostExecute(entity);
         Const.Nets = false;
+        Loading.dismiss();
         if (entity.getErrorcode()==1000) {
             Const.ID = entity.getResult().getDevInfo().getId();
             SaveUtils.setString(Save_Key.ID, String.valueOf(entity.getResult().getDevInfo().getId()));
-
+            //启动定时服务
+            context.startService(new Intent(context, TimingService.class));
+            //获取开屏
             new FindLanunch_Servlet().execute();
+            //获取主页
             new FindChannelList_Servlet().execute();
 
         } else {
+            //再次启动
+            new TurnOn_servlet(context).execute();
+
             LogUtil.e(TAG, "失败了" + entity.getErrormsg());
         }
 
-
-//        new Register_Servlet(MyAppliaction.context).execute();
     }
 }
