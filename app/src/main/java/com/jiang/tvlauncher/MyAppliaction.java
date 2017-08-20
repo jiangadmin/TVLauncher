@@ -81,7 +81,7 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, "上电开机：" + apiManager.get("getPowerOnStartValue", null, null));
                 LogUtil.e(TAG, "梯形角度：" + apiManager.get("getKeyStoneData", null, null));
 
-                apiManager.set("setKeyStoneByPoint","position0","horizontal","20",null);
+                apiManager.set("setKeyStoneByPoint","0","fff","fff",null);
 
                 String jsonStr = apiManager.get("getKeyStoneData","position",null);
 
@@ -126,7 +126,6 @@ public class MyAppliaction extends Application {
             LogUtil.e(TAG, "断开AIDL连接");
         }
     };
-
 
     public static FindChannelList channelList;
 }
