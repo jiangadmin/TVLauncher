@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.Timing_Servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
+import com.jiang.tvlauncher.utils.SaveUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,7 +37,7 @@ public class TimingService extends Service {
     public void onCreate() {
         super.onCreate();
         timer = new Timer();
-        timer.schedule( new RemindTask(), Const.seconds * 1000,Const.seconds * 1000);
+        timer.schedule(new RemindTask(), SaveUtils.getInt(Save_Key.Timming), SaveUtils.getInt(Save_Key.Timming));
         LogUtil.e(TAG, "启动服务");
 
     }
@@ -44,7 +45,7 @@ public class TimingService extends Service {
     class RemindTask extends TimerTask {
         public void run() {
             new Timing_Servlet().execute();
-            LogUtil.e(TAG,"定时服务");
+            LogUtil.e(TAG, "定时服务");
             timer.purge();
         }
     }

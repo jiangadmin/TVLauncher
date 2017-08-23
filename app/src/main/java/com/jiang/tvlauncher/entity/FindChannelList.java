@@ -10,7 +10,7 @@ public class FindChannelList extends BaseEntity {
 
     /**
      * errorcode : 1000
-     * result : [{"appList":[{"appName":"优酷","createAuthor":"","createTime":"2017-07-18 16:10:59","iconUrl":"","id":1,"isDelete":0,"packageName":"com.youku.la","remark":"","updateAuthor":"","updateTime":"2017-07-18 16:10:59","useState":1},{"appName":"爱奇艺","createAuthor":"","createTime":"2017-07-18 16:12:01","iconUrl":"","id":2,"isDelete":0,"packageName":"com.aiqy","remark":"我就想测试一下","updateAuthor":"系统管理员","updateTime":"2017-08-07 21:58:25","useState":1}],"bgUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/3D338FEA957441E6303808B33D2628B2.jpg","channelCode":"","channelName":"影视剧场","contentType":2,"contentUrl":"","createAuthor":"系统管理员","createTime":"2017-08-11 17:49:03","id":2,"isDelete":0,"parentId":0,"remark":"123","updateAuthor":"系统管理员","updateTime":"2017-08-15 17:18:03","useState":0},{"appList":[],"bgUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/167587314ADA5E1166FA3E83EF9EED83.jpg","channelCode":"","channelName":"123","contentType":0,"contentUrl":"","createAuthor":"系统管理员","createTime":"2017-08-11 17:40:50","id":1,"isDelete":0,"parentId":0,"remark":"123","updateAuthor":"系统管理员","updateTime":"2017-08-11 17:40:50","useState":0}]
+     * result : [{"appList":[{"appName":"优酷","createAuthor":"","createTime":"2017-07-18 16:10:59","iconUrl":"","id":1,"isDelete":0,"packageName":"com.youku.la","remark":"","updateAuthor":"","updateTime":"2017-07-18 16:10:59","useState":1},{"appName":"奇异果","createAuthor":"","createTime":"2017-07-18 16:12:01","iconUrl":"","id":2,"isDelete":0,"packageName":"com.gitvjimi.video","remark":"测试","updateAuthor":"系统管理员","updateTime":"2017-08-23 20:13:13","useState":1}],"bgUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/3D338FEA957441E6303808B33D2628B2.jpg","channelCode":"","channelName":"全网影视","contentType":2,"contentUrl":"","createAuthor":"系统管理员","createTime":"2017-08-11 17:49:03","id":2,"isDelete":0,"parentId":0,"remark":"123","updateAuthor":"系统管理员","updateTime":"2017-08-17 18:02:06","useState":1},{"appList":[{"appName":"奇异果","createAuthor":"","createTime":"2017-07-18 16:12:01","iconUrl":"","id":2,"isDelete":0,"packageName":"com.gitvjimi.video","remark":"测试","updateAuthor":"系统管理员","updateTime":"2017-08-23 20:13:13","useState":1}],"bgUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/FCD42FBA94AC5FB603D594A431189F38.jpg","channelCode":"","channelName":"电视直播","contentType":1,"contentUrl":"","createAuthor":"系统管理员","createTime":"2017-08-17 18:50:17","id":3,"isDelete":0,"parentId":0,"remark":"","updateAuthor":"系统管理员","updateTime":"2017-08-17 18:50:17","useState":0},{"appList":[],"bgUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/167587314ADA5E1166FA3E83EF9EED83.jpg","channelCode":"","channelName":"VIP同步院线","contentType":0,"contentUrl":"","createAuthor":"系统管理员","createTime":"2017-08-11 17:40:50","id":1,"isDelete":0,"parentId":0,"remark":"123","updateAuthor":"系统管理员","updateTime":"2017-08-17 18:03:33","useState":1},{"appList":[],"bgUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/FCD42FBA94AC5FB603D594A431189F38.jpg","channelCode":"","channelName":"更多","contentType":4,"contentUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/BAE9EBA759CFBF710EFD301901DB258B.mp4","createAuthor":"系统管理员","createTime":"2017-08-17 18:50:17","id":4,"isDelete":0,"parentId":0,"remark":"","updateAuthor":"系统管理员","updateTime":"2017-08-17 19:11:10","useState":1}]
      */
 
     private List<ResultBean> result;
@@ -25,11 +25,10 @@ public class FindChannelList extends BaseEntity {
 
     public static class ResultBean {
         /**
-         * appList : [{"appName":"优酷","createAuthor":"","createTime":"2017-07-18 16:10:59","iconUrl":"","id":1,"isDelete":0,"packageName":"com.youku.la","remark":"","updateAuthor":"","updateTime":"2017-07-18 16:10:59","useState":1},
-         *            {"appName":"爱奇艺","createAuthor":"","createTime":"2017-07-18 16:12:01","iconUrl":"","id":2,"isDelete":0,"packageName":"com.aiqy","remark":"我就想测试一下","updateAuthor":"系统管理员","updateTime":"2017-08-07 21:58:25","useState":1}]
+         * appList : [{"appName":"优酷","createAuthor":"","createTime":"2017-07-18 16:10:59","iconUrl":"","id":1,"isDelete":0,"packageName":"com.youku.la","remark":"","updateAuthor":"","updateTime":"2017-07-18 16:10:59","useState":1},{"appName":"奇异果","createAuthor":"","createTime":"2017-07-18 16:12:01","iconUrl":"","id":2,"isDelete":0,"packageName":"com.gitvjimi.video","remark":"测试","updateAuthor":"系统管理员","updateTime":"2017-08-23 20:13:13","useState":1}]
          * bgUrl : http://7xkcno.com2.z0.glb.qiniucdn.com/3D338FEA957441E6303808B33D2628B2.jpg
          * channelCode :
-         * channelName : 影视剧场
+         * channelName : 全网影视
          * contentType : 2
          * contentUrl :
          * createAuthor : 系统管理员
@@ -39,8 +38,8 @@ public class FindChannelList extends BaseEntity {
          * parentId : 0
          * remark : 123
          * updateAuthor : 系统管理员
-         * updateTime : 2017-08-15 17:18:03
-         * useState : 0
+         * updateTime : 2017-08-17 18:02:06
+         * useState : 1
          */
 
         private String bgUrl;

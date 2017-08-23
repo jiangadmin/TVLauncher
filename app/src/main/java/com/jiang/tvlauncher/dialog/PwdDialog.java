@@ -10,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.activity.Home_Activity;
+import com.jiang.tvlauncher.entity.Save_Key;
+import com.jiang.tvlauncher.utils.SaveUtils;
+
 /**
  * Created by  jiang
  * on 2017/7/3.
@@ -24,11 +28,11 @@ public class PwdDialog extends Dialog {
 
     ImageView pwd1, pwd2, pwd3, pwd4, pwd5, pwd6;
 
-    Activity activity;
+    Home_Activity activity;
 
     String password = "";
 
-    public PwdDialog(Activity activity, int theme) {
+    public PwdDialog(Home_Activity activity, int theme) {
         super(activity, theme);
         this.activity = activity;
     }
@@ -92,8 +96,8 @@ public class PwdDialog extends Dialog {
             case 6:
                 pwd6.setImageResource(resid);
                 dismiss();
-                if (password.equals("888888"))
-                    activity.finish();
+                if (password.equals(SaveUtils.getString(Save_Key.Password)))
+                    activity.PwdRe();
                 break;
         }
     }

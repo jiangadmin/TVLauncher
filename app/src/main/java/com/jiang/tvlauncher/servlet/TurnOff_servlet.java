@@ -51,5 +51,7 @@ public class TurnOff_servlet extends AsyncTask<String, Integer, BaseEntity> {
     protected void onPostExecute(BaseEntity entity) {
         super.onPostExecute(entity);
 
+        SaveUtils.setBoolean("关机",true);
+
     }
 }

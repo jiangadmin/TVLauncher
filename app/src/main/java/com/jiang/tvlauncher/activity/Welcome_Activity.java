@@ -16,6 +16,7 @@ import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
+import com.jiang.tvlauncher.utils.Tools;
 
 import java.io.File;
 
@@ -45,9 +46,13 @@ public class Welcome_Activity extends Base_Activity {
         imageView = (ImageView) findViewById(R.id.image);
         videoView = (VideoView) findViewById(R.id.video);
 
+        if (!Tools.ping()){
+            startActivity(new Intent(Welcome_Activity.this, Home_Activity.class));
+            return;
+        }
         //如果有图片
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
-            LogUtil.e(TAG,"有图片");
+            LogUtil.e(TAG, "有图片");
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageBitmap(ImageUtils.getBitmap(Environment.getExternalStorageDirectory() + File.separator + "/welcomeImage.png"));
             timeCount.start();
@@ -55,22 +60,29 @@ public class Welcome_Activity extends Base_Activity {
 
         //如果有视频
         else if (SaveUtils.getBoolean(Save_Key.NewVideo)) {
-            LogUtil.e(TAG,"有视频 "+SaveUtils.getString(Save_Key.NewVideoUrl));
+            LogUtil.e(TAG, "有视频 " + SaveUtils.getString(Save_Key.NewVideoUrl));
             videoView.setVisibility(View.VISIBLE);
-           videoView.setZOrderOnTop(true);
+            videoView.setZOrderOnTop(true);
             videoView.setVideoURI(Uri.parse(SaveUtils.getString(Save_Key.NewVideoUrl)));
             videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
-                    startActivity(new Intent(Welcome_Activity.this, Home_Activity.class));
+
                     finish();
                 }
             });
+            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                    return false;
+                }
+            });
             videoView.start();
+
         }
         //如果都没有
         else {
-            startActivity(new Intent(Welcome_Activity.this, Home_Activity.class));
+
             finish();
         }
 

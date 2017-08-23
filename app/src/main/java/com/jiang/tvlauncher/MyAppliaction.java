@@ -9,12 +9,16 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.jiang.tvlauncher.entity.FindChannelList;
+import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
 
 import org.json.JSONArray;
@@ -41,11 +45,15 @@ public class MyAppliaction extends Application {
     public static String Temp = "FFFFFF";
     public static String WindSpeed = "FFFFFF";
 
+    Point point;
+
     @Override
     public void onCreate() {
         super.onCreate();
 //        startService(new Intent(this, TimingService.class));
         context = this;
+        //初始化ImageLoader
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
 
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
         LogUtil.e(TAG, "准备连接AIDL");
@@ -62,14 +70,14 @@ public class MyAppliaction extends Application {
             //得到远程服务
             apiManager = XgimiApiManager.Stub.asInterface(iBinder);
 
-            SaveUtils.setString(Save_Key.NewVideoUrl,"http://v.cctv.com/flash/mp4video6/TMS/2011/01/05/cf752b1c12ce452b3040cab2f90bc265_h264818000nero_aac32-1.mp4");
-
             try {
                 ID = apiManager.get("getMachineId", null, null);
                 WindSpeed = apiManager.get("getWindSpeed", null, null);
                 Temp = apiManager.get("getTemp", null, null);
-                LogUtil.e(TAG, " 序列号 ：" + apiManager.get("getMachineId", null, null));
 
+                apiManager.set("setKeyStoneByPoint", "0", "0", "0", null);
+
+                LogUtil.e(TAG, " 序列号 ：" + apiManager.get("getMachineId", null, null));
                 LogUtil.e(TAG, "全局缩放：" + apiManager.get("getZoomValue", null, null));
                 LogUtil.e(TAG, "横向缩放：" + apiManager.get("getHorizentalValue", null, null));
                 LogUtil.e(TAG, "纵向缩放：" + apiManager.get("getVerticalValue", null, null));
@@ -83,29 +91,14 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, "上电开机：" + apiManager.get("getPowerOnStartValue", null, null));
                 LogUtil.e(TAG, "梯形角度：" + apiManager.get("getKeyStoneData", null, null));
 
-                apiManager.set("setKeyStoneByPoint","0","fff","fff",null);
+                String jsonStr = apiManager.get("getKeyStoneData", null, null);
 
-                String jsonStr = apiManager.get("getKeyStoneData","position",null);
-
-                apiManager.set("setKeyStoneByPoint","position","horizontal","vertical",null);
-                JSONObject jsonObject = null;
                 try {
-                    jsonObject = new JSONObject(jsonStr);
-                    String type = (String) jsonObject.get("version");
-                    if(type.equals("angle_keystone")){
-                        JSONArray array = jsonObject.getJSONArray("angle");
-                        LogUtil.e(TAG,array.toString());
-                        //自己的相应读取操作
-                    }else if(type.equals("point_keystone")){
-                        JSONArray array = jsonObject.getJSONArray("point");
-                        LogUtil.e(TAG,array.toString());
-//自己的相应读取操作
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    point = new Gson().fromJson(jsonStr, Point.class);
+                } catch (Exception e) {
+                    LogUtil.e(TAG, e.getMessage());
+                    point = null;
                 }
-
-                LogUtil.e(TAG, "左上角：" + apiManager.get("getKeyStoneByPoint", "position", "0"));
 
                 if (!TextUtils.isEmpty(ID))
                     SaveUtils.setString(Save_Key.SerialNum, ID);
@@ -129,5 +122,4 @@ public class MyAppliaction extends Application {
         }
     };
 
-    public static FindChannelList channelList;
 }

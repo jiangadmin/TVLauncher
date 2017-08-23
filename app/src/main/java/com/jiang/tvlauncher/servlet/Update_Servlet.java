@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
+import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.UpdateEntity;
 import com.jiang.tvlauncher.utils.HttpUtil;
+import com.jiang.tvlauncher.utils.Tools;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +28,8 @@ public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
     @Override
     protected UpdateEntity doInBackground(String... strings) {
         Map map = new HashMap();
-        map.put("versionNum", "1.0.0");
-        map.put("buildNum", "1");
+        map.put("versionNum", Tools.getVersionName(MyAppliaction.context));
+        map.put("buildNum", String.valueOf(Tools.getVersionCode(MyAppliaction.context)));
 
         String res = HttpUtil.doPost(Const.URL + "cms/appVersionController/findNewVersion.do", map);
 
@@ -59,6 +61,5 @@ public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
         }else {
 
         }
-//        Loading.showmessage(activity,"已是最新版本");
     }
 }

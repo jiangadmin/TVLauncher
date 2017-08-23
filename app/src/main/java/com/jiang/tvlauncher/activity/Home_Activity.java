@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,16 +13,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.PwdDialog;
-import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.entity.FindChannelList;
+import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
-import com.jiang.tvlauncher.servlet.Timing_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
+import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.view.TitleView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by  jiang
@@ -45,11 +50,19 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     TitleView titleview;
 
     RelativeLayout home1, home2, home3, home4;
-    ImageView home1bg,home2bg,home3bg,home4bg;
-    ImageView icon1,icon2,icon3,icon4;
-    TextView name1,name2,name3,name4;
+    ImageView home1bg, home2bg, home3bg, home4bg;
+    ImageView icon1, icon2, icon3, icon4;
+    TextView name1, name2, name3, name4;
+
+
+    List<TextView> namelist = new ArrayList();
+    List<ImageView> homebglist = new ArrayList();
+    List<RelativeLayout> homelist = new ArrayList();
+    List<Integer> hometype = new ArrayList();
 
     boolean toolbar_show = false;
+
+    static FindChannelList channelList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +70,8 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         setContentView(R.layout.activty_home);
         initview();
         initeven();
+
+        startActivity(new Intent(this,Welcome_Activity.class));
     }
 
     private void initview() {
@@ -106,6 +121,23 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         home2.setLayoutParams(ll_home);
         home3.setLayoutParams(ll_home);
         home4.setLayoutParams(ll_home);
+
+        homelist.add(home1);
+        homelist.add(home2);
+        homelist.add(home3);
+        homelist.add(home4);
+
+        homebglist.add(home1bg);
+        homebglist.add(home2bg);
+        homebglist.add(home3bg);
+        homebglist.add(home4bg);
+
+        namelist.add(name1);
+        namelist.add(name2);
+        namelist.add(name3);
+        namelist.add(name4);
+
+        new FindChannelList_Servlet(this).execute();
     }
 
     private void initeven() {
@@ -126,7 +158,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         back.setOnFocusChangeListener(this);
         setting.setOnFocusChangeListener(this);
 
-        new FindChannelList_Servlet().execute();
+        back.setVisibility(View.GONE);
 
     }
 
@@ -180,6 +212,22 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     }
 
+    /**
+     * 更新页面
+     */
+    public void updateshow(FindChannelList channelList) {
+        this.channelList = channelList;
+        if (channelList != null) {
+            for (int i = 0; i < channelList.getResult().size(); i++) {
+                namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
+                ImageLoader.getInstance().displayImage(channelList.getResult().get(i).getBgUrl(), homebglist.get(i));
+                hometype.add(channelList.getResult().get(i).getContentType());
+                if (channelList.getResult().get(i).getContentType()==0)
+                    homelist.get(i).setVisibility(View.GONE);
+            }
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -187,43 +235,54 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 new PwdDialog(this, R.style.MyDialog).show();
                 break;
             case R.id.setting:
-                startActivity(new Intent(this, Setting_Activity.class));
+                LogUtil.e(TAG,"Password:"+SaveUtils.getString(Save_Key.Password));
+                if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.Password)))
+                    Setting_Activity.start(this);
+                else
+                    new PwdDialog(this, R.style.MyDialog).show();
                 break;
             case R.id.home_1:
-//                startActivity(new Intent(this,APPList_Activity.class));
-
-//                if (Tools.isAppInstalled(this, MyAppliaction.channelList.getResult().get(0).get))
-//                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage("com.xgimi.wasutv")));
-//                if (Tools.isAppInstalled(this, Const.奇异果))
-//                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(Const.奇异果)));
-//
-//                else {
-////                    new TurnOn_servlet().execute();
-////                    new Update_Servlet(this).execute();
-//                    new Timing_Servlet().execute();
-////                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-////                    builder.setMessage("资源缺失是，请联系服务人员！");
-////                    builder.setPositiveButton("好的", null);
-////                    builder.show();
-//                }
-
+                open(0);
                 break;
             case R.id.home_2:
-//                startActivity(new Intent(this, APPList_Activity.class));
-                if (Tools.isAppInstalled(this, Const.影视快搜))
-                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(Const.影视快搜)));
+                open(1);
+                break;
+            case R.id.home_3:
+                open(2);
+                break;
+            case R.id.home_4:
+                open(3);
+                break;
+        }
+    }
+
+    public void open(int i) {
+        switch (hometype.get(i)) {
+            //无操作
+            case 0:
+                break;
+            //启动指定APP
+            case 1:
+                if (Tools.isAppInstalled(this, channelList.getResult().get(i).getAppList().get(0).getPackageName()))
+                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(channelList.getResult().get(i).getAppList().get(0).getPackageName())));
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("资源缺失是，请联系服务人员！");
                     builder.setPositiveButton("好的", null);
                     builder.show();
                 }
-
                 break;
-            case R.id.home_3:
-                //直接启动 HDP直播
-                if (Tools.isAppInstalled(this, Const.HDP直播)) {
-                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(Const.HDP直播)));
+            //启动指定的APP列表
+            case 2:
+                String packagename = "";
+                if (channelList.getResult().get(i).getAppList() != null) {
+                    for (int j = 0; j < channelList.getResult().get(i).getAppList().size(); j++) {
+                        packagename += channelList.getResult().get(i).getAppList().get(j).getPackageName()+"/";
+                    }
+                    Intent intent = new Intent();
+                    intent.setClass(this, APPList_Activity.class);
+                    intent.putExtra("packagename", packagename);
+                    startActivity(intent);
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("资源缺失是，请联系服务人员！");
@@ -231,10 +290,22 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                     builder.show();
                 }
                 break;
-            case R.id.home_4:
-                startActivity(new Intent(this, NewsShow_Activity.class));
+            //启动展示图片
+            case 3:
+                startActivity(new Intent(this, Image_Activity.class).putExtra("url", channelList.getResult().get(i).getContentUrl()));
+                break;
+            //启动展示视频
+            case 4:
+                startActivity(new Intent(this, Video_Activity.class).putExtra("url", channelList.getResult().get(i).getContentUrl()));
                 break;
         }
+    }
+
+    /**
+     * 密码输入返回
+     */
+    public void PwdRe() {
+        Setting_Activity.start(this);
     }
 
     @Override
@@ -259,6 +330,4 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             reduceAnim(view);
         }
     }
-
-
 }

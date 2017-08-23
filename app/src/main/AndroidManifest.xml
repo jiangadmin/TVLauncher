@@ -29,7 +29,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/StartTheme">
-        <activity android:name=".activity.Welcome_Activity">
+        <activity android:name=".activity.Welcome_Activity"/>
+
+        <activity android:name=".activity.Home_Activity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -40,19 +42,13 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".activity.Home_Activity" />
         <activity android:name=".activity.APPList_Activity" />
         <activity android:name=".activity.Setting_Activity" />
         <activity android:name=".activity.NewsShow_Activity" />
+        <activity android:name=".activity.Video_Activity"/>
+        <activity android:name=".activity.Image_Activity"/>
 
         <service android:name=".server.TimingService" />
-
-        <!--开机广播接收-->
-        <receiver android:name=".receiver.BootCompletedReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
 
         <!--关机广播接收-->
         <receiver android:name=".receiver.ShutdownReceiver">
