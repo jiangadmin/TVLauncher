@@ -72,7 +72,6 @@ public class PwdDialog extends Dialog {
             default:
                 return false;
         }
-
     }
 
     public void updatepwdshow(int resid, int npwd) {

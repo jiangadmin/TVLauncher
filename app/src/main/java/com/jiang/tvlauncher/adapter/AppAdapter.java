@@ -85,8 +85,6 @@ public class AppAdapter extends BaseAdapter {
         LogUtil.e(TAG, "软件名：  " + appBean.getName());
         LogUtil.e(TAG, "包  名：  " + appBean.getPackageName());
 
-
-
         final int pos = position;
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -215,6 +215,7 @@ public final class Tools {
      * @param context
      * @return
      */
+    @SuppressLint("MissingPermission")
     public static String getImeiCode(Context context) {
         TelephonyManager tm = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
@@ -348,7 +349,6 @@ public final class Tools {
         Boolean returnValue = (Boolean) removeBondMethod.invoke(btDevice);
         return returnValue.booleanValue();
     }
-
 
     /**
      * @param dp 要转换的 dp

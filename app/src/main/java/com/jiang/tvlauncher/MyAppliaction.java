@@ -10,20 +10,14 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
-import com.jiang.tvlauncher.utils.Tools;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by  jiang
@@ -47,6 +41,8 @@ public class MyAppliaction extends Application {
 
     Point point;
 
+    public static boolean TurnOnS = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -59,6 +55,8 @@ public class MyAppliaction extends Application {
         LogUtil.e(TAG, "准备连接AIDL");
         ComponentName componentName = new ComponentName("com.xgimi.xgimiapiservice", "com.xgimi.xgimiapiservice.XgimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);
+
+        LogUtil.e(TAG,"定时："+SaveUtils.getInt(Save_Key.Timming));
 
     }
 
@@ -103,10 +101,10 @@ public class MyAppliaction extends Application {
                 if (!TextUtils.isEmpty(ID))
                     SaveUtils.setString(Save_Key.SerialNum, ID);
 //                new Register_Servlet(MyAppliaction.this).execute();
-//
-                do {
-                    new TurnOn_servlet(context).execute();
-                } while (!Tools.ping());
+
+
+                new TurnOn_servlet(context).execute();
+
 //                new Update_Servlet().execute();
 
             } catch (RemoteException e) {

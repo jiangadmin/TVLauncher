@@ -21,7 +21,6 @@ public class Const {
 
     public static int seconds = 300;      //间隔时间
 
-
     public static String 芒果TV = "com.hunantv.license";//芒果TV
     public static String 随心听 = "com.xgimi.duobanfm";//随心听
     public static String 沙发管家 = "com.xgimi.duobanfm";//沙发管家
@@ -56,6 +55,5 @@ public class Const {
     public static String 优酷XL = "com.youku.tv.c";//影视资源
     public static String 魔力视频 = "com.molitv.android.v2";//影视资源
     public static String 电视家新版 = "com.dianshijia.newlive";//影视资源
-
 
 }

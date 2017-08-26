@@ -85,8 +85,6 @@ public class Welcome_Activity extends Base_Activity {
 
             finish();
         }
-
-
     }
 
     /**

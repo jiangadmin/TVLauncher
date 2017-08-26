@@ -1,6 +1,5 @@
 package com.jiang.tvlauncher.servlet;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -56,9 +55,9 @@ public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
         super.onPostExecute(entity);
         Loading.dismiss();
 
-        if (entity.getErrorcode()==1000){
+        if (entity.getErrorcode() == 1000) {
 
-        }else {
+        } else {
 
         }
     }

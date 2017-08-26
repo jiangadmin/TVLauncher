@@ -74,6 +74,8 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         Const.Nets = false;
         Loading.dismiss();
         if (entity.getErrorcode() == 1000) {
+            MyAppliaction.TurnOnS = true;
+
             Const.ID = entity.getResult().getDevInfo().getId();
             //存储ID
             SaveUtils.setString(Save_Key.ID, String.valueOf(entity.getResult().getDevInfo().getId()));
@@ -95,7 +97,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                             SaveUtils.setBoolean(Save_Key.NewImage, true);
                             SaveUtils.setBoolean(Save_Key.NewVideo, false);
                             ImageUtils.setimgage(ImageLoader.getInstance().loadImageSync(entity.getResult().getLaunch().get(i).getMediaUrl()), "welcomeImage");
-
                         }
 
                         //视频
@@ -110,11 +111,14 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
             //初始化梯形数据
             try {
-                Point point = new Gson().fromJson(entity.getResult().getDevInfo().getZoomVal(), Point.class);
+                String s = "{\"version\":\"point_keystone\",\"point\":["+entity.getResult().getDevInfo().getZoomVal()+"]}";
+                LogUtil.e(TAG, s);
+                Point point = new Gson().fromJson(s, Point.class);
                 for (int i = 0; i < point.getPoint().size(); i++) {
                     MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
                 }
             } catch (Exception e) {
+
                 LogUtil.e(TAG, e.getMessage());
             }
 
@@ -128,14 +132,11 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //获取更新
             new Update_Servlet().execute();
 
-
-
         } else {
             //再次启动
             new TurnOn_servlet(context).execute();
 
             LogUtil.e(TAG, "失败了" + entity.getErrormsg());
         }
-
     }
 }

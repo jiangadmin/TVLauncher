@@ -3,6 +3,7 @@ package com.jiang.tvlauncher.entity;
 import android.graphics.drawable.Drawable;
 
 public class AppBean {
+
     private String dataDir;
     private Drawable icon;
     private String id;

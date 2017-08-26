@@ -29,6 +29,8 @@ public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch>
 
     private static final String TAG = "FindLanunch_Servlet";
 
+    public static int num = 1;
+
     @Override
     protected FindLanunch doInBackground(String... strings) {
         Map map = new HashMap();
@@ -81,8 +83,18 @@ public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch>
             }
         } else {
             LogUtil.e(TAG, findLanunch.getErrormsg());
-            //再来
-            new FindLanunch_Servlet().execute();
+            if (num > 3) {
+
+            } else {
+                num++;
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                //再来
+                new FindLanunch_Servlet().execute();
+            }
         }
     }
 }

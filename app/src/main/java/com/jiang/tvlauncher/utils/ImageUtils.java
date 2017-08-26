@@ -133,7 +133,6 @@ public class ImageUtils {
         return null;
     }
 
-
     public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         String column = MediaStore.Images.Media.DATA;
@@ -182,7 +181,6 @@ public class ImageUtils {
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
-
 
     /**
      * 基于质量的压缩算法， 此方法未 解决压缩后图像失真问题
@@ -263,7 +261,6 @@ public class ImageUtils {
         return resizeBmp;
     }
 
-
     /**
      * 描述：获取图片尺寸
      *
@@ -291,8 +288,7 @@ public class ImageUtils {
      * @param desiredHeight
      * @return
      */
-    private static float getMinScale(int srcWidth, int srcHeight, int desiredWidth,
-                                     int desiredHeight) {
+    private static float getMinScale(int srcWidth, int srcHeight, int desiredWidth, int desiredHeight) {
         // 缩放的比例
         float scale = 0;
         // 计算缩放比例，宽高的最小比例
@@ -303,12 +299,10 @@ public class ImageUtils {
         } else {
             scale = scaleHeight;
         }
-
         return scale;
     }
 
-    private static int[] resizeToMaxSize(int srcWidth, int srcHeight,
-                                         int desiredWidth, int desiredHeight) {
+    private static int[] resizeToMaxSize(int srcWidth, int srcHeight, int desiredWidth, int desiredHeight) {
         int[] size = new int[2];
         if (desiredWidth <= 0) {
             desiredWidth = srcWidth;
@@ -334,7 +328,6 @@ public class ImageUtils {
         return size;
     }
 
-
     /**
      * Drawable转Bitmap.
      *
@@ -342,15 +335,12 @@ public class ImageUtils {
      * @return Bitmap
      */
     public static Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap = Bitmap
-                .createBitmap(
+        Bitmap bitmap = Bitmap.createBitmap(
                         drawable.getIntrinsicWidth(),
                         drawable.getIntrinsicHeight(),
-                        drawable.getOpacity() != PixelFormat.OPAQUE ? Config.ARGB_8888
-                                : Config.RGB_565);
+                        drawable.getOpacity() != PixelFormat.OPAQUE ? Config.ARGB_8888 : Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight());
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         drawable.draw(canvas);
         return bitmap;
     }
@@ -384,8 +374,7 @@ public class ImageUtils {
      * @param needRecycle     是否需要回收
      * @return byte[] 图片的byte[]
      */
-    public static byte[] bitmap2Bytes(Bitmap bitmap,
-                                      CompressFormat mCompressFormat, final boolean needRecycle) {
+    public static byte[] bitmap2Bytes(Bitmap bitmap, CompressFormat mCompressFormat, final boolean needRecycle) {
         byte[] result = null;
         ByteArrayOutputStream output = null;
         try {
@@ -410,7 +399,6 @@ public class ImageUtils {
         }
         return result;
     }
-
 
     /**
      * 将Bitmap转换为byte[].
@@ -442,7 +430,6 @@ public class ImageUtils {
         return result;
     }
 
-
     /**
      * 获取Bitmap大小.
      *
@@ -450,8 +437,7 @@ public class ImageUtils {
      * @param mCompressFormat 图片格式 Bitmap.CompressFormat.JPEG,CompressFormat.PNG
      * @return 图片的大小
      */
-    public static int getByteCount(Bitmap bitmap,
-                                   CompressFormat mCompressFormat) {
+    public static int getByteCount(Bitmap bitmap, CompressFormat mCompressFormat) {
         int size = 0;
         ByteArrayOutputStream output = null;
         try {
@@ -729,10 +715,8 @@ public class ImageUtils {
         Canvas canvas = new Canvas(output);
         final int color = 0xff424242;
         final Paint paint = new Paint();
-        final Rect src = new Rect((int) left, (int) top, (int) right,
-                (int) bottom);
-        final Rect dst = new Rect((int) dst_left, (int) dst_top,
-                (int) dst_right, (int) dst_bottom);
+        final Rect src = new Rect((int) left, (int) top, (int) right, (int) bottom);
+        final Rect dst = new Rect((int) dst_left, (int) dst_top, (int) dst_right, (int) dst_bottom);
         final RectF rectF = new RectF(dst);
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
@@ -815,8 +799,6 @@ public class ImageUtils {
         if (bitmap != null) {
             try {
                 if (!bitmap.isRecycled()) {
-
-
                     bitmap.recycle();
                 }
             } catch (Exception e) {
@@ -836,7 +818,6 @@ public class ImageUtils {
             try {
                 for (Bitmap bitmap : bitmaps) {
                     if (bitmap != null && !bitmap.isRecycled()) {
-
                         bitmap.recycle();
                     }
                 }
@@ -845,7 +826,6 @@ public class ImageUtils {
             }
         }
     }
-
 
     /**
      * 描述：图像的特征值颜色分布 将颜色分4个区，0,1,2,3 区组合共64组，计算每个像素点属于哪个区.
@@ -1085,7 +1065,6 @@ public class ImageUtils {
         return jpgfile.getPath();
     }
 
-
     public static int computeSampleSize(BitmapFactory.Options options, int minSideLength, int maxNumOfPixels) {
         int initialSize = computeInitialSampleSize(options, minSideLength, maxNumOfPixels);
 
@@ -1129,7 +1108,6 @@ public class ImageUtils {
         double scale = Math.sqrt((double) des / (double) src);
         return scale;
     }
-
 
     /**
      * 图片按比例大小压缩方法(根据路径获取图片并压缩)
@@ -1283,7 +1261,6 @@ public class ImageUtils {
         return bitmap;
     }
 
-
     /**
      * 保存方法
      */
@@ -1309,6 +1286,4 @@ public class ImageUtils {
         }
         return false;
     }
-
-
 }

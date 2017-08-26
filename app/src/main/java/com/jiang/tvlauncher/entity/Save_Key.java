@@ -17,5 +17,6 @@ public class Save_Key {
     public static String WiFiPwd = "WiFiPwd";
     public static String Password = "Password";
     public static String Timming = "Timming";
+    public static String Channe = "Channe";
 
 }

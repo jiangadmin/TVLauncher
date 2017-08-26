@@ -51,8 +51,6 @@ public class NewsShow_Activity extends Base_Activity {
         }
     }
 
-
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         finish();

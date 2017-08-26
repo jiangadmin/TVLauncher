@@ -1,6 +1,7 @@
 package com.jiang.tvlauncher.servlet;
 
 import android.os.AsyncTask;
+import android.os.RemoteException;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
@@ -30,8 +31,14 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
         Map map = new HashMap();
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         map.put("netSpeed", "1");
-        map.put("cpuTemp", "10");
-        map.put("fanSpeed", "1");
+        try {
+            map.put("cpuTemp", MyAppliaction.apiManager.get("getTemp", null, null));
+            map.put("fanSpeed",MyAppliaction.apiManager.get("getWindSpeed", null, null));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            map.put("cpuTemp", "0");
+            map.put("fanSpeed", "0");
+        }
         String res = HttpUtil.doPost(Const.URL + "dev/devRunStateController/monitorRunState.do", map);
         BaseEntity entity;
         if (res != null) {
@@ -55,6 +62,7 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
     @Override
     protected void onPostExecute(BaseEntity entity) {
         super.onPostExecute(entity);
+
     }
 
 }

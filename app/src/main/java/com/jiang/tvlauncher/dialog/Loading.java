@@ -42,36 +42,6 @@ public class Loading {
     }
 
 
-    public static void showmessage(Activity activity, String message) {
-
-        if (activity != null) {
-            if (!activity.isFinishing()) {
-
-                while (activity.getParent() != null) {
-                    activity = activity.getParent();
-                }
-                if (progressDialog == null) {
-                    progressDialog = LoadingDialog.create(activity, message);
-                }
-                progressDialog.setCancelable(true);
-                progressDialog.show();
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        dismiss();
-                    }
-                }).run();
-            }
-        }
-    }
-
-
     public static void dismiss() {
         try {
             if (null != progressDialog) {
@@ -80,9 +50,7 @@ public class Loading {
             }
         } catch (Exception e) {
         }
-
     }
-
 
     public static class LoadingDialog extends Dialog {
         public LoadingDialog(@NonNull Context context, @StyleRes int themeResId) {

@@ -54,7 +54,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     ImageView icon1, icon2, icon3, icon4;
     TextView name1, name2, name3, name4;
 
-
     List<TextView> namelist = new ArrayList();
     List<ImageView> homebglist = new ArrayList();
     List<RelativeLayout> homelist = new ArrayList();
@@ -71,8 +70,11 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         initview();
         initeven();
 
-        startActivity(new Intent(this,Welcome_Activity.class));
+        startActivity(new Intent(this, Welcome_Activity.class));
+
+        new FindChannelList_Servlet(this).execute();
     }
+
 
     private void initview() {
 
@@ -137,7 +139,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         namelist.add(name3);
         namelist.add(name4);
 
-        new FindChannelList_Servlet(this).execute();
     }
 
     private void initeven() {
@@ -209,7 +210,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             toolbar_view.setVisibility(View.GONE);
             toolbar_show = false;
         }
-
     }
 
     /**
@@ -222,7 +222,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
                 ImageLoader.getInstance().displayImage(channelList.getResult().get(i).getBgUrl(), homebglist.get(i));
                 hometype.add(channelList.getResult().get(i).getContentType());
-                if (channelList.getResult().get(i).getContentType()==0)
+                if (channelList.getResult().get(i).getContentType() == 0)
                     homelist.get(i).setVisibility(View.GONE);
             }
         }
@@ -235,7 +235,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 new PwdDialog(this, R.style.MyDialog).show();
                 break;
             case R.id.setting:
-                LogUtil.e(TAG,"Password:"+SaveUtils.getString(Save_Key.Password));
+                LogUtil.e(TAG, "Password:" + SaveUtils.getString(Save_Key.Password));
                 if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.Password)))
                     Setting_Activity.start(this);
                 else
@@ -257,6 +257,20 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     }
 
     public void open(int i) {
+        //数据缺失的情况
+        if (hometype.size() < 4) {
+            switch (i) {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+        }
+        //数据正常的情况
         switch (hometype.get(i)) {
             //无操作
             case 0:
@@ -277,7 +291,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 String packagename = "";
                 if (channelList.getResult().get(i).getAppList() != null) {
                     for (int j = 0; j < channelList.getResult().get(i).getAppList().size(); j++) {
-                        packagename += channelList.getResult().get(i).getAppList().get(j).getPackageName()+"/";
+                        packagename += channelList.getResult().get(i).getAppList().get(j).getPackageName() + "/";
                     }
                     Intent intent = new Intent();
                     intent.setClass(this, APPList_Activity.class);

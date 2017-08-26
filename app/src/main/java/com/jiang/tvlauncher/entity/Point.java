@@ -12,9 +12,10 @@ import java.util.List;
  */
 public class Point {
 
+
     /**
      * version : point_keystone
-     * point : [{"current_x":0,"current_y":0,"idx":0,"max_x":100,"max_y":100,"min_x":0,"min_y":0},{"current_x":0,"current_y":0,"idx":1,"max_x":0,"max_y":100,"min_x":-100,"min_y":0},{"current_x":0,"current_y":0,"idx":3,"max_x":0,"max_y":0,"min_x":-100,"min_y":-100},{"current_x":0,"current_y":0,"idx":2,"max_x":100,"max_y":0,"min_x":0,"min_y":-100}]
+     * point : [{"current_x":0,"current_y":0,"idx":0,"max_x":100,"max_y":100,"min_x":0,"min_y":0},{"current_x":-100,"current_y":100,"idx":1,"max_x":0,"max_y":100,"min_x":-100,"min_y":0},{"current_x":-100,"current_y":-100,"idx":3,"max_x":0,"max_y":0,"min_x":-100,"min_y":-100},{"current_x":100,"current_y":-100,"idx":2,"max_x":100,"max_y":0,"min_x":0,"min_y":-100}]
      */
 
     private String version;
@@ -111,6 +112,4 @@ public class Point {
             this.min_y = min_y;
         }
     }
-
-
 }

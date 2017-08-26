@@ -8,7 +8,6 @@ import java.util.List;
 
 public class TurnOnEntity extends BaseEntity {
 
-
     /**
      * errorcode : 1000
      * result : {"shadowcnf":{"createAuthor":"系统管理员","createTime":"2017-08-20 15:27:51","hotPoint":1,"id":1,"isDefault":1,"isDelete":0,"ladderPwd":"123","monitRate":300000,"powerTurn":0,"shadowName":"测试方案","shadowPwd":"8624862","threeDim":1,"turnSource":"123","updateAuthor":"系统管理员","updateTime":"2017-08-20 15:27:51","wifi":"123","wifiPassword":"123"},"devInfo":{"createAuthor":"system","createTime":"2017-08-17 22:43:10","id":14,"isDelete":0,"merchantId":0,"modelNum":"智米投影","roomId":0,"serialNum":"DC26HMF33TSH","updateAuthor":"system","updateTime":"2017-08-17 22:43:10","useState":0,"zoomVal":"{\"current_x\":0,\"current_y\":0,\"idx\":0,\"max_x\":100,\"max_y\":100,\"min_x\":0,\"min_y\":0},{\"current_x\":0,\"current_y\":0,\"idx\":1,\"max_x\":0,\"max_y\":100,\"min_x\":-100,\"min_y\":0},{\"current_x\":0,\"current_y\":0,\"idx\":3,\"max_x\":0,\"max_y\":0,\"min_x\":-100,\"min_y\":-100},{\"current_x\":0,\"current_y\":0,\"idx\":2,\"max_x\":100,\"max_y\":0,\"min_x\":0,\"min_y\":-100}"},"launch":[{"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案2","launchType":1,"mediaType":2,"mediaUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/9361BE1FB331EA2915B82569758BE30C.mp4","updateAuthor":"","updateTime":"2017-07-06 13:08:30"}]}

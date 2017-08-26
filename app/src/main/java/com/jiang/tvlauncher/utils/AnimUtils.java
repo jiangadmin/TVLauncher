@@ -13,9 +13,10 @@ import android.view.animation.LinearInterpolator;
  * on 15/6/24.
  * Email: jiangyaoyao@chinarb.cn
  * Phone：18605296932
- * Purpose: 动画类
+ * Purpose: TODO 动画类
  */
 public class AnimUtils {
+
     //左右摇晃
     public static void animyaohuang(View v) {
         ObjectAnimator animator0 = ObjectAnimator.ofFloat(v, "translationX", 0, 20);
@@ -114,7 +115,6 @@ public class AnimUtils {
         set.start();
     }
 
-
     /**
      * 控制控件上下移动
      * @param v 控件
@@ -129,5 +129,4 @@ public class AnimUtils {
         set.setInterpolator(new LinearInterpolator());
         set.start();
     }
-
 }

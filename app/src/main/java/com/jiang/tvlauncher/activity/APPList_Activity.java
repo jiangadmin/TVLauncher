@@ -40,8 +40,6 @@ public class APPList_Activity extends Base_Activity {
         packagename = getIntent().getStringExtra("packagename");
         initview();
         initeven();
-
-
     }
 
     private void initview() {
@@ -49,8 +47,7 @@ public class APPList_Activity extends Base_Activity {
     }
 
     //能显示的程序包名
-//    String packagename = Const.芒果TV + "," + Const.优酷XL + "," + Const.魔力视频;
-
+    //String packagename = Const.芒果TV + "," + Const.优酷XL + "," + Const.魔力视频;
 
     private void initeven() {
         AppDataManage getAppInstance = new AppDataManage(this);

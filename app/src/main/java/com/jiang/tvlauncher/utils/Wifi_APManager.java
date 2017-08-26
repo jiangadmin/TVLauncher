@@ -91,7 +91,6 @@ public class Wifi_APManager {
         return null;
     }
 
-
     /**
      * 检查是否开启Wifi热点
      *
@@ -142,8 +141,7 @@ public class Wifi_APManager {
     public ArrayList<String> getConnectedIP() {
         ArrayList<String> connectedIp = new ArrayList<String>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(
-                    "/proc/net/arp"));
+            BufferedReader br = new BufferedReader(new FileReader("/proc/net/arp"));
             String line;
             while ((line = br.readLine()) != null) {
                 String[] splitted = line.split(" +");

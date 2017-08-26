@@ -11,7 +11,7 @@ import com.jiang.tvlauncher.MyAppliaction;
  * on 15/7/23.
  * Email: www.fangmu@qq.com
  * Phone：18661201018
- * Purpose: LOG日志
+ * Purpose: TODO LOG日志
  */
 public class LogUtil {
     static String className;

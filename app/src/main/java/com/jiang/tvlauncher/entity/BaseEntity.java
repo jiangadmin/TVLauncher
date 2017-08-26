@@ -17,6 +17,7 @@ public class BaseEntity {
      */
 
     private int errorcode;
+
     private String errormsg;
 
     public int getErrorcode() {

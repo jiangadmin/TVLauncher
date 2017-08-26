@@ -25,9 +25,9 @@ public class AppDataManage {
         Intent localIntent = new Intent("android.intent.action.MAIN");
         localIntent.addCategory("android.intent.category.LAUNCHER");
         List<ResolveInfo> localList = localPackageManager.queryIntentActivities(localIntent, 0);
-        ArrayList<AppBean> localArrayList = null;
+        ArrayList<AppBean> localArrayList = new ArrayList<>();
         Iterator<ResolveInfo> localIterator = null;
-        localArrayList = new ArrayList<>();
+
         if (localList.size() != 0) {
             localIterator = localList.iterator();
         }

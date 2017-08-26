@@ -31,7 +31,6 @@ public class SaveUtils {
         return editor.commit();
     }
 
-
     /**
      * 读取 String
      *
@@ -56,7 +55,6 @@ public class SaveUtils {
         editor.putInt(key, value);
         return editor.commit();
     }
-
 
     /**
      * 读取 Int
@@ -108,7 +106,6 @@ public class SaveUtils {
         editor.putFloat(key, value);
         return editor.commit();
     }
-
 
     /**
      * 读取 Float

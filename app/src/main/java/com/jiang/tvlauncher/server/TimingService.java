@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.Timing_Servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
@@ -37,7 +36,10 @@ public class TimingService extends Service {
     public void onCreate() {
         super.onCreate();
         timer = new Timer();
-        timer.schedule(new RemindTask(), SaveUtils.getInt(Save_Key.Timming), SaveUtils.getInt(Save_Key.Timming));
+        if (SaveUtils.getInt(Save_Key.Timming) == 0)
+            timer.schedule(new RemindTask(), 5*60*1000, 5*60*1000);
+        else
+            timer.schedule(new RemindTask(), SaveUtils.getInt(Save_Key.Timming), SaveUtils.getInt(Save_Key.Timming));
         LogUtil.e(TAG, "启动服务");
 
     }

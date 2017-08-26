@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
@@ -30,6 +29,9 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
     private static final String TAG = "FindChannelList_Servlet";
     Home_Activity activity;
 
+    public static int num = 1;
+    String res;
+
     public FindChannelList_Servlet(Home_Activity activity) {
         this.activity = activity;
     }
@@ -38,14 +40,14 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
     protected FindChannelList doInBackground(String... strings) {
         Map map = new HashMap();
         FindChannelList channelList;
-        if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.ID))){
+        if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.ID))) {
             channelList = new FindChannelList();
             channelList.setErrorcode(-3);
             channelList.setErrormsg("数据缺失");
         }
 
         map.put("devId", SaveUtils.getString(Save_Key.ID));
-        String res = HttpUtil.doPost(Const.URL + "cms/channelController/findChannelList.do", map);
+        res = HttpUtil.doPost(Const.URL + "cms/channelController/findChannelList.do", map);
 
         if (res != null) {
             try {
@@ -67,9 +69,21 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
     protected void onPostExecute(FindChannelList channelList) {
         super.onPostExecute(channelList);
         Loading.dismiss();
-        if (channelList.getErrorcode()==1000)
+        if (channelList.getErrorcode() == 1000) {
+            SaveUtils.setString(Save_Key.Channe, res);
             activity.updateshow(channelList);
-        if ((channelList.getErrorcode()==-3)||(channelList.getErrorcode()==-1))
-            new FindChannelList_Servlet(activity).execute();
+        }
+        if ((channelList.getErrorcode() == -3) || (channelList.getErrorcode() == -1))
+            if (num > 3) {
+                activity.updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+            } else {
+                num++;
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                new FindChannelList_Servlet(activity).execute();
+            }
     }
 }

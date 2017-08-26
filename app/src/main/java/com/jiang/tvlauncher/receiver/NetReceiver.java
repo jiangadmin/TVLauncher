@@ -5,12 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import android.widget.Toast;
-
-import com.jiang.tvlauncher.entity.Const;
-import com.jiang.tvlauncher.servlet.TurnOn_servlet;
-import com.jiang.tvlauncher.utils.LogUtil;
 
 /**
  * Created by  jiang
@@ -22,6 +17,7 @@ import com.jiang.tvlauncher.utils.LogUtil;
  */
 public class NetReceiver extends BroadcastReceiver {
     private static final String TAG = "NetReceiver";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         NetworkInfo.State wifiState = null;
