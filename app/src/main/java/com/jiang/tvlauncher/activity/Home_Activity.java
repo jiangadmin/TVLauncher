@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.PwdDialog;
@@ -222,8 +223,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
                 ImageLoader.getInstance().displayImage(channelList.getResult().get(i).getBgUrl(), homebglist.get(i));
                 hometype.add(channelList.getResult().get(i).getContentType());
-                if (channelList.getResult().get(i).getContentType() == 0)
-                    homelist.get(i).setVisibility(View.GONE);
             }
         }
     }
@@ -274,6 +273,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         switch (hometype.get(i)) {
             //无操作
             case 0:
+                Toast.makeText(this,"栏目未开通",Toast.LENGTH_SHORT).show();
                 break;
             //启动指定APP
             case 1:

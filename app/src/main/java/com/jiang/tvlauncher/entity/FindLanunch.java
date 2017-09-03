@@ -8,7 +8,6 @@ import java.util.List;
 
 public class FindLanunch extends BaseEntity {
 
-
     /**
      * errorcode : 1000
      * result : [{"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案2","launchType":1,"mediaType":1,"mediaUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/F4594CF749FE8A4B6091B17E66F6591A.png","updateAuthor":"","updateTime":"2017-07-06 13:08:30"}]

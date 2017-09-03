@@ -47,7 +47,8 @@ public class Welcome_Activity extends Base_Activity {
         videoView = (VideoView) findViewById(R.id.video);
 
         if (!Tools.ping()){
-            startActivity(new Intent(Welcome_Activity.this, Home_Activity.class));
+            finish();
+
             return;
         }
         //如果有图片
