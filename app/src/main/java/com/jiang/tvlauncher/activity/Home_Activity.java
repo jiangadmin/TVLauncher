@@ -268,6 +268,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 case 4:
                     break;
             }
+            return;
         }
         //数据正常的情况
         switch (hometype.get(i)) {

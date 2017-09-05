@@ -3,6 +3,7 @@ package com.jiang.tvlauncher.utils;
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -159,6 +160,45 @@ public class Wifi_APManager {
         }
 
         return connectedIp;
+    }
+
+
+    /**
+     * 创建Wifi热点
+     */
+    public void createWifiHotspot(String SSID, String PWD) {
+        if (mWifiManager.isWifiEnabled()) {
+            //如果wifi处于打开状态，则关闭wifi,
+            mWifiManager.setWifiEnabled(false);
+        }
+        WifiConfiguration config = new WifiConfiguration();
+        config.SSID = SSID;
+        config.preSharedKey = PWD;
+        config.hiddenSSID = true;
+        config.allowedAuthAlgorithms
+                .set(WifiConfiguration.AuthAlgorithm.OPEN);//开放系统认证
+        config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+        config.allowedPairwiseCiphers
+                .set(WifiConfiguration.PairwiseCipher.TKIP);
+        config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+        config.allowedPairwiseCiphers
+                .set(WifiConfiguration.PairwiseCipher.CCMP);
+        config.status = WifiConfiguration.Status.ENABLED;
+        //通过反射调用设置热点
+        try {
+            Method method = mWifiManager.getClass().getMethod(
+                    "setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
+            boolean enable = (Boolean) method.invoke(mWifiManager, config, true);
+            if (enable) {
+                Toast.makeText(mContext, "热点已开启 SSID:" + SSID + " password:" + PWD, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(mContext, "创建热点失败", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(mContext, "创建热点失败", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

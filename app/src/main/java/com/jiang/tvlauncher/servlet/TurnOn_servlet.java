@@ -84,7 +84,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             SaveUtils.setString(Save_Key.Password, entity.getResult().getShadowcnf().getShadowPwd());
 
             //设置热点名  热点密码
-            new Wifi_APManager(context).startWifiAp(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword(), true);
+            new Wifi_APManager(context).createWifiHotspot(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
 
             for (int i = 0; i < entity.getResult().getLaunch().size(); i++) {
                 //方案类型（1=开机，2=屏保，3=互动）
@@ -109,8 +109,15 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 }
             }
 
-            //初始化梯形数据
+
             try {
+                //初始化设备名称
+                MyAppliaction.apiManager.set("setDeviceName",entity.getResult().getDevInfo().getModelNum(),null,null,null);
+
+                //初始化上电开机
+                MyAppliaction.apiManager.set("setPowerOnStart",entity.getResult().getShadowcnf().getPowerTurn(),null,null,null);
+
+                //初始化梯形数据
                 String s = "{\"version\":\"point_keystone\",\"point\":["+entity.getResult().getDevInfo().getZoomVal()+"]}";
                 LogUtil.e(TAG, s);
                 Point point = new Gson().fromJson(s, Point.class);

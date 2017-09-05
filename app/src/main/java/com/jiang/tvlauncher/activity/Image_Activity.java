@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.utils.LogUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -25,6 +26,7 @@ public class Image_Activity extends Base_Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
+        LogUtil.e(TAG,"图片展示");
 
         imageurl = getIntent().getStringExtra("url");
 

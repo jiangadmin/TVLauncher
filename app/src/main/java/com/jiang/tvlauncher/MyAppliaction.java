@@ -17,6 +17,7 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
 
 /**
@@ -50,6 +51,8 @@ public class MyAppliaction extends Application {
         context = this;
         //初始化ImageLoader
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
+
+        CrashReport.initCrashReport(getApplicationContext(), "948ab2c9a7", false);
 
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
         LogUtil.e(TAG, "准备连接AIDL");

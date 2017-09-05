@@ -44,8 +44,8 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
             channelList = new FindChannelList();
             channelList.setErrorcode(-3);
             channelList.setErrormsg("数据缺失");
+            return channelList;
         }
-
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         res = HttpUtil.doPost(Const.URL + "cms/channelController/findChannelList.do", map);
 

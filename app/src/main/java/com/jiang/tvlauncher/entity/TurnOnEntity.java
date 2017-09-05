@@ -87,7 +87,7 @@ public class TurnOnEntity extends BaseEntity {
             private int isDelete;
             private String ladderPwd;
             private int monitRate;
-            private int powerTurn;
+            private String powerTurn;
             private String shadowName;
             private String shadowPwd;
             private int threeDim;
@@ -161,11 +161,11 @@ public class TurnOnEntity extends BaseEntity {
                 this.monitRate = monitRate;
             }
 
-            public int getPowerTurn() {
+            public String getPowerTurn() {
                 return powerTurn;
             }
 
-            public void setPowerTurn(int powerTurn) {
+            public void setPowerTurn(String powerTurn) {
                 this.powerTurn = powerTurn;
             }
 

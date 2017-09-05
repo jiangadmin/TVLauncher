@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.widget.VideoView;
 
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.utils.LogUtil;
 
 /**
  * Created by wwwfa
@@ -25,6 +26,7 @@ public class Video_Activity extends Base_Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+        LogUtil.e(TAG,"视频播放");
 
         videourl = getIntent().getStringExtra("url");
 
