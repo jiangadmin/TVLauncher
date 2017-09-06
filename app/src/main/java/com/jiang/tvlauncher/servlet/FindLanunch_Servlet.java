@@ -68,8 +68,7 @@ public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch>
                         if (findLanunch.getResult().get(i).getMediaType() == 1) {
                             SaveUtils.setBoolean(Save_Key.NewImage, true);
                             SaveUtils.setBoolean(Save_Key.NewVideo, false);
-                            ImageUtils.setimgage(ImageLoader.getInstance().loadImageSync(findLanunch.getResult().get(i).getMediaUrl()), "welcomeImage");
-
+                            SaveUtils.setString(Save_Key.NewImageUrl,findLanunch.getResult().get(i).getMediaUrl());
                         }
 
                         //视频

@@ -76,7 +76,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         new FindChannelList_Servlet(this).execute();
     }
 
-
     private void initview() {
 
         home1 = (RelativeLayout) findViewById(R.id.home_1);

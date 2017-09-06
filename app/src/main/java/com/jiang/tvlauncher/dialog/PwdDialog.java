@@ -1,13 +1,10 @@
 package com.jiang.tvlauncher.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.activity.Home_Activity;
@@ -55,7 +52,6 @@ public class PwdDialog extends Dialog {
 
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_UP:
                 updatepwdshow(R.drawable.ic_up, 8);
@@ -68,6 +64,12 @@ public class PwdDialog extends Dialog {
                 return true;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 updatepwdshow(R.drawable.ic_right, 6);
+                return true;
+            case KeyEvent.KEYCODE_BACK:
+                dismiss();
+                return true;
+            case KeyEvent.KEYCODE_HOME:
+                dismiss();
                 return true;
             default:
                 return false;

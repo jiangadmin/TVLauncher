@@ -21,7 +21,7 @@
 
     <uses-permission android:name="android.permission.READ_LOGS" />
 
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:name=".MyAppliaction"
@@ -31,7 +31,9 @@
         android:supportsRtl="true"
         android:theme="@style/StartTheme">
 
-        <activity android:name=".activity.Home_Activity" >
+        <activity
+            android:name=".activity.Home_Activity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -41,7 +43,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.Welcome_Activity"/>
+        <activity android:name=".activity.Welcome_Activity" />
 
         <activity android:name=".activity.APPList_Activity" />
 
@@ -49,11 +51,12 @@
 
         <activity android:name=".activity.NewsShow_Activity" />
 
-        <activity android:name=".activity.Video_Activity"/>
+        <activity android:name=".activity.Video_Activity" />
 
-        <activity android:name=".activity.Image_Activity"/>
+        <activity android:name=".activity.Image_Activity" />
 
-        <activity android:name=".dialog.UpdateWindow"
+        <activity
+            android:name=".dialog.UpdateWindow"
             android:theme="@style/MyDialogStyleBottom" />
 
         <service android:name=".server.TimingService" />

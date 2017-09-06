@@ -1,11 +1,9 @@
 package com.jiang.tvlauncher.activity;
 
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,12 +11,10 @@ import android.widget.VideoView;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.entity.Save_Key;
-import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
-
-import java.io.File;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by  jiang
@@ -55,7 +51,7 @@ public class Welcome_Activity extends Base_Activity {
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
             LogUtil.e(TAG, "有图片");
             imageView.setVisibility(View.VISIBLE);
-            imageView.setImageBitmap(ImageUtils.getBitmap(Environment.getExternalStorageDirectory() + File.separator + "/welcomeImage.png"));
+            ImageLoader.getInstance().displayImage(SaveUtils.getString(Save_Key.NewImageUrl), imageView);
             timeCount.start();
         }
 
@@ -68,7 +64,6 @@ public class Welcome_Activity extends Base_Activity {
             videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
-
                     finish();
                 }
             });

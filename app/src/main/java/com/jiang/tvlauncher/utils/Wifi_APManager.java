@@ -175,15 +175,12 @@ public class Wifi_APManager {
         config.SSID = SSID;
         config.preSharedKey = PWD;
         config.hiddenSSID = true;
-        config.allowedAuthAlgorithms
-                .set(WifiConfiguration.AuthAlgorithm.OPEN);//开放系统认证
+        config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);//开放系统认证
         config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
         config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-        config.allowedPairwiseCiphers
-                .set(WifiConfiguration.PairwiseCipher.TKIP);
+        config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
         config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-        config.allowedPairwiseCiphers
-                .set(WifiConfiguration.PairwiseCipher.CCMP);
+        config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
         config.status = WifiConfiguration.Status.ENABLED;
         //通过反射调用设置热点
         try {
@@ -193,11 +190,11 @@ public class Wifi_APManager {
             if (enable) {
                 Toast.makeText(mContext, "热点已开启 SSID:" + SSID + " password:" + PWD, Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(mContext, "创建热点失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "热点开启失败", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(mContext, "创建热点失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "热点开启失败", Toast.LENGTH_SHORT).show();
         }
     }
 

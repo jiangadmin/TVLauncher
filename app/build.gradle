@@ -5,7 +5,7 @@ android {
         jiang {
             keyAlias 'jiang'
             keyPassword 'jiangadmin'
-            storeFile file('/Users/jiangyao/Desktop/TVLauncher/Jiang.jks')
+            storeFile file('C:/Users/wwwfa/Desktop/TVLauncher/Jiang.jks')
             storePassword 'jiangadmin'
         }
     }
@@ -16,7 +16,7 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.jiang.tvlauncher"
         minSdkVersion 22
@@ -29,6 +29,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.jiang
         }
     }
 
@@ -39,7 +40,6 @@ dependencies {
     compile 'com.android.support:leanback-v17:25.3.1'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    compile 'com.tencent.bugly:crashreport:latest.release'
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
 }

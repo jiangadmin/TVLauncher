@@ -11,6 +11,7 @@ public class Save_Key {
     public static String NewImage = "NewImage";
     public static String NewVideo = "NewVideo";
     public static String NewVideoUrl = "NewVideoUrl";
+    public static String NewImageUrl = "NewImageUrl";
     public static String RoomID = "RoomID";
     public static String UserID = "UserID";
     public static String WiFiName = "WiFiName";

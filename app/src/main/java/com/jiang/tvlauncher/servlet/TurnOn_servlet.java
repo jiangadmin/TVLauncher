@@ -14,11 +14,9 @@ import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.entity.TurnOnEntity;
 import com.jiang.tvlauncher.server.TimingService;
 import com.jiang.tvlauncher.utils.HttpUtil;
-import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Wifi_APManager;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,6 +75,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             MyAppliaction.TurnOnS = true;
 
             Const.ID = entity.getResult().getDevInfo().getId();
+
             //存储ID
             SaveUtils.setString(Save_Key.ID, String.valueOf(entity.getResult().getDevInfo().getId()));
 
@@ -96,7 +95,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                         if (entity.getResult().getLaunch().get(i).getMediaType() == 1) {
                             SaveUtils.setBoolean(Save_Key.NewImage, true);
                             SaveUtils.setBoolean(Save_Key.NewVideo, false);
-                            ImageUtils.setimgage(ImageLoader.getInstance().loadImageSync(entity.getResult().getLaunch().get(i).getMediaUrl()), "welcomeImage");
+                            SaveUtils.setString(Save_Key.NewImageUrl, entity.getResult().getLaunch().get(i).getMediaUrl());
                         }
 
                         //视频
@@ -109,16 +108,15 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 }
             }
 
-
             try {
                 //初始化设备名称
-                MyAppliaction.apiManager.set("setDeviceName",entity.getResult().getDevInfo().getModelNum(),null,null,null);
+                MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
 
                 //初始化上电开机
-                MyAppliaction.apiManager.set("setPowerOnStart",entity.getResult().getShadowcnf().getPowerTurn(),null,null,null);
+                MyAppliaction.apiManager.set("setPowerOnStart", entity.getResult().getShadowcnf().getPowerTurn(), null, null, null);
 
                 //初始化梯形数据
-                String s = "{\"version\":\"point_keystone\",\"point\":["+entity.getResult().getDevInfo().getZoomVal()+"]}";
+                String s = "{\"version\":\"point_keystone\",\"point\":[" + entity.getResult().getDevInfo().getZoomVal() + "]}";
                 LogUtil.e(TAG, s);
                 Point point = new Gson().fromJson(s, Point.class);
                 for (int i = 0; i < point.getPoint().size(); i++) {

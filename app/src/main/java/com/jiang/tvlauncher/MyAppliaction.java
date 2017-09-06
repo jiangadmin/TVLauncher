@@ -12,12 +12,13 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
+
 import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.tencent.bugly.crashreport.CrashReport;
+
 import com.xgimi.xgimiapiservice.XgimiApiManager;
 
 /**
@@ -49,10 +50,9 @@ public class MyAppliaction extends Application {
         super.onCreate();
 //        startService(new Intent(this, TimingService.class));
         context = this;
+
         //初始化ImageLoader
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
-
-        CrashReport.initCrashReport(getApplicationContext(), "948ab2c9a7", false);
 
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
         LogUtil.e(TAG, "准备连接AIDL");
@@ -105,7 +105,6 @@ public class MyAppliaction extends Application {
                     SaveUtils.setString(Save_Key.SerialNum, ID);
 //                new Register_Servlet(MyAppliaction.this).execute();
 
-
                 new TurnOn_servlet(context).execute();
 
 //                new Update_Servlet().execute();
@@ -122,5 +121,4 @@ public class MyAppliaction extends Application {
             LogUtil.e(TAG, "断开AIDL连接");
         }
     };
-
 }

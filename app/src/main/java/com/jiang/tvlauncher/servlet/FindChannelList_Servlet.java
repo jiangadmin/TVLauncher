@@ -73,7 +73,11 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
             SaveUtils.setString(Save_Key.Channe, res);
             activity.updateshow(channelList);
         }
-        if ((channelList.getErrorcode() == -3) || (channelList.getErrorcode() == -1))
+        //资源缺失，持续发送直到有资源
+        if (channelList.getErrorcode() == -3){
+            new FindChannelList_Servlet(activity).execute();
+        }
+        if (channelList.getErrorcode() == -1)
             if (num > 3) {
                 activity.updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
             } else {

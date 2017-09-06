@@ -1,6 +1,7 @@
 package com.jiang.tvlauncher.utils;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.jiang.tvlauncher.entity.Const;
 
@@ -123,7 +124,7 @@ public class HttpUtil {
         BufferedReader in = null;
         String result = "";
         // 发送请求参数
-        LogUtil.e(TAG, "http发送 " + url + "?" + paramStr.toString());
+        Log.e(TAG, "http发送 " + url + "?" + paramStr.toString());
         try {
             URL realUrl = new URL(url);
             // 打开和URL之间的连接
