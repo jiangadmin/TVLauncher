@@ -78,11 +78,6 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
                 activity.updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
             } else {
                 num++;
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    return;
-                }
                 new FindChannelList_Servlet(activity).execute();
             }
     }

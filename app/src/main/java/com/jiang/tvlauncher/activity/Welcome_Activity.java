@@ -46,7 +46,7 @@ public class Welcome_Activity extends Base_Activity {
         imageView = (ImageView) findViewById(R.id.image);
         videoView = (VideoView) findViewById(R.id.video);
 
-        if (!Tools.ping()){
+        if (!Tools.ping()) {
             finish();
 
             return;
@@ -83,7 +83,7 @@ public class Welcome_Activity extends Base_Activity {
         }
         //如果都没有
         else {
-
+            LogUtil.e(TAG, "退出");
             finish();
         }
     }
@@ -99,7 +99,7 @@ public class Welcome_Activity extends Base_Activity {
         //倒计时完成
         @Override
         public void onFinish() {
-            startActivity(new Intent(Welcome_Activity.this, Home_Activity.class));
+
             finish();
         }
 
