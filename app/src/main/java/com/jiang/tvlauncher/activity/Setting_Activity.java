@@ -90,7 +90,7 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
             //检测更新
             case R.id.setting_5:
                 Loading.show(this, "检查更新");
-                new Update_Servlet().execute();
+                new Update_Servlet(this).execute();
                 break;
             //关于本机
             case R.id.setting_6:
@@ -110,7 +110,7 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
             builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Loading.show(Setting_Activity.this,"同步中···");
+                    Loading.show(Setting_Activity.this, "同步中···");
                     new SyncDevZoom_Servlet().execute();
                 }
             });

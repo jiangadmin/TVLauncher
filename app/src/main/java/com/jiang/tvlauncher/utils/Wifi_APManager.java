@@ -3,6 +3,7 @@ package com.jiang.tvlauncher.utils;
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -15,6 +16,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class Wifi_APManager {
+    private static final String TAG = "Wifi_APManager";
 
     private WifiManager mWifiManager;
     private Context mContext;
@@ -183,19 +185,86 @@ public class Wifi_APManager {
         config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
         config.status = WifiConfiguration.Status.ENABLED;
         //通过反射调用设置热点
+        Method method = null;
         try {
-            Method method = mWifiManager.getClass().getMethod(
-                    "setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
+            method = mWifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
+
+            LogUtil.e(TAG, "method:" + method);
             boolean enable = (Boolean) method.invoke(mWifiManager, config, true);
             if (enable) {
                 Toast.makeText(mContext, "热点已开启 SSID:" + SSID + " password:" + PWD, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(mContext, "热点开启失败", Toast.LENGTH_SHORT).show();
             }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            LogUtil.e(TAG, e.getMessage());
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            LogUtil.e(TAG, e.getMessage());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            LogUtil.e(TAG, e.getMessage());
+        }
+
+    }
+    boolean flag = false;
+
+    public boolean createAp(String SSID, String preSharedKey) {
+        //开启热点先关闭Wifi
+        if (mWifiManager.isWifiEnabled()) {
+            //如果wifi处于打开状态，则关闭wifi,
+            mWifiManager.setWifiEnabled(false);
+        }
+        try {
+
+            Method method = mWifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
+            method.setAccessible(true);
+            WifiConfiguration config = new WifiConfiguration();
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+            config.SSID = SSID;
+            config.preSharedKey = preSharedKey;
+            mWifiManager.setWifiEnabled(false);
+            if(checkWifiApStatus()){
+                method.invoke(mWifiManager,config,false);
+                flag = (boolean) method.invoke(mWifiManager,config,true);
+
+            }else{
+                flag = (boolean) method.invoke(mWifiManager,config,true);
+
+            }
+            return flag;
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(mContext, "热点开启失败", Toast.LENGTH_SHORT).show();
+            Log.d("Rain.tang","changed_error : "+e.getLocalizedMessage());
         }
+        return false;
+
     }
+
+    public boolean checkWifiApStatus(){
+        Method method2 = null;
+        try {
+            method2 = mWifiManager.getClass().getDeclaredMethod("getWifiApState");
+            int state = (int) method2.invoke(mWifiManager);
+            //通过放射获取 WIFI_AP的开启状态属性
+            Field field = mWifiManager.getClass().getDeclaredField("WIFI_AP_STATE_ENABLED");
+            //获取属性值
+            int value = (int) field.get(mWifiManager);
+            //判断是否开启
+            if (state == value) {
+                Log.d("Rain.tang","AP_ok");
+                return true;
+            } else {
+                Log.d("Rain.tang","AP_false");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

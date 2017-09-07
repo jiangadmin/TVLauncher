@@ -2,6 +2,8 @@ package com.jiang.tvlauncher.servlet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
@@ -33,6 +35,9 @@ import java.util.Map;
 public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
     private static final String TAG = "TurnOn_servlet";
     Context context;
+
+    private WifiManager mWifiManager;
+    private WifiConfiguration configuration;
 
     public TurnOn_servlet(Context context) {
         this.context = context;
@@ -83,7 +88,10 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             SaveUtils.setString(Save_Key.Password, entity.getResult().getShadowcnf().getShadowPwd());
 
             //设置热点名  热点密码
-            new Wifi_APManager(context).createWifiHotspot(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
+
+
+//            new Wifi_APManager(context).createWifiHotspot(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
+            new Wifi_APManager(context).createAp(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
 
             for (int i = 0; i < entity.getResult().getLaunch().size(); i++) {
                 //方案类型（1=开机，2=屏保，3=互动）
@@ -134,8 +142,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             context.startService(new Intent(context, TimingService.class));
             //获取开屏
             new FindLanunch_Servlet().execute();
-            //获取更新
-            new Update_Servlet().execute();
 
         } else {
             //再次启动

@@ -2,7 +2,10 @@ package com.jiang.tvlauncher.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -13,12 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.PwdDialog;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
+import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
@@ -64,6 +69,11 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     static FindChannelList channelList;
 
+    TimeCount timeCount;
+
+    ImageView imageView;
+    VideoView videoView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +81,10 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         initview();
         initeven();
 
-        startActivity(new Intent(this, Welcome_Activity.class));
+        //获取更新
+        new Update_Servlet(this).execute();
 
+        //更新页面
         new FindChannelList_Servlet(this).execute();
     }
 
@@ -138,6 +150,47 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         namelist.add(name2);
         namelist.add(name3);
         namelist.add(name4);
+
+        timeCount = new TimeCount(3000, 1000);
+
+        imageView = (ImageView) findViewById(R.id.image);
+        videoView = (VideoView) findViewById(R.id.video);
+
+        if (!Tools.ping()) {
+            finish();
+
+            return;
+        }
+        //如果有图片
+        if (SaveUtils.getBoolean(Save_Key.NewImage)) {
+            LogUtil.e(TAG, "有图片");
+            imageView.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(SaveUtils.getString(Save_Key.NewImageUrl), imageView);
+            timeCount.start();
+        }
+
+        //如果有视频
+        else if (SaveUtils.getBoolean(Save_Key.NewVideo)) {
+            LogUtil.e(TAG, "有视频 " + SaveUtils.getString(Save_Key.NewVideoUrl));
+            videoView.setVisibility(View.VISIBLE);
+            videoView.setZOrderOnTop(true);
+            videoView.setVideoURI(Uri.parse(SaveUtils.getString(Save_Key.NewVideoUrl)));
+            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    videoView.setVisibility(View.GONE);
+                }
+            });
+            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                    videoView.setVisibility(View.GONE);
+                    return false;
+                }
+            });
+            videoView.start();
+
+        }
 
     }
 
@@ -256,28 +309,19 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     public void open(int i) {
         //数据缺失的情况
-        if (hometype.size() < 4) {
-            switch (i) {
-                case 0:
-                    break;
-                case 1:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-            }
+        if (hometype.size() <= i) {
+            Toast.makeText(this, "栏目未开通！" + hometype.size(), Toast.LENGTH_SHORT).show();
             return;
         }
         //数据正常的情况
         switch (hometype.get(i)) {
             //无操作
             case 0:
-                Toast.makeText(this,"栏目未开通",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
                 break;
             //启动指定APP
             case 1:
-                if (Tools.isAppInstalled(this, channelList.getResult().get(i).getAppList().get(0).getPackageName()))
+                if (Tools.isAppInstalled(channelList.getResult().get(i).getAppList().get(0).getPackageName()))
                     startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(channelList.getResult().get(i).getAppList().get(0).getPackageName())));
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -286,23 +330,24 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                     builder.show();
                 }
                 break;
-            //启动指定的APP列表
+            //启动APP列表
             case 2:
-                String packagename = "";
-                if (channelList.getResult().get(i).getAppList() != null) {
-                    for (int j = 0; j < channelList.getResult().get(i).getAppList().size(); j++) {
-                        packagename += channelList.getResult().get(i).getAppList().get(j).getPackageName() + "/";
-                    }
-                    Intent intent = new Intent();
-                    intent.setClass(this, APPList_Activity.class);
-                    intent.putExtra("packagename", packagename);
-                    startActivity(intent);
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("资源缺失是，请联系服务人员！");
-                    builder.setPositiveButton("好的", null);
-                    builder.show();
-                }
+                NewAPPList_Activity.start(this, channelList.getResult().get(i).getAppList());
+//                String packagename = "";
+//                if (channelList.getResult().get(i).getAppList() != null) {
+//                    for (int j = 0; j < channelList.getResult().get(i).getAppList().size(); j++) {
+//                        packagename += channelList.getResult().get(i).getAppList().get(j).getPackageName() + "/";
+//                    }
+//                    Intent intent = new Intent();
+//                    intent.setClass(this, APPList_Activity.class);
+//                    intent.putExtra("packagename", packagename);
+//                    startActivity(intent);
+//                } else {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                    builder.setMessage("资源缺失是，请联系服务人员！");
+//                    builder.setPositiveButton("好的", null);
+//                    builder.show();
+//                }
                 break;
             //启动展示图片
             case 3:
@@ -342,6 +387,27 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 back_txt.setTextColor(getResources().getColor(R.color.gray));
             }
             reduceAnim(view);
+        }
+    }
+
+    /**
+     * 计时器
+     */
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+
+        //倒计时完成
+        @Override
+        public void onFinish() {
+
+            imageView.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+
         }
     }
 }

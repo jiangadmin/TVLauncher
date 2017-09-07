@@ -23,6 +23,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.jiang.tvlauncher.MyAppliaction;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -364,14 +366,13 @@ public final class Tools {
     /**
      * 判断APP有没有
      *
-     * @param context
      * @param packagename
      * @return
      */
-    public static boolean isAppInstalled(Context context, String packagename) {
+    public static boolean isAppInstalled(String packagename) {
         PackageInfo packageInfo;
         try {
-            packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
+            packageInfo = MyAppliaction.context.getPackageManager().getPackageInfo(packagename, 0);
         } catch (Exception e) {
             packageInfo = null;
             e.printStackTrace();

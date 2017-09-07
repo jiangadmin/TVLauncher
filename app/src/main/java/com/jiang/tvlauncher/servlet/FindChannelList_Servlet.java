@@ -10,6 +10,7 @@ import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.HttpUtil;
+import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 
 import java.util.HashMap;
@@ -69,6 +70,7 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
     protected void onPostExecute(FindChannelList channelList) {
         super.onPostExecute(channelList);
         Loading.dismiss();
+        LogUtil.e(TAG,channelList.getErrormsg());
         if (channelList.getErrorcode() == 1000) {
             SaveUtils.setString(Save_Key.Channe, res);
             activity.updateshow(channelList);

@@ -1,6 +1,9 @@
 package com.jiang.tvlauncher.servlet;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
@@ -23,6 +26,11 @@ import java.util.Map;
  */
 public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
     private static final String TAG = "Update_Servlet";
+    Activity activity;
+
+    public Update_Servlet(Activity activity) {
+        this.activity = activity;
+    }
 
     @Override
     protected UpdateEntity doInBackground(String... strings) {
@@ -45,7 +53,6 @@ public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
             entity = new UpdateEntity();
             entity.setErrorcode(-1);
             entity.setErrormsg("连接服务器失败");
-
         }
         return entity;
     }
@@ -54,11 +61,12 @@ public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
     protected void onPostExecute(UpdateEntity entity) {
         super.onPostExecute(entity);
         Loading.dismiss();
-
         if (entity.getErrorcode() == 1000) {
-
+            if (entity.getResult().getBuildNum() > Tools.getVersionCode(MyAppliaction.context)) {
+                new DownUtil(activity).downLoadApk(entity.getResult().getDownloadUrl(),"Feekr"+entity.getResult().getVersionNum()+".apk");
+            }
         } else {
-
+            Toast.makeText(activity, entity.getErrormsg(), Toast.LENGTH_SHORT).show();
         }
     }
 }
