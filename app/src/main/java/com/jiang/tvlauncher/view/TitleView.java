@@ -1,18 +1,12 @@
 package com.jiang.tvlauncher.view;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,10 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.utils.Tools;
 
 public class TitleView extends RelativeLayout {
+    private static final String TAG = "TitleView";
 
-    private RelativeLayout layout;
     private View view;
     private final Context context;
     private Typeface typeface;
@@ -42,71 +37,6 @@ public class TitleView extends RelativeLayout {
 
     };
 
-    private final BroadcastReceiver wifiChange = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            WifiManager wifiManager = (WifiManager) context
-                    .getSystemService(context.WIFI_SERVICE);
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            if (wifiInfo.getBSSID() != null) {
-                // wifi信号强度
-                int signalLevel = WifiManager.calculateSignalLevel(
-                        wifiInfo.getRssi(), 4);
-                if (signalLevel == 0) {
-                    imgNetWorkState.setImageDrawable(context.getResources()
-                            .getDrawable(R.mipmap.wifi_1));
-
-                } else if (signalLevel == 1) {
-                    imgNetWorkState.setImageDrawable(context.getResources()
-                            .getDrawable(R.mipmap.wifi_2));
-
-                } else if (signalLevel == 2) {
-                    imgNetWorkState.setImageDrawable(context.getResources()
-                            .getDrawable(R.mipmap.wifi_3));
-
-                } else if (signalLevel == 3) {
-                    imgNetWorkState.setImageDrawable(context.getResources()
-                            .getDrawable(R.mipmap.network_state_on));
-                }
-            }
-        }
-    };
-
-    private final BroadcastReceiver mConnReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-
-            boolean noConnectivity = intent.getBooleanExtra(
-                    ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-            String reason = intent
-                    .getStringExtra(ConnectivityManager.EXTRA_REASON);
-            boolean isFailover = intent.getBooleanExtra(
-                    ConnectivityManager.EXTRA_IS_FAILOVER, false);
-
-            NetworkInfo currentNetworkInfo = (NetworkInfo) intent
-                    .getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-            NetworkInfo otherNetworkInfo = (NetworkInfo) intent
-                    .getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
-
-            if (currentNetworkInfo.isConnected()
-                    && currentNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-
-                imgNetWorkState.setImageDrawable(context.getResources()
-                        .getDrawable(R.mipmap.network_state_on));
-
-            } else if (currentNetworkInfo.isConnected()
-                    && currentNetworkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
-
-                imgNetWorkState.setImageDrawable(context.getResources()
-                        .getDrawable(R.mipmap.networkstate_ethernet));
-
-            } else if (!currentNetworkInfo.isConnected()) {
-                imgNetWorkState.setImageDrawable(context.getResources()
-                        .getDrawable(R.mipmap.networkstate_off));
-            }
-        }
-    };
-
     public TitleView(Context context) {
         super(context);
         this.context = context;
@@ -121,26 +51,43 @@ public class TitleView extends RelativeLayout {
 
     public void initTitleView() {
         view = LayoutInflater.from(context).inflate(R.layout.titleview, this, true);
-        layout = (RelativeLayout) view.findViewById(R.id.home_title);
         tvTime = (TextView) view.findViewById(R.id.title_bar_hour);
         tvDate = (TextView) view.findViewById(R.id.title_bar_date);
         imgNetWorkState = (ImageView) view.findViewById(R.id.title_bar_network_state);
-        typeface = Typeface.createFromAsset(context.getAssets(),
-                "helvetica_neueltpro_thex.otf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "helvetica_neueltpro_thex.otf");
         tvTime.setTypeface(typeface);
         tvDate.setTypeface(typeface);
         timeHandle.post(timeRun);
         imgNetWorkState = (ImageView) this.findViewById(R.id.title_bar_network_state);
-        context.registerReceiver(mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        context.registerReceiver(wifiChange, new IntentFilter(WifiManager.RSSI_CHANGED_ACTION));
 
-        DisplayMetrics dm = context.getApplicationContext().getResources().getDisplayMetrics();
-        RelativeLayout.LayoutParams ll_view = (LayoutParams) layout.getLayoutParams();
-        ll_view.height = dm.heightPixels / 10;
-        layout.setLayoutParams(ll_view);
+        //判断有没有网络
+        if (Tools.isNetworkConnected()) {
+            //是否是WIFI
+            if (Tools.isWifiConnected()) {
+                WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
+                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                if (wifiInfo.getBSSID() != null) {
+                    // wifi信号强度
+                    int signalLevel = WifiManager.calculateSignalLevel(wifiInfo.getRssi(), 4);
+                    if (signalLevel == 0) {
+                        imgNetWorkState.setImageDrawable(context.getResources().getDrawable(R.mipmap.wifi_1));
+                    } else if (signalLevel == 1) {
+                        imgNetWorkState.setImageDrawable(context.getResources().getDrawable(R.mipmap.wifi_2));
 
+                    } else if (signalLevel == 2) {
+                        imgNetWorkState.setImageDrawable(context.getResources().getDrawable(R.mipmap.wifi_3));
+
+                    } else if (signalLevel == 3) {
+                        imgNetWorkState.setImageDrawable(context.getResources().getDrawable(R.mipmap.network_state_on));
+                    }
+                }
+            } else {
+                imgNetWorkState.setImageResource(R.mipmap.networkstate_ethernet);
+            }
+        } else {
+            imgNetWorkState.setImageResource(R.mipmap.networkstate_off);
+        }
     }
-
 
     public void setTvTimeText(String text) {
         tvTime.setText(text);
@@ -158,8 +105,7 @@ public class TitleView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        context.unregisterReceiver(mConnReceiver);
-        context.unregisterReceiver(wifiChange);
+
     }
 
 

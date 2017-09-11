@@ -10,15 +10,15 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
-
+import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
 import com.xgimi.xgimiapiservice.XgimiApiManager;
 
 /**
@@ -40,7 +40,7 @@ public class MyAppliaction extends Application {
     public static String ID = "FFFFFF";
     public static String Temp = "FFFFFF";
     public static String WindSpeed = "FFFFFF";
-
+    public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
     Point point;
 
     public static boolean TurnOnS = false;
@@ -59,7 +59,7 @@ public class MyAppliaction extends Application {
         ComponentName componentName = new ComponentName("com.xgimi.xgimiapiservice", "com.xgimi.xgimiapiservice.XgimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);
 
-        LogUtil.e(TAG,"定时："+SaveUtils.getInt(Save_Key.Timming));
+        new FindChannelList_Servlet(new Home_Activity()).execute();
 
     }
 
@@ -75,8 +75,8 @@ public class MyAppliaction extends Application {
                 ID = apiManager.get("getMachineId", null, null);
                 WindSpeed = apiManager.get("getWindSpeed", null, null);
                 Temp = apiManager.get("getTemp", null, null);
-
-                apiManager.set("setKeyStoneByPoint", "0", "0", "0", null);
+                //允许开机自启动
+//                apiManager.set("setAutoStartApk","Feekr","true",null,null);
 
                 LogUtil.e(TAG, " 序列号 ：" + apiManager.get("getMachineId", null, null));
                 LogUtil.e(TAG, "全局缩放：" + apiManager.get("getZoomValue", null, null));
@@ -90,6 +90,10 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, "温   度：" + apiManager.get("getTemp", null, null));
                 LogUtil.e(TAG, " 开机源 ：" + apiManager.get("getBootSource", null, null));
                 LogUtil.e(TAG, "上电开机：" + apiManager.get("getPowerOnStartValue", null, null));
+                if (Boolean.valueOf(apiManager.get("getPowerOnStartValue", null, null)))
+                    turnType = "1";
+                else
+                    turnType = "2";
                 LogUtil.e(TAG, "梯形角度：" + apiManager.get("getKeyStoneData", null, null));
 
                 String jsonStr = apiManager.get("getKeyStoneData", null, null);
@@ -103,11 +107,8 @@ public class MyAppliaction extends Application {
 
                 if (!TextUtils.isEmpty(ID))
                     SaveUtils.setString(Save_Key.SerialNum, ID);
-//                new Register_Servlet(MyAppliaction.this).execute();
 
                 new TurnOn_servlet(context).execute();
-
-//                new Update_Servlet().execute();
 
             } catch (RemoteException e) {
                 e.printStackTrace();

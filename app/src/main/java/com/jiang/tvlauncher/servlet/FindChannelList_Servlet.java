@@ -1,6 +1,7 @@
 package com.jiang.tvlauncher.servlet;
 
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -80,11 +81,8 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
             new FindChannelList_Servlet(activity).execute();
         }
         if (channelList.getErrorcode() == -1)
-            if (num > 3) {
-                activity.updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
-            } else {
-                num++;
-                new FindChannelList_Servlet(activity).execute();
-            }
+            activity.updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+
     }
+
 }

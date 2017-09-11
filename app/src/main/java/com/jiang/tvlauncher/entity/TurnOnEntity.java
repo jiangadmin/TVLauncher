@@ -87,7 +87,7 @@ public class TurnOnEntity extends BaseEntity {
             private int isDelete;
             private String ladderPwd;
             private int monitRate;
-            private String powerTurn;
+            private int powerTurn;
             private String shadowName;
             private String shadowPwd;
             private int threeDim;
@@ -96,6 +96,15 @@ public class TurnOnEntity extends BaseEntity {
             private String updateTime;
             private String wifi;
             private String wifiPassword;
+            private String projectMode;
+
+            public String getProjectMode() {
+                return projectMode;
+            }
+
+            public void setProjectMode(String projectMode) {
+                this.projectMode = projectMode;
+            }
 
             public String getCreateAuthor() {
                 return createAuthor;
@@ -161,11 +170,11 @@ public class TurnOnEntity extends BaseEntity {
                 this.monitRate = monitRate;
             }
 
-            public String getPowerTurn() {
+            public int getPowerTurn() {
                 return powerTurn;
             }
 
-            public void setPowerTurn(String powerTurn) {
+            public void setPowerTurn(int powerTurn) {
                 this.powerTurn = powerTurn;
             }
 

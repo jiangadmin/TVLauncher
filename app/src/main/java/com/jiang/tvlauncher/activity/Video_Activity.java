@@ -39,6 +39,14 @@ public class Video_Activity extends Base_Activity {
                 videoView.start();
             }
         });
+        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                finish();
+                return false;
+            }
+        });
         videoView.start();
+
     }
 }

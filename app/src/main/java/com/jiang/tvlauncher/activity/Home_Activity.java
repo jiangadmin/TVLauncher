@@ -1,6 +1,5 @@
 package com.jiang.tvlauncher.activity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -19,9 +18,11 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.PwdDialog;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
+import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
@@ -57,7 +58,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     RelativeLayout home1, home2, home3, home4;
     ImageView home1bg, home2bg, home3bg, home4bg;
-    ImageView icon1, icon2, icon3, icon4;
     TextView name1, name2, name3, name4;
 
     List<TextView> namelist = new ArrayList();
@@ -83,9 +83,10 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         //获取更新
         new Update_Servlet(this).execute();
-
         //更新页面
-        new FindChannelList_Servlet(this).execute();
+        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.ID)))
+            new FindChannelList_Servlet(this).execute();
+
     }
 
     private void initview() {
@@ -99,11 +100,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         home2bg = (ImageView) findViewById(R.id.home_2_bg);
         home3bg = (ImageView) findViewById(R.id.home_3_bg);
         home4bg = (ImageView) findViewById(R.id.home_4_bg);
-
-        icon1 = (ImageView) findViewById(R.id.home_1_icon);
-        icon2 = (ImageView) findViewById(R.id.home_2_icon);
-        icon3 = (ImageView) findViewById(R.id.home_3_icon);
-        icon4 = (ImageView) findViewById(R.id.home_4_icon);
 
         name1 = (TextView) findViewById(R.id.home_1_name);
         name2 = (TextView) findViewById(R.id.home_2_name);
@@ -129,7 +125,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         ll_home.height = metric.heightPixels / 2;
 
-        ll_home.width = metric.widthPixels / 6;
+        ll_home.width = metric.widthPixels / 5;
 
         home1.setLayoutParams(ll_home);
         home2.setLayoutParams(ll_home);
@@ -156,11 +152,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         imageView = (ImageView) findViewById(R.id.image);
         videoView = (VideoView) findViewById(R.id.video);
 
-        if (!Tools.ping()) {
-            finish();
-
-            return;
-        }
         //如果有图片
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
             LogUtil.e(TAG, "有图片");
@@ -324,30 +315,13 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 if (Tools.isAppInstalled(channelList.getResult().get(i).getAppList().get(0).getPackageName()))
                     startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(channelList.getResult().get(i).getAppList().get(0).getPackageName())));
                 else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("资源缺失是，请联系服务人员！");
-                    builder.setPositiveButton("好的", null);
-                    builder.show();
+                    Loading.show(this, "请稍后");
+                    new DownUtil(this).downLoadApk(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk");
                 }
                 break;
             //启动APP列表
             case 2:
                 NewAPPList_Activity.start(this, channelList.getResult().get(i).getAppList());
-//                String packagename = "";
-//                if (channelList.getResult().get(i).getAppList() != null) {
-//                    for (int j = 0; j < channelList.getResult().get(i).getAppList().size(); j++) {
-//                        packagename += channelList.getResult().get(i).getAppList().get(j).getPackageName() + "/";
-//                    }
-//                    Intent intent = new Intent();
-//                    intent.setClass(this, APPList_Activity.class);
-//                    intent.putExtra("packagename", packagename);
-//                    startActivity(intent);
-//                } else {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                    builder.setMessage("资源缺失是，请联系服务人员！");
-//                    builder.setPositiveButton("好的", null);
-//                    builder.show();
-//                }
                 break;
             //启动展示图片
             case 3:

@@ -19,5 +19,6 @@ public class Save_Key {
     public static String Password = "Password";
     public static String Timming = "Timming";
     public static String Channe = "Channe";
+    public static String MachineId = "MachineId";
 
 }

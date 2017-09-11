@@ -9,7 +9,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.location.Location;
 import android.location.LocationListener;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -271,46 +274,6 @@ public final class Tools {
         context.startActivity(i);
     }
 
-    /**
-     * @return
-     * @author cat
-     * @category 判断是否有外网连接（普通方法不能判断外网的网络是否连接，比如连接上局域网）
-     */
-    public static final boolean ping() {
-
-        String result = null;
-        try {
-            String ip = "www.baidu.com";// 除非百度挂了，否则用这个应该没问题(也可以换成自己要连接的服务器地址)
-            Process p = Runtime.getRuntime().exec("ping -c 1 -w 100 " + ip);// ping3次
-            // 读取ping的内容，可不加。
-            InputStream input = p.getInputStream();
-            BufferedReader in = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                in = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
-            }
-            StringBuffer stringBuffer = new StringBuffer();
-            String content = "";
-            while ((content = in.readLine()) != null) {
-                stringBuffer.append(content);
-            }
-            Log.i("TTT", "result content : " + stringBuffer.toString());
-            // PING的状态
-            int status = p.waitFor();
-            if (status == 0) {
-                result = "successful~";
-                return true;
-            } else {
-                result = "failed~ cannot reach the IP address";
-            }
-        } catch (IOException e) {
-            result = "failed~ IOException";
-        } catch (InterruptedException e) {
-            result = "failed~ InterruptedException";
-        } finally {
-            Log.i("TTT", "result = " + result);
-        }
-        return false;
-    }
 
     /**
      * 得到sd卡剩余大小
@@ -469,6 +432,38 @@ public final class Tools {
             }
         }
 //        return pName.contains(packageName);//判断pName中是否有目标程序的包名，有TRUE，没有FALSE
+    }
+
+    /**
+     * 判断是否有网络连接
+     * @return
+     */
+    public static boolean isNetworkConnected() {
+        if (MyAppliaction.context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) MyAppliaction.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+
+
+
+    /**
+     * 判断是否是WIFI连接
+     * @return
+     */
+    public static boolean isWifiConnected() {
+        if (MyAppliaction.context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) MyAppliaction.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mWiFiNetworkInfo = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            if (mWiFiNetworkInfo != null) {
+                return mWiFiNetworkInfo.isAvailable();
+            }
+        }
+        return false;
     }
 
 }

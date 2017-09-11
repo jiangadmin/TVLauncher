@@ -2,19 +2,21 @@ package com.jiang.tvlauncher.servlet;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.entity.TurnOnEntity;
 import com.jiang.tvlauncher.server.TimingService;
+import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
@@ -36,19 +38,23 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
     private static final String TAG = "TurnOn_servlet";
     Context context;
 
-    private WifiManager mWifiManager;
-    private WifiConfiguration configuration;
+    TimeCount timeCount;
 
     public TurnOn_servlet(Context context) {
         this.context = context;
+        timeCount = new TimeCount(30000, 1000);
     }
 
     @Override
     protected TurnOnEntity doInBackground(String... strings) {
         Map map = new HashMap();
-//        map.put("text", "开机发送请求");
+
         map.put("serialNum", MyAppliaction.ID);
-        map.put("turnType", "1");
+        map.put("turnType", MyAppliaction.turnType);
+        map.put("modelNum", Build.PRODUCT);
+        map.put("systemVersion", Build.DISPLAY);
+        map.put("androidVersion", Build.VERSION.RELEASE);
+        LogUtil.e(TAG, "剩余空间：" + FileUtils.getFreeDiskSpaceS());
 
         String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOn.do", map);
 
@@ -88,10 +94,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             SaveUtils.setString(Save_Key.Password, entity.getResult().getShadowcnf().getShadowPwd());
 
             //设置热点名  热点密码
-
-
-//            new Wifi_APManager(context).createWifiHotspot(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
-            new Wifi_APManager(context).createAp(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
+//            new Wifi_APManager(context).createAp(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
 
             for (int i = 0; i < entity.getResult().getLaunch().size(); i++) {
                 //方案类型（1=开机，2=屏保，3=互动）
@@ -120,9 +123,14 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 //初始化设备名称
                 MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
 
-                //初始化上电开机
-                MyAppliaction.apiManager.set("setPowerOnStart", entity.getResult().getShadowcnf().getPowerTurn(), null, null, null);
+                //初始化投影方式
+                MyAppliaction.apiManager.set("setProjectionMode", entity.getResult().getShadowcnf().getProjectMode(), null, null, null);
 
+                //初始化上电开机
+                if (entity.getResult().getShadowcnf().getPowerTurn() == 1)
+                    MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
+                else
+                    MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
                 //初始化梯形数据
                 String s = "{\"version\":\"point_keystone\",\"point\":[" + entity.getResult().getDevInfo().getZoomVal() + "]}";
                 LogUtil.e(TAG, s);
@@ -140,14 +148,39 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
             //启动定时服务
             context.startService(new Intent(context, TimingService.class));
+
             //获取开屏
             new FindLanunch_Servlet().execute();
 
+            new FindChannelList_Servlet(new Home_Activity()).execute();
+
+        } else if (entity.getErrorcode() == -2) {
+            LogUtil.e(TAG, entity.getErrormsg());
+
         } else {
+            timeCount.start();
+            LogUtil.e(TAG, "失败了" + entity.getErrormsg());
+        }
+    }
+
+    /**
+     * 计时器
+     */
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+
+        //倒计时完成
+        @Override
+        public void onFinish() {
             //再次启动
             new TurnOn_servlet(context).execute();
+        }
 
-            LogUtil.e(TAG, "失败了" + entity.getErrormsg());
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+
         }
     }
 }
