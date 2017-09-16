@@ -70,7 +70,7 @@ public class DownUtil {
                 public void run() {
                     try {
                         // 在子线程中下载APK文件
-                        File file = getFileFromServer(path, "New"+fileName, pd);
+                        File file = getFileFromServer(path, "New" + fileName, pd);
                         sleep(1000);
                         // 安装APK文件
                         LogUtil.e(TAG, "文件下载好了" + file.getPath());
@@ -81,7 +81,8 @@ public class DownUtil {
 //
 //                        else
                         //com.jiang.tvlauncher
-                        String result = MyAppliaction.apiManager.set("setInstallApk", "mnt/usb/C8F3-C4EE/app-debug.apk", "true", "activity", "com.jiang.tvlauncher/com.jiang.tvlauncher.activity.Home_Activity");
+//                        String result = MyAppliaction.apiManager.set("setInstallApk",file.getPath(), "true", "activity", "com.jiang.tvlauncher/com.jiang.tvlauncher.activity.Home_Activity");
+                        String result = MyAppliaction.apiManager.set("setInstallApk", file.getPath(), null, null, null);
 //                            LogUtil.e(TAG,"静默安装并自启动 :"+result);
                         pd.dismiss(); // 结束掉进度条对话框
                     } catch (Exception e) {
