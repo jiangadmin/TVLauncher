@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
@@ -43,6 +45,12 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
         setContentView(R.layout.activity_setting);
         initview();
         initeven();
+
+        try {
+            MyAppliaction.apiManager.set("setFocusOnOff", "true",null,null,null);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initview() {

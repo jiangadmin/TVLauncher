@@ -79,6 +79,7 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
         } else {
             Loading.show(this, "请稍后");
             LogUtil.e(TAG, "开始下载" + appList.get(i).getPackageName());
+            DownUtil.isopen = false;
             new DownUtil(this).downLoadApk(appList.get(i).getDownloadUrl(), appList.get(i).getAppName() + ".apk");
         }
     }

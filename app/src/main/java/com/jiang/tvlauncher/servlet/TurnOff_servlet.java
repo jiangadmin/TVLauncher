@@ -1,9 +1,9 @@
 package com.jiang.tvlauncher.servlet;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.entity.BaseEntity;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -26,11 +26,16 @@ public class TurnOff_servlet extends AsyncTask<String, Integer, BaseEntity> {
     @Override
     protected BaseEntity doInBackground(String... strings) {
         Map map = new HashMap();
+        BaseEntity entity;
+        if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.ID))) {
+            entity = new BaseEntity();
+            entity.setErrorcode(-3);
+            entity.setErrormsg("数据缺失");
+        }
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         map.put("turnType", "3");
 
         String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOff.do", map);
-        BaseEntity entity;
         if (res != null) {
             try {
                 entity = new Gson().fromJson(res, BaseEntity.class);
@@ -51,7 +56,7 @@ public class TurnOff_servlet extends AsyncTask<String, Integer, BaseEntity> {
     protected void onPostExecute(BaseEntity entity) {
         super.onPostExecute(entity);
 
-        SaveUtils.setBoolean("关机",true);
+        SaveUtils.setBoolean("关机", true);
 
     }
 }

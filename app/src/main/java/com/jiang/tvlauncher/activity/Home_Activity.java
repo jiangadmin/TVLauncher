@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.PwdDialog;
@@ -208,6 +210,17 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+//        禁止调焦
+        try {
+            MyAppliaction.apiManager.set("setFocusOnOff", "false",null,null,null);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         return;
     }
@@ -316,6 +329,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                     startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(channelList.getResult().get(i).getAppList().get(0).getPackageName())));
                 else {
                     Loading.show(this, "请稍后");
+                    DownUtil.isopen = false;
                     new DownUtil(this).downLoadApk(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk");
                 }
                 break;

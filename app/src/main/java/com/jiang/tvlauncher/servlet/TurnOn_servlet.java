@@ -152,7 +152,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //获取开屏
             new FindLanunch_Servlet().execute();
 
-            new FindChannelList_Servlet(new Home_Activity()).execute();
+//            new FindChannelList_Servlet(new Home_Activity()).execute();
 
         } else if (entity.getErrorcode() == -2) {
             LogUtil.e(TAG, entity.getErrormsg());

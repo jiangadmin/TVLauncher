@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
@@ -59,8 +60,6 @@ public class MyAppliaction extends Application {
         ComponentName componentName = new ComponentName("com.xgimi.xgimiapiservice", "com.xgimi.xgimiapiservice.XgimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);
 
-        new FindChannelList_Servlet(new Home_Activity()).execute();
-
     }
 
     ServiceConnection serviceConnection = new ServiceConnection() {
@@ -78,6 +77,9 @@ public class MyAppliaction extends Application {
                 //允许开机自启动
 //                apiManager.set("setAutoStartApk","Feekr","true",null,null);
 
+                //禁止调焦
+                apiManager.set("setFocusOnOff", "false",null,null,null);
+
                 LogUtil.e(TAG, " 序列号 ：" + apiManager.get("getMachineId", null, null));
                 LogUtil.e(TAG, "全局缩放：" + apiManager.get("getZoomValue", null, null));
                 LogUtil.e(TAG, "横向缩放：" + apiManager.get("getHorizentalValue", null, null));
@@ -90,6 +92,11 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, "温   度：" + apiManager.get("getTemp", null, null));
                 LogUtil.e(TAG, " 开机源 ：" + apiManager.get("getBootSource", null, null));
                 LogUtil.e(TAG, "上电开机：" + apiManager.get("getPowerOnStartValue", null, null));
+                LogUtil.e(TAG, "设备型号：" + apiManager.get("getDeviceModel", null, null));
+//                LogUtil.e(TAG, "调焦距：" + apiManager.get("getFocusOnOffValue",null,null));
+                LogUtil.e(TAG, "设置调焦距：" + apiManager.set("setFocusOnOff", "false",null,null,null));
+//                LogUtil.e(TAG, "调焦距：" + apiManager.get("getFocusOnOffValue",null,null));
+                LogUtil.e(TAG, "固件版本：" + Build.VERSION.INCREMENTAL);
                 if (Boolean.valueOf(apiManager.get("getPowerOnStartValue", null, null)))
                     turnType = "1";
                 else

@@ -32,6 +32,8 @@ public class DownUtil {
 
     ProgressDialog pd;
 
+    public static boolean isopen = false;
+
     public DownUtil(Activity activity) {
         this.activity = activity;
     }
@@ -68,11 +70,19 @@ public class DownUtil {
                 public void run() {
                     try {
                         // 在子线程中下载APK文件
-                        File file = getFileFromServer(path, fileName, pd);
+                        File file = getFileFromServer(path, "New"+fileName, pd);
                         sleep(1000);
                         // 安装APK文件
                         LogUtil.e(TAG, "文件下载好了" + file.getPath());
-                        MyAppliaction.apiManager.set("setInstallApk", file.getPath(), null, null, null);
+//                        if (isopen){
+//                            String result = MyAppliaction.apiManager.set("setInstallApk", file.getPath(), "true", "activity", "com.jiang.tvlauncher/com.jiang.tvlauncher.activity.Home_Activity");
+//                            LogUtil.e(TAG,"静默安装并自启动 :"+result);
+//                        }
+//
+//                        else
+                        //com.jiang.tvlauncher
+                        String result = MyAppliaction.apiManager.set("setInstallApk", "mnt/usb/C8F3-C4EE/app-debug.apk", "true", "activity", "com.jiang.tvlauncher/com.jiang.tvlauncher.activity.Home_Activity");
+//                            LogUtil.e(TAG,"静默安装并自启动 :"+result);
                         pd.dismiss(); // 结束掉进度条对话框
                     } catch (Exception e) {
                         LogUtil.e(TAG, "文件下载失败了");
@@ -104,7 +114,6 @@ public class DownUtil {
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }
-
             FileOutputStream fos = new FileOutputStream(file);
             BufferedInputStream bis = new BufferedInputStream(is);
             byte[] buffer = new byte[1024];
