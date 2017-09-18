@@ -9,17 +9,16 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
-import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.entity.TurnOnEntity;
 import com.jiang.tvlauncher.server.TimingService;
-import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
+import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.utils.Wifi_APManager;
 
 import java.util.HashMap;
@@ -51,10 +50,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
         map.put("serialNum", MyAppliaction.ID);
         map.put("turnType", MyAppliaction.turnType);
-        map.put("modelNum", Build.PRODUCT);
-        map.put("systemVersion", Build.DISPLAY);
+        map.put("modelNum", MyAppliaction.modelNum);
+        map.put("systemVersion", Build.VERSION.INCREMENTAL);
         map.put("androidVersion", Build.VERSION.RELEASE);
-        LogUtil.e(TAG, "剩余空间：" + FileUtils.getFreeDiskSpaceS());
 
         String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOn.do", map);
 
@@ -93,8 +91,10 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //存储密码
             SaveUtils.setString(Save_Key.Password, entity.getResult().getShadowcnf().getShadowPwd());
 
-            //设置热点名  热点密码
-//            new Wifi_APManager(context).createAp(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
+            //判断是否是有线连接
+            if (Tools.isLineConnected())
+                //设置热点名  热点密码
+                new Wifi_APManager(context).createAp(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
 
             for (int i = 0; i < entity.getResult().getLaunch().size(); i++) {
                 //方案类型（1=开机，2=屏保，3=互动）

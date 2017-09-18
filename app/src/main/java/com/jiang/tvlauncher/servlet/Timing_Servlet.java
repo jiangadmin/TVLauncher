@@ -8,7 +8,9 @@ import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.entity.BaseEntity;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
+import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.HttpUtil;
+import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 
 import java.util.HashMap;
@@ -31,6 +33,9 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
         Map map = new HashMap();
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         map.put("netSpeed", "1");
+        map.put("storage",  FileUtils.getRomSize());
+        map.put("memoryInfo",  FileUtils.getAvailMemory());
+        map.put("avaSpace",  FileUtils.getFreeDiskSpaceS());
         try {
             map.put("cpuTemp", MyAppliaction.apiManager.get("getTemp", null, null));
             map.put("fanSpeed",MyAppliaction.apiManager.get("getWindSpeed", null, null));

@@ -3,9 +3,13 @@ package com.jiang.tvlauncher.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.drm.DrmStore;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
+
+import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.utils.LogUtil;
 
 /**
  * Created by  jiang
@@ -20,34 +24,22 @@ public class NetReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        NetworkInfo.State wifiState = null;
-        NetworkInfo.State mobileState = null;
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
-        mobileState = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
-        if (wifiState != null && mobileState != null
-                && NetworkInfo.State.CONNECTED != wifiState
-                && NetworkInfo.State.CONNECTED == mobileState) {
-            setTurnOn();
-            // 手机网络连接成功
-        } else if (wifiState != null && mobileState != null
-                && NetworkInfo.State.CONNECTED != wifiState
-                && NetworkInfo.State.CONNECTED != mobileState) {
-            Toast.makeText(context, "手机没有任何的网络", Toast.LENGTH_SHORT).show();
-            // 手机没有任何的网络
-        } else if (wifiState != null && NetworkInfo.State.CONNECTED == wifiState) {
-            // 无线网络连接成功
-            setTurnOn();
+        if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)){
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo!=null&&networkInfo.isAvailable()){
+                if (networkInfo.getType()==ConnectivityManager.TYPE_ETHERNET){
+                    LogUtil.e(TAG,"有线网络");
+                    MyAppliaction.IsLineNet = true;
+                }
+                if (networkInfo.getType()==ConnectivityManager.TYPE_WIFI){
+                    LogUtil.e(TAG,"无线网络");
+                    MyAppliaction.IsLineNet = false;
+                }
+            }else {
+                LogUtil.e(TAG,"网络断开");
+            }
         }
-    }
 
-
-    /**
-     * 发出开机数据
-     */
-    public void setTurnOn() {
-
-//        if (Const.Nets)
-//            new TurnOn_servlet().execute();
     }
 }

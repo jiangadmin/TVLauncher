@@ -1,13 +1,16 @@
 
 package com.jiang.tvlauncher.utils;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
+import android.text.format.Formatter;
 import android.util.Log;
 
 import com.jiang.tvlauncher.BuildConfig;
+import com.jiang.tvlauncher.MyAppliaction;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -224,6 +227,20 @@ public class FileUtils {
     }
 
     /**
+     * 获取android当前可用内存大小
+     *
+     * @return
+     */
+    public static String getAvailMemory() {
+        // 获取android当前可用内存大小 
+        ActivityManager am = (ActivityManager) MyAppliaction.context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        am.getMemoryInfo(mi);
+        //mi.availMem; 当前系统的可用内存
+        return getPrintSize(mi.availMem);
+    }
+
+    /**
      * 转换文件大小
      *
      * @param fileS
@@ -344,6 +361,20 @@ public class FileUtils {
     }
 
     /**
+     * 获取Rom大小
+     * @return
+     */
+    public static String getRomSize() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockCount = stat.getBlockCount();
+        long blockSize = stat.getBlockSize();
+        String totalSize = Formatter.formatFileSize(MyAppliaction.context, blockCount * blockSize);
+
+        return totalSize;
+    }
+
+    /**
      * 计算SD卡的剩余空间
      *
      * @return 返回-1，说明没有安装sd卡
@@ -354,6 +385,7 @@ public class FileUtils {
 
     /**
      * 单位计算
+     *
      * @param size
      * @return
      */
@@ -385,6 +417,7 @@ public class FileUtils {
                     + String.valueOf((size % 100)) + "GB";
         }
     }
+
     /**
      * 新建目录
      *

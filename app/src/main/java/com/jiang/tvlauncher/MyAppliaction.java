@@ -11,13 +11,12 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
-import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
+import com.jiang.tvlauncher.utils.Tools;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
@@ -38,6 +37,8 @@ public class MyAppliaction extends Application {
 
     public static XgimiApiManager apiManager;
 
+    public static boolean IsLineNet = true;//是否是有线网络
+    public static String modelNum = "Z5";
     public static String ID = "FFFFFF";
     public static String Temp = "FFFFFF";
     public static String WindSpeed = "FFFFFF";
@@ -54,6 +55,8 @@ public class MyAppliaction extends Application {
 
         //初始化ImageLoader
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
+
+        LogUtil.e(TAG,"有线连接："+Tools.isLineConnected());
 
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
         LogUtil.e(TAG, "准备连接AIDL");
@@ -78,7 +81,7 @@ public class MyAppliaction extends Application {
 //                apiManager.set("setAutoStartApk","Feekr","true",null,null);
 
                 //禁止调焦
-                apiManager.set("setFocusOnOff", "false",null,null,null);
+                apiManager.set("setFocusOnOff", "false", null, null, null);
 
                 LogUtil.e(TAG, " 序列号 ：" + apiManager.get("getMachineId", null, null));
                 LogUtil.e(TAG, "全局缩放：" + apiManager.get("getZoomValue", null, null));
@@ -94,9 +97,10 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, "上电开机：" + apiManager.get("getPowerOnStartValue", null, null));
                 LogUtil.e(TAG, "设备型号：" + apiManager.get("getDeviceModel", null, null));
 //                LogUtil.e(TAG, "调焦距：" + apiManager.get("getFocusOnOffValue",null,null));
-                LogUtil.e(TAG, "设置调焦距：" + apiManager.set("setFocusOnOff", "false",null,null,null));
+                LogUtil.e(TAG, "设置调焦距：" + apiManager.set("setFocusOnOff", "false", null, null, null));
 //                LogUtil.e(TAG, "调焦距：" + apiManager.get("getFocusOnOffValue",null,null));
                 LogUtil.e(TAG, "固件版本：" + Build.VERSION.INCREMENTAL);
+                modelNum = apiManager.get("getDeviceModel", null, null);
                 if (Boolean.valueOf(apiManager.get("getPowerOnStartValue", null, null)))
                     turnType = "1";
                 else

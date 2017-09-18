@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jiang.tvlauncher.R;
-import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.utils.Tools;
 
 public class TitleView extends RelativeLayout {
@@ -29,7 +28,7 @@ public class TitleView extends RelativeLayout {
 
     private final Handler timeHandle = new Handler();
 
-    TimeCount timeCount  = new TimeCount(10000, 1000);
+    TimeCount timeCount = new TimeCount(1000, 1000);
 
     private final Runnable timeRun = new Runnable() {
 
@@ -69,12 +68,14 @@ public class TitleView extends RelativeLayout {
 
     }
 
-    public void update(){
+    public void update() {
         timeCount.start();
         //判断有没有网络
         if (Tools.isNetworkConnected()) {
-            //是否是WIFI
-            if (Tools.isWifiConnected()) {
+            //是否是有线
+            if (Tools.isLineConnected()) {
+                imgNetWorkState.setImageResource(R.mipmap.networkstate_ethernet);
+            } else {
                 WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
                 WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                 if (wifiInfo.getBSSID() != null) {
@@ -92,8 +93,6 @@ public class TitleView extends RelativeLayout {
                         imgNetWorkState.setImageDrawable(context.getResources().getDrawable(R.mipmap.network_state_on));
                     }
                 }
-            } else {
-                imgNetWorkState.setImageResource(R.mipmap.networkstate_ethernet);
             }
         } else {
             imgNetWorkState.setImageResource(R.mipmap.networkstate_off);

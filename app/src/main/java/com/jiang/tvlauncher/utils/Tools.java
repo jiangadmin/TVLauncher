@@ -12,7 +12,6 @@ import android.location.LocationListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,11 +30,7 @@ import com.jiang.tvlauncher.MyAppliaction;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -436,6 +431,7 @@ public final class Tools {
 
     /**
      * 判断是否有网络连接
+     *
      * @return
      */
     public static boolean isNetworkConnected() {
@@ -449,19 +445,36 @@ public final class Tools {
         return false;
     }
 
-
-
     /**
      * 判断是否是WIFI连接
+     *
      * @return
      */
     public static boolean isWifiConnected() {
         if (MyAppliaction.context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) MyAppliaction.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mWiFiNetworkInfo = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-            if (mWiFiNetworkInfo != null) {
-                return mWiFiNetworkInfo.isAvailable();
-            }
+            NetworkInfo mWiFiNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mWiFiNetworkInfo != null && mWiFiNetworkInfo.isAvailable())
+                if (mWiFiNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI)
+                    return mWiFiNetworkInfo.isAvailable();
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * 判断是否是有线连接
+     *
+     * @return
+     */
+    public static boolean isLineConnected() {
+        if (MyAppliaction.context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) MyAppliaction.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mLineNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mLineNetworkInfo != null && mLineNetworkInfo.isAvailable())
+                if (mLineNetworkInfo.getType() == ConnectivityManager.TYPE_ETHERNET)
+                    return mLineNetworkInfo.isAvailable();
+            return false;
         }
         return false;
     }
