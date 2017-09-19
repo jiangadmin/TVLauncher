@@ -29,7 +29,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 //            start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
 //            context.startActivity(start);
             //注册广播
-            registerNetworkReceiver();
+//            registerNetworkReceiver();
         }
     }
 
