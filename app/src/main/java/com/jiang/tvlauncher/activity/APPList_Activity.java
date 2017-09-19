@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.GridView;
 
+import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.adapter.AppAdapter;
 import com.jiang.tvlauncher.entity.AppBean;
@@ -37,6 +38,7 @@ public class APPList_Activity extends Base_Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applist);
+        MyAppliaction.activity = this;
         packagename = getIntent().getStringExtra("packagename");
         initview();
         initeven();

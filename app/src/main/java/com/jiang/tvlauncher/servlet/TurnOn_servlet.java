@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
@@ -41,7 +43,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
     public TurnOn_servlet(Context context) {
         this.context = context;
-        timeCount = new TimeCount(30000, 1000);
+        timeCount = new TimeCount(3000, 1000);
     }
 
     @Override
@@ -51,6 +53,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         map.put("serialNum", MyAppliaction.ID);
         map.put("turnType", MyAppliaction.turnType);
         map.put("modelNum", MyAppliaction.modelNum);
+
         map.put("systemVersion", Build.VERSION.INCREMENTAL);
         map.put("androidVersion", Build.VERSION.RELEASE);
 
@@ -80,6 +83,12 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         super.onPostExecute(entity);
         Const.Nets = false;
         Loading.dismiss();
+
+        LogUtil.e(TAG, "=======================================================================================");
+        LogUtil.e(TAG, entity.getErrormsg());
+//        Toast.makeText(context, "开机请求返回："+entity.getErrormsg(), Toast.LENGTH_SHORT).show();
+        LogUtil.e(TAG, "=======================================================================================");
+
         if (entity.getErrorcode() == 1000) {
             MyAppliaction.TurnOnS = true;
 
@@ -119,6 +128,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 }
             }
 
+            String s =  entity.getResult().getDevInfo().getZoomVal();
+            LogUtil.e(TAG, "梯形数据:"+s);
+
             try {
                 //初始化设备名称
                 MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
@@ -132,8 +144,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 else
                     MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
                 //初始化梯形数据
-                String s = "{\"version\":\"point_keystone\",\"point\":[" + entity.getResult().getDevInfo().getZoomVal() + "]}";
-                LogUtil.e(TAG, s);
+
                 Point point = new Gson().fromJson(s, Point.class);
                 for (int i = 0; i < point.getPoint().size(); i++) {
                     MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
@@ -151,6 +162,10 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
             //获取开屏
             new FindLanunch_Servlet().execute();
+
+            if (MyAppliaction.activity.getClass() == Home_Activity.class) {
+                ((Home_Activity) MyAppliaction.activity).update();
+            }
 
 //            new FindChannelList_Servlet(new Home_Activity()).execute();
 

@@ -52,8 +52,6 @@
 
         <activity android:name=".activity.Setting_Activity" />
 
-        <activity android:name=".activity.NewsShow_Activity" />
-
         <activity android:name=".activity.Video_Activity" />
 
         <activity android:name=".activity.Image_Activity" />
@@ -72,11 +70,11 @@
         </receiver>
 
         <!--网络广播接收-->
-        <!--<receiver android:name=".receiver.NetReceiver">-->
-            <!--<intent-filter>  -->
-                <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />  -->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+        <receiver android:name=".receiver.NetReceiver">
+            <intent-filter>  
+                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />  
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name=".receiver.AppInstallReceiver"

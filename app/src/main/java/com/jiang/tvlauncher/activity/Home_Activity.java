@@ -1,13 +1,11 @@
 package com.jiang.tvlauncher.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -64,6 +62,8 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     ImageView home1bg, home2bg, home3bg, home4bg;
     TextView name1, name2, name3, name4;
 
+    TextView ver;
+
     List<TextView> namelist = new ArrayList();
     List<ImageView> homebglist = new ArrayList();
     List<RelativeLayout> homelist = new ArrayList();
@@ -82,15 +82,19 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activty_home);
+        MyAppliaction.activity = this;
         initview();
         initeven();
 
+        update();
+    }
+
+    public void update(){
+//        Toast.makeText(Home_Activity.this, "开始获取主页数据", Toast.LENGTH_SHORT).show();
+        new FindChannelList_Servlet(Home_Activity.this).execute();
+
         //获取更新
         new Update_Servlet(this).execute();
-        //更新页面
-        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.ID)))
-            new FindChannelList_Servlet(this).execute();
-
     }
 
     private void initview() {
@@ -120,6 +124,9 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         setting_txt = (TextView) findViewById(R.id.setting_txt);
 
         titleview = (TitleView) findViewById(R.id.titleview);
+
+        ver = (TextView) findViewById(R.id.ver);
+        ver.setText("V "+ Tools.getVersionName(MyAppliaction.context));
 
         //获取屏幕宽度
         DisplayMetrics metric = new DisplayMetrics();
@@ -216,8 +223,9 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         super.onRestart();
 //        禁止调焦
         try {
-            MyAppliaction.apiManager.set("setFocusOnOff", "false",null,null,null);
-        } catch (RemoteException e) {
+            if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.MachineId)))
+                MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -316,7 +324,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     public void open(int i) {
         //数据缺失的情况
         if (hometype.size() <= i) {
-            Toast.makeText(this, "栏目未开通！" + hometype.size(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "栏目未开通！", Toast.LENGTH_SHORT).show();
             return;
         }
         //数据正常的情况

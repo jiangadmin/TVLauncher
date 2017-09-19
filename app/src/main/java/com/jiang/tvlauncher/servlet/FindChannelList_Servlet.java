@@ -3,6 +3,7 @@ package com.jiang.tvlauncher.servlet;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.activity.Home_Activity;
@@ -34,8 +35,11 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
     public static int num = 1;
     String res;
 
+    TimeCount timeCount;
     public FindChannelList_Servlet(Home_Activity activity) {
         this.activity = activity;
+
+        timeCount = new TimeCount(3000, 1000);
     }
 
     @Override
@@ -71,16 +75,38 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
     protected void onPostExecute(FindChannelList channelList) {
         super.onPostExecute(channelList);
         Loading.dismiss();
+//        Toast.makeText(activity, "主页请求返回："+channelList.getErrormsg(), Toast.LENGTH_SHORT).show();
         LogUtil.e(TAG,channelList.getErrormsg());
         if (channelList.getErrorcode() == 1000) {
             SaveUtils.setString(Save_Key.Channe, res);
             activity.updateshow(channelList);
         }
         //资源缺失，持续发送直到有资源
-        if (channelList.getErrorcode() == -3){
-            new FindChannelList_Servlet(activity).execute();
-        }
+        if (channelList.getErrorcode() == -3)
+            timeCount.start();
+
         if (channelList.getErrorcode() == -1)
             activity.updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+    }
+
+    /**
+     * 计时器
+     */
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+
+        //倒计时完成
+        @Override
+        public void onFinish() {
+            //再次启动
+            new FindChannelList_Servlet(activity).execute();
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+
+        }
     }
 }

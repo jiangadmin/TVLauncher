@@ -1,5 +1,6 @@
 package com.jiang.tvlauncher;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.entity.Point;
@@ -38,14 +40,16 @@ public class MyAppliaction extends Application {
     public static XgimiApiManager apiManager;
 
     public static boolean IsLineNet = true;//是否是有线网络
-    public static String modelNum = "Z5";
-    public static String ID = "FFFFFF";
+    public static String modelNum = "Z5极光";
+    public static String ID = "DGX8H7761TAF";
     public static String Temp = "FFFFFF";
     public static String WindSpeed = "FFFFFF";
     public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
     Point point;
 
     public static boolean TurnOnS = false;
+
+    public static Activity activity;
 
     @Override
     public void onCreate() {
@@ -56,9 +60,10 @@ public class MyAppliaction extends Application {
         //初始化ImageLoader
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
 
-        LogUtil.e(TAG,"有线连接："+Tools.isLineConnected());
+        LogUtil.e(TAG, "有线连接：" + Tools.isLineConnected());
 
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
+
         LogUtil.e(TAG, "准备连接AIDL");
         ComponentName componentName = new ComponentName("com.xgimi.xgimiapiservice", "com.xgimi.xgimiapiservice.XgimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);
@@ -96,11 +101,10 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, " 开机源 ：" + apiManager.get("getBootSource", null, null));
                 LogUtil.e(TAG, "上电开机：" + apiManager.get("getPowerOnStartValue", null, null));
                 LogUtil.e(TAG, "设备型号：" + apiManager.get("getDeviceModel", null, null));
-//                LogUtil.e(TAG, "调焦距：" + apiManager.get("getFocusOnOffValue",null,null));
                 LogUtil.e(TAG, "设置调焦距：" + apiManager.set("setFocusOnOff", "false", null, null, null));
-//                LogUtil.e(TAG, "调焦距：" + apiManager.get("getFocusOnOffValue",null,null));
                 LogUtil.e(TAG, "固件版本：" + Build.VERSION.INCREMENTAL);
                 modelNum = apiManager.get("getDeviceModel", null, null);
+
                 if (Boolean.valueOf(apiManager.get("getPowerOnStartValue", null, null)))
                     turnType = "1";
                 else
@@ -119,6 +123,7 @@ public class MyAppliaction extends Application {
                 if (!TextUtils.isEmpty(ID))
                     SaveUtils.setString(Save_Key.SerialNum, ID);
 
+//                Toast.makeText(context, "发送开机请求", Toast.LENGTH_SHORT).show();
                 new TurnOn_servlet(context).execute();
 
             } catch (RemoteException e) {

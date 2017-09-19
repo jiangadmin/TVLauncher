@@ -32,6 +32,7 @@ public class TurnOff_servlet extends AsyncTask<String, Integer, BaseEntity> {
             entity.setErrorcode(-3);
             entity.setErrormsg("数据缺失");
         }
+        else
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         map.put("turnType", "3");
 

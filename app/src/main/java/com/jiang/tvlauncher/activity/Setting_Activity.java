@@ -43,6 +43,7 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        MyAppliaction.activity = this;
         initview();
         initeven();
 
