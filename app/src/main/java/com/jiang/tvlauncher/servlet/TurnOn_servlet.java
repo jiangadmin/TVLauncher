@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
@@ -101,9 +100,12 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             SaveUtils.setString(Save_Key.Password, entity.getResult().getShadowcnf().getShadowPwd());
 
             //判断是否是有线连接
-            if (Tools.isLineConnected())
+            if (Tools.isLineConnected()) {
+                LogUtil.e(TAG, "SSID:" + entity.getResult().getShadowcnf().getWifi() + "  PassWord:" + entity.getResult().getShadowcnf().getWifiPassword());
                 //设置热点名  热点密码
+                new Wifi_APManager(context).closeWifiAp();
                 new Wifi_APManager(context).createAp(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
+            }
 
             for (int i = 0; i < entity.getResult().getLaunch().size(); i++) {
                 //方案类型（1=开机，2=屏保，3=互动）
@@ -128,8 +130,8 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 }
             }
 
-            String s =  entity.getResult().getDevInfo().getZoomVal();
-            LogUtil.e(TAG, "梯形数据:"+s);
+            String s = entity.getResult().getDevInfo().getZoomVal();
+            LogUtil.e(TAG, "梯形数据:" + s);
 
             try {
                 //初始化设备名称
@@ -163,7 +165,8 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //获取开屏
             new FindLanunch_Servlet().execute();
 
-            if (MyAppliaction.activity.getClass() == Home_Activity.class) {
+
+            if (MyAppliaction.activity != null && MyAppliaction.activity.getClass() == Home_Activity.class) {
                 ((Home_Activity) MyAppliaction.activity).update();
             }
 

@@ -48,10 +48,34 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
         initeven();
 
         try {
-            MyAppliaction.apiManager.set("setFocusOnOff", "true",null,null,null);
+            MyAppliaction.apiManager.set("setFocusOnOff", "true", null, null, null);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onStop() {
+
+        try {
+            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        try {
+            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        super.onDestroy();
     }
 
     private void initview() {

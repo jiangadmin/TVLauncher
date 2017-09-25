@@ -3,7 +3,6 @@ package com.jiang.tvlauncher.activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -89,7 +88,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         update();
     }
 
-    public void update(){
+    public void update() {
 //        Toast.makeText(Home_Activity.this, "开始获取主页数据", Toast.LENGTH_SHORT).show();
         new FindChannelList_Servlet(Home_Activity.this).execute();
 
@@ -126,7 +125,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         titleview = (TitleView) findViewById(R.id.titleview);
 
         ver = (TextView) findViewById(R.id.ver);
-        ver.setText("V "+ Tools.getVersionName(MyAppliaction.context));
+        ver.setText("V " + Tools.getVersionName(MyAppliaction.context));
 
         //获取屏幕宽度
         DisplayMetrics metric = new DisplayMetrics();
@@ -158,7 +157,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         namelist.add(name3);
         namelist.add(name4);
 
-        timeCount = new TimeCount(3000, 1000);
+        timeCount = new TimeCount(5000, 1000);
 
         imageView = (ImageView) findViewById(R.id.image);
         videoView = (VideoView) findViewById(R.id.video);
@@ -219,18 +218,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-//        禁止调焦
-        try {
-            if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.MachineId)))
-                MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         return;
     }
@@ -277,6 +264,24 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             toolbar_view.setVisibility(View.GONE);
             toolbar_show = false;
         }
+
+        //禁止调焦
+        try {
+            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        //禁止调焦
+        try {
+            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onRestart();
     }
 
     /**
@@ -335,13 +340,15 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 break;
             //启动指定APP
             case 1:
-                if (Tools.isAppInstalled(channelList.getResult().get(i).getAppList().get(0).getPackageName()))
-                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(channelList.getResult().get(i).getAppList().get(0).getPackageName())));
-                else {
-                    Loading.show(this, "请稍后");
-                    DownUtil.isopen = false;
-                    new DownUtil(this).downLoadApk(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk");
-                }
+                if (channelList.getResult().get(i).getAppList() != null && channelList.getResult().get(i).getAppList().size() > 0)
+                    if (Tools.isAppInstalled(channelList.getResult().get(i).getAppList().get(0).getPackageName()))
+                        startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(channelList.getResult().get(i).getAppList().get(0).getPackageName())));
+                    else {
+                        Loading.show(this, "请稍后");
+                        new DownUtil(this).downLoadApk(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk");
+                    }
+                else
+                    Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
                 break;
             //启动APP列表
             case 2:

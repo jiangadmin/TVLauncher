@@ -1,6 +1,5 @@
 package com.jiang.tvlauncher.activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,12 +51,6 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
 
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        mAdapter.notifyDataSetChanged();
-    }
-
     private void initview() {
         mGridView = (GridView) findViewById(R.id.app_grid);
     }
@@ -78,9 +71,8 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
         if (launchIntent != null) {
             startActivity(launchIntent);
         } else {
-            Loading.show(this, "请稍后");
+            Loading.show(this, "正在安装");
             LogUtil.e(TAG, "开始下载" + appList.get(i).getPackageName());
-            DownUtil.isopen = false;
             new DownUtil(this).downLoadApk(appList.get(i).getDownloadUrl(), appList.get(i).getAppName() + ".apk");
         }
     }
