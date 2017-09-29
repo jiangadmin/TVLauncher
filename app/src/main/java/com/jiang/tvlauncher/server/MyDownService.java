@@ -19,8 +19,6 @@ import java.net.URL;
 
 public class MyDownService extends Service {
 
-
-
     /**
      * 从服务器下载apk
      */

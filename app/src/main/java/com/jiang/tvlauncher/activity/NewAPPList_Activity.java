@@ -60,8 +60,6 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
         mAdapter = new NewAppAdapter(this, appList);
         mGridView.setAdapter(mAdapter);
         mGridView.setFocusable(true);
-//        mGridView.setSmoothScrollbarEnabled(true);
-
         mGridView.setOnItemClickListener(this);
     }
 

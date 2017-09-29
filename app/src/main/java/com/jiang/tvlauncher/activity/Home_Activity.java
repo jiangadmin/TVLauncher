@@ -303,46 +303,45 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         String file = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
 
         //更改开机动画
-        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))){
-            LogUtil.e(TAG,"开始下载");
-            new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)),false);
+        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
+            LogUtil.e(TAG, "开始下载");
+            new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn), Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
         }
 
         if (channelList != null) {
             for (int i = 0; i < channelList.getResult().size(); i++) {
                 String url = channelList.getResult().get(i).getBgUrl();
 
-                LogUtil.e(TAG,"URL:"+url);
+                LogUtil.e(TAG, "URL:" + url);
                 String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
-                LogUtil.e(TAG,"filename:"+filename);
+                LogUtil.e(TAG, "filename:" + filename);
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
                 //判断有没有网络
                 if (Tools.isNetworkConnected())
                     //网络加载图片
                     ImageLoader.getInstance().displayImage(url, homebglist.get(i));
                 else
-                    LogUtil.e(TAG,"断开网络连接");
-                    //本地加载图片
-                    switch (i) {
-                        case 0:
-                            LogUtil.e(TAG,file + SaveUtils.getString(Save_Key.ItemImage0));
-                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage0))));
-                            break;
-                        case 1:
-                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage1))));
-                            break;
-                        case 2:
-                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage2))));
-                            break;
-                        case 3:
-                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage3))));
-                            break;
-                    }
+                    LogUtil.e(TAG, "断开网络连接");
+                //本地加载图片
+                switch (i) {
+                    case 0:
+                        LogUtil.e(TAG, file + SaveUtils.getString(Save_Key.ItemImage0));
+                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage0))));
+                        break;
+                    case 1:
+                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage1))));
+                        break;
+                    case 2:
+                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage2))));
+                        break;
+                    case 3:
+                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage3))));
+                        break;
+                }
                 hometype.add(channelList.getResult().get(i).getContentType());
 
                 //下载图片
                 new DownUtil(this).downLoad(url, filename, false);
-
 
 
                 //记录文件名

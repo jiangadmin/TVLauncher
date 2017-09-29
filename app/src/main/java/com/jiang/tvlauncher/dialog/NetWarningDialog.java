@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 
 import com.jiang.tvlauncher.R;
 
-
 /**
  * Created by  jiang
  * on 2017/8/29.

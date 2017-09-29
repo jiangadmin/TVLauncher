@@ -56,7 +56,6 @@ public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch>
         super.onPostExecute(findLanunch);
 
         if (findLanunch.getErrorcode() == 1000) {
-
             //方案类型（1=开机，2=屏保，3=互动）
             if (findLanunch.getResult().getLaunchType() == 1) {
                 //非空判断
@@ -77,7 +76,7 @@ public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch>
                     }
                 }
             }
-        } else{
+        } else {
             LogUtil.e(TAG, findLanunch.getErrormsg());
             if (num > 3) {
 

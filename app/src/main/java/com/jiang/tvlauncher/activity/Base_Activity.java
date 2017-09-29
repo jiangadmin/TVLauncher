@@ -22,6 +22,7 @@ public class Base_Activity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     public void enlargeAnim(View v) {
         Animation a = AnimationUtils.loadAnimation(v.getContext(), R.anim.uikit_enlarge);
         a.setAnimationListener(new Animation.AnimationListener() {

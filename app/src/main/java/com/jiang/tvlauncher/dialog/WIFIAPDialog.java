@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.jiang.tvlauncher.R;
 
-
 /**
  * Created by  jiang
  * on 2017/9/29.

@@ -72,7 +72,7 @@ public class DownUtil {
                         File file = getFileFromServer(path, fileName, pd);
                         sleep(1000);
                         // 安装APK文件
-                        LogUtil.e(TAG, "文件下载完成"+fileName);
+                        LogUtil.e(TAG, "文件下载完成" + fileName);
                         if (showpd)
                             pd.dismiss(); // 结束掉进度条对话框
                         //如果是安装包
@@ -80,7 +80,7 @@ public class DownUtil {
                             MyAppliaction.apiManager.set("setInstallApk", file.getPath(), null, null, null);
                         //如果是资源文件
                         if (fileName.contains(".zip"))
-                            MyAppliaction.apiManager.set("setBootStartPlayer", file.getPath(),null,null,null);
+                            MyAppliaction.apiManager.set("setBootStartPlayer", file.getPath(), null, null, null);
                     } catch (Exception e) {
                         LogUtil.e(TAG, "文件下载失败了");
                         Loading.dismiss();

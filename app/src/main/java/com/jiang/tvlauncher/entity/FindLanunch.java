@@ -6,7 +6,6 @@ package com.jiang.tvlauncher.entity;
 
 public class FindLanunch extends BaseEntity {
 
-
     /**
      * errorcode : 1000
      * result : {"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案22","launchType":1,"mediaType":1,"mediaUrl":"http://oa6l8rxnr.bkt.clouddn.com/bootanimation.zip","updateAuthor":"系统管理员","updateTime":"2017-09-26 16:18:07"}

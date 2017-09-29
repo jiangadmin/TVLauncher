@@ -480,7 +480,6 @@ public final class Tools {
         return false;
     }
 
-
     /**
      * 获得休眠时间 毫秒
      */

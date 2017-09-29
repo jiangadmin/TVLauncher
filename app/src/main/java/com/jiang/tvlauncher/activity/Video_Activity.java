@@ -31,11 +31,9 @@ public class Video_Activity extends Base_Activity {
     private static final String TAG = "Video_Activity";
     private static final String URL = "url";
 
-
     VideoView videoView;
 
     String videourl, videoname;
-
 
     public static void start(Context context, String url) {
         Intent intent = new Intent();

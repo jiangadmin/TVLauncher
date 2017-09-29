@@ -108,9 +108,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             }
 
             //更改开机动画
-            if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())){
-                LogUtil.e(TAG,entity.getResult().getLaunch().getMediaUrl());
-                SaveUtils.setString(Save_Key.BootAn,entity.getResult().getLaunch().getMediaUrl());
+            if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())) {
+                LogUtil.e(TAG, entity.getResult().getLaunch().getMediaUrl());
+                SaveUtils.setString(Save_Key.BootAn, entity.getResult().getLaunch().getMediaUrl());
             }
 
             //方案类型（1=开机，2=屏保，3=互动）

@@ -62,21 +62,16 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
             entity.setErrorcode(-1);
             entity.setErrormsg("连接服务器失败");
         }
-
         return entity;
     }
 
     @Override
     protected void onPostExecute(BaseEntity entity) {
         super.onPostExecute(entity);
-
         if (sleep){
             if (MyAppliaction.isForeground()){
                 
             }
         }
-
-
     }
-
 }

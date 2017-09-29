@@ -3,7 +3,6 @@ package com.jiang.tvlauncher.servlet;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.activity.Home_Activity;
@@ -36,6 +35,7 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
     String res;
 
     TimeCount timeCount;
+
     public FindChannelList_Servlet(Home_Activity activity) {
         this.activity = activity;
 
@@ -76,7 +76,7 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
         super.onPostExecute(channelList);
         Loading.dismiss();
 //        Toast.makeText(activity, "主页请求返回："+channelList.getErrormsg(), Toast.LENGTH_SHORT).show();
-        LogUtil.e(TAG,channelList.getErrormsg());
+        LogUtil.e(TAG, channelList.getErrormsg());
         if (channelList.getErrorcode() == 1000) {
             SaveUtils.setString(Save_Key.Channe, res);
             activity.updateshow(channelList);
