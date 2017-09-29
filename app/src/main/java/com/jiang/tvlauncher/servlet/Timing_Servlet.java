@@ -28,6 +28,8 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
 
     private static final String TAG = "Timing_Servlet";
 
+    private static boolean sleep = false;
+
     @Override
     protected BaseEntity doInBackground(String... infos) {
         Map map = new HashMap();
@@ -37,10 +39,8 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
         map.put("memoryInfo", FileUtils.getAvailMemory());
         map.put("avaSpace", FileUtils.getFreeDiskSpaceS());
         try {
-            if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.MachineId))) {
                 map.put("cpuTemp", MyAppliaction.apiManager.get("getTemp", null, null));
                 map.put("fanSpeed", MyAppliaction.apiManager.get("getWindSpeed", null, null));
-            }
         } catch (RemoteException e) {
             e.printStackTrace();
             map.put("cpuTemp", "0");
@@ -69,6 +69,13 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
     @Override
     protected void onPostExecute(BaseEntity entity) {
         super.onPostExecute(entity);
+
+        if (sleep){
+            if (MyAppliaction.isForeground()){
+                
+            }
+        }
+
 
     }
 

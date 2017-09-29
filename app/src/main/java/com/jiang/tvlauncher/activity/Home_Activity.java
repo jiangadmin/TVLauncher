@@ -27,6 +27,7 @@ import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
+import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
@@ -167,6 +168,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             LogUtil.e(TAG, "有图片");
             imageView.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(SaveUtils.getString(Save_Key.NewImageUrl), imageView);
+            ImageUtils.setimgage(ImageUtils.getBitmap(SaveUtils.getString(Save_Key.NewImageUrl)),"Welcome");
             timeCount.start();
         }
 

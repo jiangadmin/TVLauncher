@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
+import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -479,5 +480,30 @@ public final class Tools {
         return false;
     }
 
+
+    /**
+     * 获得休眠时间 毫秒
+     */
+    public static int getScreenOffTime() {
+        int screenOffTime = 0;
+        try {
+            screenOffTime = Settings.System.getInt(MyAppliaction.context.getContentResolver(),
+                    Settings.System.SCREEN_OFF_TIMEOUT);
+        } catch (Exception localException) {
+        }
+        return screenOffTime;
+    }
+
+    /**
+     * 设置休眠时间 毫秒
+     */
+    public static void setScreenOffTime(int paramInt) {
+        try {
+            Settings.System.putInt(MyAppliaction.context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT,
+                    paramInt);
+        } catch (Exception localException) {
+            localException.printStackTrace();
+        }
+    }
 
 }

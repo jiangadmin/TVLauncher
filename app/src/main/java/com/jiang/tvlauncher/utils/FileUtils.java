@@ -348,8 +348,8 @@ public class FileUtils {
             try {
                 File path = Environment.getExternalStorageDirectory();
                 StatFs stat = new StatFs(path.getPath());
-                long blockSize = stat.getBlockSize();
-                long availableBlocks = stat.getAvailableBlocks();
+                long blockSize = stat.getBlockSizeLong();
+                long availableBlocks = stat.getAvailableBlocksLong();
                 freeSpace = availableBlocks * blockSize;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -367,8 +367,8 @@ public class FileUtils {
     public static String getRomSize() {
         File path = Environment.getDataDirectory();
         StatFs stat = new StatFs(path.getPath());
-        long blockCount = stat.getBlockCount();
-        long blockSize = stat.getBlockSize();
+        long blockCount = stat.getBlockCountLong();
+        long blockSize = stat.getBlockSizeLong();
         String totalSize = Formatter.formatFileSize(MyAppliaction.context, blockCount * blockSize);
 
         return totalSize;

@@ -1,6 +1,7 @@
 package com.jiang.tvlauncher;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,7 +11,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.entity.Point;
@@ -22,6 +22,8 @@ import com.jiang.tvlauncher.utils.Tools;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
+
+import java.util.List;
 
 /**
  * Created by  jiang
@@ -61,6 +63,8 @@ public class MyAppliaction extends Application {
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
 
         LogUtil.e(TAG, "有线连接：" + Tools.isLineConnected());
+        Tools.setScreenOffTime(24 * 60 * 60 * 1000);
+        LogUtil.e(TAG, "休眠时间：" + Tools.getScreenOffTime());
 
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
 
@@ -87,6 +91,7 @@ public class MyAppliaction extends Application {
 
                 //禁止调焦
                 apiManager.set("setFocusOnOff", "false", null, null, null);
+                apiManager.set("setBootStartPlayer","system/media/bootanimation.zip",null,null,null);
 
                 LogUtil.e(TAG, " 序列号 ：" + apiManager.get("getMachineId", null, null));
                 LogUtil.e(TAG, "全局缩放：" + apiManager.get("getZoomValue", null, null));
@@ -138,4 +143,24 @@ public class MyAppliaction extends Application {
             LogUtil.e(TAG, "断开AIDL连接");
         }
     };
+
+    /**
+     * 当前应用是否处于前台
+     *
+     * @return
+     */
+    public static boolean isForeground() {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> processes = activityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo processInfo : processes) {
+            if (processInfo.processName.equals(context.getPackageName())) {
+                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
 }
