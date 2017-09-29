@@ -175,6 +175,25 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
+        <!--热点-->
+        <LinearLayout
+            android:id="@+id/wifiap"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="WIFI"
+                android:textColor="@color/gray"
+                android:textSize="18sp" />
+        </LinearLayout>
+
         <!--控制台-->
         <LinearLayout
             android:id="@+id/setting"

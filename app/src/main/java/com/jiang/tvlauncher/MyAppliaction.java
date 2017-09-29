@@ -91,7 +91,6 @@ public class MyAppliaction extends Application {
 
                 //禁止调焦
                 apiManager.set("setFocusOnOff", "false", null, null, null);
-                apiManager.set("setBootStartPlayer","system/media/bootanimation.zip",null,null,null);
 
                 LogUtil.e(TAG, " 序列号 ：" + apiManager.get("getMachineId", null, null));
                 LogUtil.e(TAG, "全局缩放：" + apiManager.get("getZoomValue", null, null));

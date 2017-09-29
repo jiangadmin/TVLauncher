@@ -11,6 +11,8 @@ public class Save_Key {
     public static String NewImage = "NewImage";
     public static String NewVideo = "NewVideo";
     public static String NewVideoUrl = "NewVideoUrl";
+    public static String NewVideoName = "NewVideoName";
+    public static String NewImageName = "NewImageName";
     public static String NewImageUrl = "NewImageUrl";
     public static String RoomID = "RoomID";
     public static String UserID = "UserID";
@@ -20,5 +22,12 @@ public class Save_Key {
     public static String Timming = "Timming";
     public static String Channe = "Channe";
     public static String MachineId = "MachineId";
+
+    public static String ItemImage0 = "ItemImage0";
+    public static String ItemImage1 = "ItemImage1";
+    public static String ItemImage2 = "ItemImage2";
+    public static String ItemImage3 = "ItemImage3";
+
+    public static String BootAn = "BootAn";
 
 }

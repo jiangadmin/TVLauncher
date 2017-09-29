@@ -1,16 +1,15 @@
 package com.jiang.tvlauncher.entity;
 
-import java.util.List;
-
 /**
  * Created by wwwfa on 2017/8/9.
  */
 
 public class TurnOnEntity extends BaseEntity {
 
+
     /**
      * errorcode : 1000
-     * result : {"shadowcnf":{"createAuthor":"系统管理员","createTime":"2017-08-20 15:27:51","hotPoint":1,"id":1,"isDefault":1,"isDelete":0,"ladderPwd":"123","monitRate":300000,"powerTurn":0,"shadowName":"测试方案","shadowPwd":"8624862","threeDim":1,"turnSource":"123","updateAuthor":"系统管理员","updateTime":"2017-08-20 15:27:51","wifi":"123","wifiPassword":"123"},"devInfo":{"createAuthor":"system","createTime":"2017-08-17 22:43:10","id":14,"isDelete":0,"merchantId":0,"modelNum":"智米投影","roomId":0,"serialNum":"DC26HMF33TSH","updateAuthor":"system","updateTime":"2017-08-17 22:43:10","useState":0,"zoomVal":"{\"current_x\":0,\"current_y\":0,\"idx\":0,\"max_x\":100,\"max_y\":100,\"min_x\":0,\"min_y\":0},{\"current_x\":0,\"current_y\":0,\"idx\":1,\"max_x\":0,\"max_y\":100,\"min_x\":-100,\"min_y\":0},{\"current_x\":0,\"current_y\":0,\"idx\":3,\"max_x\":0,\"max_y\":0,\"min_x\":-100,\"min_y\":-100},{\"current_x\":0,\"current_y\":0,\"idx\":2,\"max_x\":100,\"max_y\":0,\"min_x\":0,\"min_y\":-100}"},"launch":[{"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案2","launchType":1,"mediaType":2,"mediaUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/9361BE1FB331EA2915B82569758BE30C.mp4","updateAuthor":"","updateTime":"2017-07-06 13:08:30"}]}
+     * result : {"shadowcnf":{"createAuthor":"系统管理员","createTime":"2017-08-20 15:27:51","hotPoint":1,"id":1,"isDefault":1,"isDelete":0,"ladderPwd":"123","monitRate":300000,"powerTurn":1,"projectMode":0,"shadowName":"测试方案","shadowPwd":"862486","threeDim":1,"turnSource":"123","updateAuthor":"系统管理员","updateTime":"2017-09-23 17:30:45","wifi":"智米","wifiPassword":"12345678"},"devInfo":{"androidVersion":"6.0","createAuthor":"system","createTime":"2017-09-27 19:27:41","id":28,"isDelete":0,"merchantId":0,"modelNum":"Z5极光","roomId":0,"serialNum":"DG69H9DBCTAF","systemVersion":"V2.5.19","updateAuthor":"system","updateTime":"2017-09-27 19:27:41","useState":0,"zoomVal":"{\"current_x\":0,\"current_y\":0,\"idx\":0,\"max_x\":100,\"max_y\":100,\"min_x\":0,\"min_y\":0},{\"current_x\":0,\"current_y\":0,\"idx\":1,\"max_x\":0,\"max_y\":100,\"min_x\":-100,\"min_y\":0},{\"current_x\":0,\"current_y\":0,\"idx\":3,\"max_x\":0,\"max_y\":0,\"min_x\":-100,\"min_y\":-100},{\"current_x\":0,\"current_y\":0,\"idx\":2,\"max_x\":100,\"max_y\":0,\"min_x\":0,\"min_y\":-100}"},"launch":{"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案22","launchType":1,"mediaType":1,"mediaUrl":"http://oa6l8rxnr.bkt.clouddn.com/bootanimation.zip","updateAuthor":"系统管理员","updateTime":"2017-09-26 16:18:07"}}
      */
 
     private ResultBean result;
@@ -25,14 +24,14 @@ public class TurnOnEntity extends BaseEntity {
 
     public static class ResultBean {
         /**
-         * shadowcnf : {"createAuthor":"系统管理员","createTime":"2017-08-20 15:27:51","hotPoint":1,"id":1,"isDefault":1,"isDelete":0,"ladderPwd":"123","monitRate":300000,"powerTurn":0,"shadowName":"测试方案","shadowPwd":"8624862","threeDim":1,"turnSource":"123","updateAuthor":"系统管理员","updateTime":"2017-08-20 15:27:51","wifi":"123","wifiPassword":"123"}
-         * devInfo : {"createAuthor":"system","createTime":"2017-08-17 22:43:10","id":14,"isDelete":0,"merchantId":0,"modelNum":"智米投影","roomId":0,"serialNum":"DC26HMF33TSH","updateAuthor":"system","updateTime":"2017-08-17 22:43:10","useState":0,"zoomVal":"{\"current_x\":0,\"current_y\":0,\"idx\":0,\"max_x\":100,\"max_y\":100,\"min_x\":0,\"min_y\":0},{\"current_x\":0,\"current_y\":0,\"idx\":1,\"max_x\":0,\"max_y\":100,\"min_x\":-100,\"min_y\":0},{\"current_x\":0,\"current_y\":0,\"idx\":3,\"max_x\":0,\"max_y\":0,\"min_x\":-100,\"min_y\":-100},{\"current_x\":0,\"current_y\":0,\"idx\":2,\"max_x\":100,\"max_y\":0,\"min_x\":0,\"min_y\":-100}"}
-         * launch : [{"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案2","launchType":1,"mediaType":2,"mediaUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/9361BE1FB331EA2915B82569758BE30C.mp4","updateAuthor":"","updateTime":"2017-07-06 13:08:30"}]
+         * shadowcnf : {"createAuthor":"系统管理员","createTime":"2017-08-20 15:27:51","hotPoint":1,"id":1,"isDefault":1,"isDelete":0,"ladderPwd":"123","monitRate":300000,"powerTurn":1,"projectMode":0,"shadowName":"测试方案","shadowPwd":"862486","threeDim":1,"turnSource":"123","updateAuthor":"系统管理员","updateTime":"2017-09-23 17:30:45","wifi":"智米","wifiPassword":"12345678"}
+         * devInfo : {"androidVersion":"6.0","createAuthor":"system","createTime":"2017-09-27 19:27:41","id":28,"isDelete":0,"merchantId":0,"modelNum":"Z5极光","roomId":0,"serialNum":"DG69H9DBCTAF","systemVersion":"V2.5.19","updateAuthor":"system","updateTime":"2017-09-27 19:27:41","useState":0,"zoomVal":"{\"current_x\":0,\"current_y\":0,\"idx\":0,\"max_x\":100,\"max_y\":100,\"min_x\":0,\"min_y\":0},{\"current_x\":0,\"current_y\":0,\"idx\":1,\"max_x\":0,\"max_y\":100,\"min_x\":-100,\"min_y\":0},{\"current_x\":0,\"current_y\":0,\"idx\":3,\"max_x\":0,\"max_y\":0,\"min_x\":-100,\"min_y\":-100},{\"current_x\":0,\"current_y\":0,\"idx\":2,\"max_x\":100,\"max_y\":0,\"min_x\":0,\"min_y\":-100}"}
+         * launch : {"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案22","launchType":1,"mediaType":1,"mediaUrl":"http://oa6l8rxnr.bkt.clouddn.com/bootanimation.zip","updateAuthor":"系统管理员","updateTime":"2017-09-26 16:18:07"}
          */
 
         private ShadowcnfBean shadowcnf;
         private DevInfoBean devInfo;
-        private List<LaunchBean> launch;
+        private LaunchBean launch;
 
         public ShadowcnfBean getShadowcnf() {
             return shadowcnf;
@@ -50,11 +49,11 @@ public class TurnOnEntity extends BaseEntity {
             this.devInfo = devInfo;
         }
 
-        public List<LaunchBean> getLaunch() {
+        public LaunchBean getLaunch() {
             return launch;
         }
 
-        public void setLaunch(List<LaunchBean> launch) {
+        public void setLaunch(LaunchBean launch) {
             this.launch = launch;
         }
 
@@ -68,15 +67,16 @@ public class TurnOnEntity extends BaseEntity {
              * isDelete : 0
              * ladderPwd : 123
              * monitRate : 300000
-             * powerTurn : 0
+             * powerTurn : 1
+             * projectMode : 0
              * shadowName : 测试方案
-             * shadowPwd : 8624862
+             * shadowPwd : 862486
              * threeDim : 1
              * turnSource : 123
              * updateAuthor : 系统管理员
-             * updateTime : 2017-08-20 15:27:51
-             * wifi : 123
-             * wifiPassword : 123
+             * updateTime : 2017-09-23 17:30:45
+             * wifi : 智米
+             * wifiPassword : 12345678
              */
 
             private String createAuthor;
@@ -88,6 +88,7 @@ public class TurnOnEntity extends BaseEntity {
             private String ladderPwd;
             private int monitRate;
             private int powerTurn;
+            private int projectMode;
             private String shadowName;
             private String shadowPwd;
             private int threeDim;
@@ -96,15 +97,6 @@ public class TurnOnEntity extends BaseEntity {
             private String updateTime;
             private String wifi;
             private String wifiPassword;
-            private String projectMode;
-
-            public String getProjectMode() {
-                return projectMode;
-            }
-
-            public void setProjectMode(String projectMode) {
-                this.projectMode = projectMode;
-            }
 
             public String getCreateAuthor() {
                 return createAuthor;
@@ -178,6 +170,14 @@ public class TurnOnEntity extends BaseEntity {
                 this.powerTurn = powerTurn;
             }
 
+            public int getProjectMode() {
+                return projectMode;
+            }
+
+            public void setProjectMode(int projectMode) {
+                this.projectMode = projectMode;
+            }
+
             public String getShadowName() {
                 return shadowName;
             }
@@ -245,20 +245,23 @@ public class TurnOnEntity extends BaseEntity {
 
         public static class DevInfoBean {
             /**
+             * androidVersion : 6.0
              * createAuthor : system
-             * createTime : 2017-08-17 22:43:10
-             * id : 14
+             * createTime : 2017-09-27 19:27:41
+             * id : 28
              * isDelete : 0
              * merchantId : 0
-             * modelNum : 智米投影
+             * modelNum : Z5极光
              * roomId : 0
-             * serialNum : DC26HMF33TSH
+             * serialNum : DG69H9DBCTAF
+             * systemVersion : V2.5.19
              * updateAuthor : system
-             * updateTime : 2017-08-17 22:43:10
+             * updateTime : 2017-09-27 19:27:41
              * useState : 0
              * zoomVal : {"current_x":0,"current_y":0,"idx":0,"max_x":100,"max_y":100,"min_x":0,"min_y":0},{"current_x":0,"current_y":0,"idx":1,"max_x":0,"max_y":100,"min_x":-100,"min_y":0},{"current_x":0,"current_y":0,"idx":3,"max_x":0,"max_y":0,"min_x":-100,"min_y":-100},{"current_x":0,"current_y":0,"idx":2,"max_x":100,"max_y":0,"min_x":0,"min_y":-100}
              */
 
+            private String androidVersion;
             private String createAuthor;
             private String createTime;
             private int id;
@@ -267,10 +270,19 @@ public class TurnOnEntity extends BaseEntity {
             private String modelNum;
             private int roomId;
             private String serialNum;
+            private String systemVersion;
             private String updateAuthor;
             private String updateTime;
             private int useState;
             private String zoomVal;
+
+            public String getAndroidVersion() {
+                return androidVersion;
+            }
+
+            public void setAndroidVersion(String androidVersion) {
+                this.androidVersion = androidVersion;
+            }
 
             public String getCreateAuthor() {
                 return createAuthor;
@@ -336,6 +348,14 @@ public class TurnOnEntity extends BaseEntity {
                 this.serialNum = serialNum;
             }
 
+            public String getSystemVersion() {
+                return systemVersion;
+            }
+
+            public void setSystemVersion(String systemVersion) {
+                this.systemVersion = systemVersion;
+            }
+
             public String getUpdateAuthor() {
                 return updateAuthor;
             }
@@ -376,12 +396,12 @@ public class TurnOnEntity extends BaseEntity {
              * id : 3
              * isDefault : 1
              * isDelete : 0
-             * launchName : 开机方案2
+             * launchName : 开机方案22
              * launchType : 1
-             * mediaType : 2
-             * mediaUrl : http://7xkcno.com2.z0.glb.qiniucdn.com/9361BE1FB331EA2915B82569758BE30C.mp4
-             * updateAuthor :
-             * updateTime : 2017-07-06 13:08:30
+             * mediaType : 1
+             * mediaUrl : http://oa6l8rxnr.bkt.clouddn.com/bootanimation.zip
+             * updateAuthor : 系统管理员
+             * updateTime : 2017-09-26 16:18:07
              */
 
             private String createAuthor;

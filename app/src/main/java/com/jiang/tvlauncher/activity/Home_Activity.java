@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -21,6 +22,7 @@ import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.PwdDialog;
+import com.jiang.tvlauncher.dialog.WIFIAPDialog;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
@@ -31,9 +33,11 @@ import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
+import com.jiang.tvlauncher.utils.Wifi_APManager;
 import com.jiang.tvlauncher.view.TitleView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +52,7 @@ import java.util.List;
 public class Home_Activity extends Base_Activity implements View.OnClickListener, View.OnFocusChangeListener {
     private static final String TAG = "Home_Activity";
     RelativeLayout toolbar_view;
-    LinearLayout back;
+    LinearLayout back, wifiap;
     ImageView back_img;
     TextView back_txt;
 
@@ -91,7 +95,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     public void update() {
 //        Toast.makeText(Home_Activity.this, "开始获取主页数据", Toast.LENGTH_SHORT).show();
-        new FindChannelList_Servlet(Home_Activity.this).execute();
+        new FindChannelList_Servlet(this).execute();
 
         //获取更新
         new Update_Servlet(this).execute();
@@ -116,6 +120,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         toolbar_view = (RelativeLayout) findViewById(R.id.toolbar_view);
         back = (LinearLayout) findViewById(R.id.back);
+        wifiap = (LinearLayout) findViewById(R.id.wifiap);
         back_img = (ImageView) findViewById(R.id.back_img);
         back_txt = (TextView) findViewById(R.id.back_txt);
 
@@ -168,7 +173,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             LogUtil.e(TAG, "有图片");
             imageView.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(SaveUtils.getString(Save_Key.NewImageUrl), imageView);
-            ImageUtils.setimgage(ImageUtils.getBitmap(SaveUtils.getString(Save_Key.NewImageUrl)),"Welcome");
             timeCount.start();
         }
 
@@ -205,6 +209,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         home4.setOnClickListener(this);
 
         back.setOnClickListener(this);
+        wifiap.setOnClickListener(this);
         setting.setOnClickListener(this);
 
         home1.setOnFocusChangeListener(this);
@@ -213,9 +218,13 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         home4.setOnFocusChangeListener(this);
 
         back.setOnFocusChangeListener(this);
+        wifiap.setOnFocusChangeListener(this);
         setting.setOnFocusChangeListener(this);
 
         back.setVisibility(View.GONE);
+
+        if (!new Wifi_APManager(this).isWifiApEnabled())
+            wifiap.setVisibility(View.GONE);
 
     }
 
@@ -291,11 +300,66 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
      */
     public void updateshow(FindChannelList channelList) {
         this.channelList = channelList;
+        String file = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
+
+        //更改开机动画
+        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))){
+            LogUtil.e(TAG,"开始下载");
+            new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)),false);
+        }
+
         if (channelList != null) {
             for (int i = 0; i < channelList.getResult().size(); i++) {
+                String url = channelList.getResult().get(i).getBgUrl();
+
+                LogUtil.e(TAG,"URL:"+url);
+                String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
+                LogUtil.e(TAG,"filename:"+filename);
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
-                ImageLoader.getInstance().displayImage(channelList.getResult().get(i).getBgUrl(), homebglist.get(i));
+                //判断有没有网络
+                if (Tools.isNetworkConnected())
+                    //网络加载图片
+                    ImageLoader.getInstance().displayImage(url, homebglist.get(i));
+                else
+                    LogUtil.e(TAG,"断开网络连接");
+                    //本地加载图片
+                    switch (i) {
+                        case 0:
+                            LogUtil.e(TAG,file + SaveUtils.getString(Save_Key.ItemImage0));
+                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage0))));
+                            break;
+                        case 1:
+                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage1))));
+                            break;
+                        case 2:
+                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage2))));
+                            break;
+                        case 3:
+                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage3))));
+                            break;
+                    }
                 hometype.add(channelList.getResult().get(i).getContentType());
+
+                //下载图片
+                new DownUtil(this).downLoad(url, filename, false);
+
+
+
+                //记录文件名
+                switch (i) {
+                    case 0:
+                        SaveUtils.setString(Save_Key.ItemImage0, filename);
+                        break;
+                    case 1:
+                        SaveUtils.setString(Save_Key.ItemImage1, filename);
+                        break;
+                    case 2:
+                        SaveUtils.setString(Save_Key.ItemImage2, filename);
+                        break;
+                    case 3:
+                        SaveUtils.setString(Save_Key.ItemImage3, filename);
+                        break;
+                }
             }
         }
     }
@@ -303,6 +367,9 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.wifiap:
+                new WIFIAPDialog(this).show();
+                break;
             case R.id.back:
                 new PwdDialog(this, R.style.MyDialog).show();
                 break;
@@ -347,7 +414,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                         startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(channelList.getResult().get(i).getAppList().get(0).getPackageName())));
                     else {
                         Loading.show(this, "请稍后");
-                        new DownUtil(this).downLoadApk(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk");
+                        new DownUtil(this).downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
                     }
                 else
                     Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
@@ -358,11 +425,11 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 break;
             //启动展示图片
             case 3:
-                startActivity(new Intent(this, Image_Activity.class).putExtra("url", channelList.getResult().get(i).getContentUrl()));
+                Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
                 break;
             //启动展示视频
             case 4:
-                startActivity(new Intent(this, Video_Activity.class).putExtra("url", channelList.getResult().get(i).getContentUrl()));
+                Video_Activity.start(this, channelList.getResult().get(i).getContentUrl());
                 break;
         }
     }

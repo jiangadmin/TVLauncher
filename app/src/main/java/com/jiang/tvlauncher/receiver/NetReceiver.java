@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.activity.Home_Activity;
+import com.jiang.tvlauncher.dialog.NetWarningDialog;
 import com.jiang.tvlauncher.utils.LogUtil;
 
 /**
@@ -30,7 +31,7 @@ public class NetReceiver extends BroadcastReceiver {
                 if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
                     LogUtil.e(TAG, "有线网络");
                     MyAppliaction.IsLineNet = true;
-
+//                    new NetWarningDialog(MyAppliaction.activity).dismiss();
                     if (MyAppliaction.activity.getClass() == Home_Activity.class) {
                         ((Home_Activity) MyAppliaction.activity).update();
                     }
@@ -38,12 +39,13 @@ public class NetReceiver extends BroadcastReceiver {
                 if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                     LogUtil.e(TAG, "无线网络");
                     MyAppliaction.IsLineNet = false;
-
+//                    new NetWarningDialog(MyAppliaction.activity).dismiss();
                     if (MyAppliaction.activity.getClass() == Home_Activity.class) {
                         ((Home_Activity) MyAppliaction.activity).update();
                     }
                 }
             } else {
+//                new NetWarningDialog(MyAppliaction.activity).esc();
                 LogUtil.e(TAG, "网络断开");
             }
         }

@@ -1,25 +1,24 @@
 package com.jiang.tvlauncher.entity;
 
-import java.util.List;
-
 /**
  * Created by wwwfa on 2017/8/9.
  */
 
 public class FindLanunch extends BaseEntity {
 
+
     /**
      * errorcode : 1000
-     * result : [{"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案2","launchType":1,"mediaType":1,"mediaUrl":"http://7xkcno.com2.z0.glb.qiniucdn.com/F4594CF749FE8A4B6091B17E66F6591A.png","updateAuthor":"","updateTime":"2017-07-06 13:08:30"}]
+     * result : {"createAuthor":"","createTime":"2017-07-06 13:08:30","id":3,"isDefault":1,"isDelete":0,"launchName":"开机方案22","launchType":1,"mediaType":1,"mediaUrl":"http://oa6l8rxnr.bkt.clouddn.com/bootanimation.zip","updateAuthor":"系统管理员","updateTime":"2017-09-26 16:18:07"}
      */
 
-    private List<ResultBean> result;
+    private ResultBean result;
 
-    public List<ResultBean> getResult() {
+    public ResultBean getResult() {
         return result;
     }
 
-    public void setResult(List<ResultBean> result) {
+    public void setResult(ResultBean result) {
         this.result = result;
     }
 
@@ -30,12 +29,12 @@ public class FindLanunch extends BaseEntity {
          * id : 3
          * isDefault : 1
          * isDelete : 0
-         * launchName : 开机方案2
+         * launchName : 开机方案22
          * launchType : 1
          * mediaType : 1
-         * mediaUrl : http://7xkcno.com2.z0.glb.qiniucdn.com/F4594CF749FE8A4B6091B17E66F6591A.png
-         * updateAuthor :
-         * updateTime : 2017-07-06 13:08:30
+         * mediaUrl : http://oa6l8rxnr.bkt.clouddn.com/bootanimation.zip
+         * updateAuthor : 系统管理员
+         * updateTime : 2017-09-26 16:18:07
          */
 
         private String createAuthor;

@@ -107,25 +107,29 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 new Wifi_APManager(context).createAp(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
             }
 
-            for (int i = 0; i < entity.getResult().getLaunch().size(); i++) {
-                //方案类型（1=开机，2=屏保，3=互动）
-                if (entity.getResult().getLaunch().get(i).getLaunchType() == 1) {
-                    //非空判断
-                    if (!TextUtils.isEmpty(entity.getResult().getLaunch().get(i).getMediaUrl())) {
+            //更改开机动画
+            if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())){
+                LogUtil.e(TAG,entity.getResult().getLaunch().getMediaUrl());
+                SaveUtils.setString(Save_Key.BootAn,entity.getResult().getLaunch().getMediaUrl());
+            }
 
-                        //图片
-                        if (entity.getResult().getLaunch().get(i).getMediaType() == 1) {
-                            SaveUtils.setBoolean(Save_Key.NewImage, true);
-                            SaveUtils.setBoolean(Save_Key.NewVideo, false);
-                            SaveUtils.setString(Save_Key.NewImageUrl, entity.getResult().getLaunch().get(i).getMediaUrl());
-                        }
+            //方案类型（1=开机，2=屏保，3=互动）
+            if (entity.getResult().getLaunch().getLaunchType() == 1) {
+                //非空判断
+                if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())) {
 
-                        //视频
-                        if (entity.getResult().getLaunch().get(i).getMediaType() == 2) {
-                            SaveUtils.setBoolean(Save_Key.NewVideo, true);
-                            SaveUtils.setBoolean(Save_Key.NewImage, false);
-                            SaveUtils.setString(Save_Key.NewVideoUrl, entity.getResult().getLaunch().get(i).getMediaUrl());
-                        }
+                    //图片
+                    if (entity.getResult().getLaunch().getMediaType() == 1) {
+                        SaveUtils.setBoolean(Save_Key.NewImage, true);
+                        SaveUtils.setBoolean(Save_Key.NewVideo, false);
+                        SaveUtils.setString(Save_Key.NewImageUrl, entity.getResult().getLaunch().getMediaUrl());
+                    }
+
+                    //视频
+                    if (entity.getResult().getLaunch().getMediaType() == 2) {
+                        SaveUtils.setBoolean(Save_Key.NewVideo, true);
+                        SaveUtils.setBoolean(Save_Key.NewImage, false);
+                        SaveUtils.setString(Save_Key.NewVideoUrl, entity.getResult().getLaunch().getMediaUrl());
                     }
                 }
             }
@@ -138,7 +142,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
 
                 //初始化投影方式
-                MyAppliaction.apiManager.set("setProjectionMode", entity.getResult().getShadowcnf().getProjectMode(), null, null, null);
+                MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
 
                 //初始化上电开机
                 if (entity.getResult().getShadowcnf().getPowerTurn() == 1)
@@ -164,7 +168,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
             //获取开屏
             new FindLanunch_Servlet().execute();
-
 
             if (MyAppliaction.activity != null && MyAppliaction.activity.getClass() == Home_Activity.class) {
                 ((Home_Activity) MyAppliaction.activity).update();

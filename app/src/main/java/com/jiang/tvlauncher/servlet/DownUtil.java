@@ -36,7 +36,7 @@ public class DownUtil {
         this.activity = activity;
     }
 
-    public void downLoadApk(final String path, final String fileName) {
+    public void downLoad(final String path, final String fileName, final boolean showpd) {
         // 进度条对话框
         pd = new ProgressDialog(activity);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -48,7 +48,7 @@ public class DownUtil {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-                    Toast.makeText(activity, "正在下载请稍后", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(activity, "正在下载请稍后", Toast.LENGTH_SHORT).show();
                     return true;
                 } else {
                     return false;
@@ -61,23 +61,31 @@ public class DownUtil {
             Loading.dismiss();
 
         } else {
-            pd.show();
+            if (showpd)
+                pd.show();
             //下载的子线程
             new Thread() {
                 @Override
                 public void run() {
                     try {
                         // 在子线程中下载APK文件
-                        File file = getFileFromServer(path, "New" + fileName, pd);
+                        File file = getFileFromServer(path, fileName, pd);
                         sleep(1000);
                         // 安装APK文件
-                        LogUtil.e(TAG, "文件下载完成");
-                        MyAppliaction.apiManager.set("setInstallApk", file.getPath(), null, null, null);
-                        pd.dismiss(); // 结束掉进度条对话框
+                        LogUtil.e(TAG, "文件下载完成"+fileName);
+                        if (showpd)
+                            pd.dismiss(); // 结束掉进度条对话框
+                        //如果是安装包
+                        if (fileName.contains(".apk"))
+                            MyAppliaction.apiManager.set("setInstallApk", file.getPath(), null, null, null);
+                        //如果是资源文件
+                        if (fileName.contains(".zip"))
+                            MyAppliaction.apiManager.set("setBootStartPlayer", file.getPath(),null,null,null);
                     } catch (Exception e) {
                         LogUtil.e(TAG, "文件下载失败了");
                         Loading.dismiss();
-                        pd.dismiss();
+                        if (showpd)
+                            pd.dismiss();
                         e.printStackTrace();
                     }
                 }
@@ -96,7 +104,8 @@ public class DownUtil {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(5000);
             // 获取到文件的大小
-            pd.setMax(conn.getContentLength() / 1024);
+            if (pd != null)
+                pd.setMax(conn.getContentLength() / 1024);
             InputStream is = conn.getInputStream();
 
             File file = new File(Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/", fileName);
@@ -113,7 +122,8 @@ public class DownUtil {
                 fos.write(buffer, 0, len);
                 total += len;
                 // 获取当前下载量
-                pd.setProgress(total / 1024);
+                if (pd != null)
+                    pd.setProgress(total / 1024);
             }
             fos.close();
             bis.close();

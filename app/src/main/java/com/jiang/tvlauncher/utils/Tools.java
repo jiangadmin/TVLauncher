@@ -506,4 +506,16 @@ public final class Tools {
         }
     }
 
+    /**
+     * 保留文件名及后缀
+     */
+    public static String getFileNameWithSuffix(String pathandname) {
+        int start = pathandname.lastIndexOf("/");
+        if (start != -1) {
+            return pathandname.substring(start + 1);
+        } else {
+            return null;
+        }
+    }
+
 }

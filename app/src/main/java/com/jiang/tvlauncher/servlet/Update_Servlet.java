@@ -64,7 +64,7 @@ public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
         if (entity.getErrorcode() == 1000) {
             if (entity.getResult().getBuildNum() > Tools.getVersionCode(MyAppliaction.context)) {
                 Loading.show(activity, "安装中");
-                new DownUtil(activity).downLoadApk(entity.getResult().getDownloadUrl(),"Feekr"+entity.getResult().getVersionNum()+".apk");
+                new DownUtil(activity).downLoad(entity.getResult().getDownloadUrl(),"Feekr"+entity.getResult().getVersionNum()+".apk",true);
             }
         } else if (entity.getErrorcode() == 15) {
 //            Toast.makeText(activity, TAG+entity.getErrormsg(), Toast.LENGTH_SHORT).show();

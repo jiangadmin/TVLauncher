@@ -34,6 +34,7 @@ import android.widget.ImageView;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -336,9 +337,9 @@ public class ImageUtils {
      */
     public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = Bitmap.createBitmap(
-                        drawable.getIntrinsicWidth(),
-                        drawable.getIntrinsicHeight(),
-                        drawable.getOpacity() != PixelFormat.OPAQUE ? Config.ARGB_8888 : Config.RGB_565);
+                drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(),
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Config.ARGB_8888 : Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         drawable.draw(canvas);
@@ -416,14 +417,14 @@ public class ImageUtils {
             bitmap.recycle();
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         } finally {
             if (output != null) {
                 try {
                     output.close();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    LogUtil.e(TAG,e.getMessage());
+                    LogUtil.e(TAG, e.getMessage());
                 }
             }
         }
@@ -448,14 +449,14 @@ public class ImageUtils {
             result = null;
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         } finally {
             if (output != null) {
                 try {
                     output.close();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    LogUtil.e(TAG,e.getMessage());
+                    LogUtil.e(TAG, e.getMessage());
                 }
             }
         }
@@ -476,7 +477,7 @@ public class ImageUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         }
         return bitmap;
     }
@@ -494,7 +495,7 @@ public class ImageUtils {
             view.setDrawingCacheEnabled(false);
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         }
         return bitmap;
     }
@@ -514,7 +515,7 @@ public class ImageUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         }
         return mBitmapDrawable;
     }
@@ -540,7 +541,7 @@ public class ImageUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         }
         return bitmap;
     }
@@ -560,7 +561,7 @@ public class ImageUtils {
             b = ImageUtils.bitmap2Bytes(bitmap, compressFormat, true);
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         }
         return b;
     }
@@ -581,7 +582,7 @@ public class ImageUtils {
                     bitmap.getHeight(), m, false);
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         }
         return mBitmap;
     }
@@ -613,7 +614,7 @@ public class ImageUtils {
             matrix.postTranslate(cx, cy);
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         }
         return mBitmap;
     }
@@ -785,7 +786,7 @@ public class ImageUtils {
             bitmap = bitmapWithReflection;
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         }
         return bitmap;
     }
@@ -802,7 +803,7 @@ public class ImageUtils {
                     bitmap.recycle();
                 }
             } catch (Exception e) {
-                LogUtil.e(TAG,e.getMessage());
+                LogUtil.e(TAG, e.getMessage());
             }
             bitmap = null;
         }
@@ -822,7 +823,7 @@ public class ImageUtils {
                     }
                 }
             } catch (Exception e) {
-                LogUtil.e(TAG,e.getMessage());
+                LogUtil.e(TAG, e.getMessage());
             }
         }
     }
@@ -1060,7 +1061,7 @@ public class ImageUtils {
             os.close();
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         }
         return jpgfile.getPath();
     }
@@ -1279,11 +1280,28 @@ public class ImageUtils {
             return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            LogUtil.e(TAG,e.getMessage());
+            LogUtil.e(TAG, e.getMessage());
         }
         return false;
+    }
+
+    /**
+     * 加载本地图片
+     * http://bbs.3gstdy.com
+     *
+     * @param url
+     * @return
+     */
+    public static Bitmap getLoacalBitmap(String url) {
+        try {
+            FileInputStream fis = new FileInputStream(url);
+            return BitmapFactory.decodeStream(fis);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -8,10 +8,8 @@ import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindLanunch;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.HttpUtil;
-import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,8 +40,8 @@ public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch>
                 lanunch = new Gson().fromJson(res, FindLanunch.class);
             } catch (Exception e) {
                 lanunch = new FindLanunch();
-                lanunch.setErrorcode(-1);
-                lanunch.setErrormsg("连接服务器失败");
+                lanunch.setErrorcode(-2);
+                lanunch.setErrormsg("数据解析失败");
             }
         } else {
             lanunch = new FindLanunch();
@@ -58,29 +56,28 @@ public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch>
         super.onPostExecute(findLanunch);
 
         if (findLanunch.getErrorcode() == 1000) {
-            for (int i = 0; i < findLanunch.getResult().size(); i++) {
-                //方案类型（1=开机，2=屏保，3=互动）
-                if (findLanunch.getResult().get(i).getLaunchType() == 1) {
-                    //非空判断
-                    if (!TextUtils.isEmpty(findLanunch.getResult().get(i).getMediaUrl())) {
 
-                        //图片
-                        if (findLanunch.getResult().get(i).getMediaType() == 1) {
-                            SaveUtils.setBoolean(Save_Key.NewImage, true);
-                            SaveUtils.setBoolean(Save_Key.NewVideo, false);
-                            SaveUtils.setString(Save_Key.NewImageUrl,findLanunch.getResult().get(i).getMediaUrl());
-                        }
+            //方案类型（1=开机，2=屏保，3=互动）
+            if (findLanunch.getResult().getLaunchType() == 1) {
+                //非空判断
+                if (!TextUtils.isEmpty(findLanunch.getResult().getMediaUrl())) {
 
-                        //视频
-                        if (findLanunch.getResult().get(i).getMediaType() == 2) {
-                            SaveUtils.setBoolean(Save_Key.NewVideo, true);
-                            SaveUtils.setBoolean(Save_Key.NewImage, false);
-                            SaveUtils.setString(Save_Key.NewVideoUrl, findLanunch.getResult().get(i).getMediaUrl());
-                        }
+                    //图片
+                    if (findLanunch.getResult().getMediaType() == 1) {
+                        SaveUtils.setBoolean(Save_Key.NewImage, true);
+                        SaveUtils.setBoolean(Save_Key.NewVideo, false);
+                        SaveUtils.setString(Save_Key.NewImageUrl, findLanunch.getResult().getMediaUrl());
+                    }
+
+                    //视频
+                    if (findLanunch.getResult().getMediaType() == 2) {
+                        SaveUtils.setBoolean(Save_Key.NewVideo, true);
+                        SaveUtils.setBoolean(Save_Key.NewImage, false);
+                        SaveUtils.setString(Save_Key.NewVideoUrl, findLanunch.getResult().getMediaUrl());
                     }
                 }
             }
-        } else {
+        } else{
             LogUtil.e(TAG, findLanunch.getErrormsg());
             if (num > 3) {
 
