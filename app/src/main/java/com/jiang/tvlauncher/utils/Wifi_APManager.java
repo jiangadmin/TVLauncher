@@ -75,6 +75,7 @@ public class Wifi_APManager {
             Object localObject1 = localMethod.invoke(this.mWifiManager, new Object[0]);
             if (localObject1 == null) return null;
             WifiConfiguration localWifiConfiguration = (WifiConfiguration) localObject1;
+
             if (localWifiConfiguration.SSID != null) return localWifiConfiguration.SSID;
             Field localField1 = WifiConfiguration.class.getDeclaredField("mWifiApProfile");
             if (localField1 == null) return null;

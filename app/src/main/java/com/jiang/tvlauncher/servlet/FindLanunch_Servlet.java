@@ -77,6 +77,8 @@ public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch>
                 }
             }
         } else {
+            if(findLanunch.getErrorcode()==-2)
+                return;
             LogUtil.e(TAG, findLanunch.getErrormsg());
             if (num > 3) {
 

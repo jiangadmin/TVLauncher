@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.entity.Save_Key;
+import com.jiang.tvlauncher.utils.SaveUtils;
 
 /**
  * Created by  jiang
@@ -21,7 +23,7 @@ import com.jiang.tvlauncher.R;
 public class WIFIAPDialog extends Dialog {
 
     ImageView imageView;
-    TextView ssid,pwd;
+    TextView ssid, pwd;
 
     public WIFIAPDialog(@NonNull Context context) {
         super(context, R.style.MyDialog);
@@ -35,5 +37,8 @@ public class WIFIAPDialog extends Dialog {
         imageView = (ImageView) findViewById(R.id.qrcode);
         ssid = (TextView) findViewById(R.id.ssid);
         pwd = (TextView) findViewById(R.id.wifipwd);
+
+        ssid.setText(SaveUtils.getString(Save_Key.WiFiName));
+        pwd.setText(SaveUtils.getString(Save_Key.WiFiPwd));
     }
 }

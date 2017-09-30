@@ -32,17 +32,17 @@ public class NetReceiver extends BroadcastReceiver {
                     LogUtil.e(TAG, "有线网络");
                     MyAppliaction.IsLineNet = true;
 //                    new NetWarningDialog(MyAppliaction.activity).dismiss();
-                    if (MyAppliaction.activity.getClass() == Home_Activity.class) {
-                        ((Home_Activity) MyAppliaction.activity).update();
-                    }
+//                    if (MyAppliaction.activity.getClass() == Home_Activity.class) {
+//                        ((Home_Activity) MyAppliaction.activity).update();
+//                    }
                 }
                 if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                     LogUtil.e(TAG, "无线网络");
                     MyAppliaction.IsLineNet = false;
 //                    new NetWarningDialog(MyAppliaction.activity).dismiss();
-                    if (MyAppliaction.activity.getClass() == Home_Activity.class) {
-                        ((Home_Activity) MyAppliaction.activity).update();
-                    }
+//                    if (MyAppliaction.activity.getClass() == Home_Activity.class) {
+//                        ((Home_Activity) MyAppliaction.activity).update();
+//                    }
                 }
             } else {
 //                new NetWarningDialog(MyAppliaction.activity).esc();

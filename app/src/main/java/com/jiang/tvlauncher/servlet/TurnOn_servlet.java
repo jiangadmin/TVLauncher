@@ -101,6 +101,8 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
             //判断是否是有线连接
             if (Tools.isLineConnected()) {
+                SaveUtils.setString(Save_Key.WiFiName, entity.getResult().getShadowcnf().getWifi());
+                SaveUtils.setString(Save_Key.WiFiPwd, entity.getResult().getShadowcnf().getWifiPassword());
                 LogUtil.e(TAG, "SSID:" + entity.getResult().getShadowcnf().getWifi() + "  PassWord:" + entity.getResult().getShadowcnf().getWifiPassword());
                 //设置热点名  热点密码
                 new Wifi_APManager(context).closeWifiAp();
