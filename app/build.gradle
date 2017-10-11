@@ -5,7 +5,7 @@ android {
         jiang {
             keyAlias 'jiang'
             keyPassword 'jiangadmin'
-            storeFile file('/Users/jiangyao/Desktop/TVLauncher/Jiang.jks')
+            storeFile file('C:/Users/wwwfa/Desktop/TVLauncher/Jiang.jks')
             storePassword 'jiangadmin'
         }
     }
@@ -21,8 +21,8 @@ android {
         applicationId "com.jiang.tvlauncher"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 4
+        versionName "1.0.4"
         signingConfig signingConfigs.jiang
     }
     buildTypes {
@@ -41,4 +41,5 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
+    compile project(':libzxing')
 }
