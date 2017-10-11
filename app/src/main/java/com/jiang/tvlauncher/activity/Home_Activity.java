@@ -233,9 +233,11 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (!new Wifi_APManager(this).isWifiApEnabled()) {
+        if (!new Wifi_APManager(this).isWifiApEnabled())
             wifiap.setVisibility(View.GONE);
-        }
+        else
+            wifiap.setVisibility(View.VISIBLE);
+
         switch (keyCode) {
             case KeyEvent.KEYCODE_HOME:
                 LogUtil.e(TAG, "点击了HOME键");

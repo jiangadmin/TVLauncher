@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.entity.Save_Key;
+import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.SaveUtils;
 
 /**
@@ -38,6 +39,7 @@ public class WIFIAPDialog extends Dialog {
         ssid = (TextView) findViewById(R.id.ssid);
         pwd = (TextView) findViewById(R.id.wifipwd);
 
+        imageView.setImageBitmap(ImageUtils.getQRcode("WIFI:T:WPA;P:\""+SaveUtils.getString(Save_Key.WiFiPwd)+"\";S:"+SaveUtils.getString(Save_Key.WiFiName)+";"));
         ssid.setText(SaveUtils.getString(Save_Key.WiFiName));
         pwd.setText(SaveUtils.getString(Save_Key.WiFiPwd));
     }
