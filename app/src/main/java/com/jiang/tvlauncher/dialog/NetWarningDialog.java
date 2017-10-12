@@ -1,6 +1,5 @@
 package com.jiang.tvlauncher.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -17,11 +16,9 @@ import com.jiang.tvlauncher.R;
  * update：
  */
 public class NetWarningDialog extends Dialog {
-    Activity activity;
 
-    public NetWarningDialog(@NonNull Activity activity) {
-        super(activity, R.style.MyDialog);
-        this.activity = activity;
+    public NetWarningDialog(@NonNull Context context) {
+        super(context, R.style.MyDialog);
     }
 
     @Override
@@ -30,7 +27,7 @@ public class NetWarningDialog extends Dialog {
         setContentView(R.layout.dialog_netwarning);
     }
 
-    public void esc(){
+    public void esc() {
         dismiss();
     }
 }

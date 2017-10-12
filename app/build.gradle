@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+
     signingConfigs {
         jiang {
             keyAlias 'jiang'
@@ -15,16 +16,19 @@ android {
             java.srcDirs = ['src/main/java', 'src/main/aidl']
         }
     }
+
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
+
     defaultConfig {
         applicationId "com.jiang.tvlauncher"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 4
-        versionName "1.0.4"
+        versionCode 5
+        versionName "1.0.5"
         signingConfig signingConfigs.jiang
     }
+
     buildTypes {
         release {
             minifyEnabled false

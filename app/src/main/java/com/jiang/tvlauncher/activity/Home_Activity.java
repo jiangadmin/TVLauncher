@@ -21,6 +21,7 @@ import android.widget.VideoView;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
+import com.jiang.tvlauncher.dialog.NetWarningDialog;
 import com.jiang.tvlauncher.dialog.PwdDialog;
 import com.jiang.tvlauncher.dialog.WIFIAPDialog;
 import com.jiang.tvlauncher.entity.FindChannelList;
@@ -52,13 +53,16 @@ import java.util.List;
 public class Home_Activity extends Base_Activity implements View.OnClickListener, View.OnFocusChangeListener {
     private static final String TAG = "Home_Activity";
     RelativeLayout toolbar_view;
-    LinearLayout back, wifiap;
+    LinearLayout back;
     ImageView back_img;
     TextView back_txt;
 
     LinearLayout setting;
     ImageView setting_img;
     TextView setting_txt;
+
+    LinearLayout wifiap;
+    TextView wifiap_txt;
 
     TitleView titleview;
 
@@ -74,6 +78,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     List<Integer> hometype = new ArrayList();
 
     boolean toolbar_show = false;
+    boolean ifnet = false;//判断有无网络使用
 
     static FindChannelList channelList;
 
@@ -87,6 +92,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activty_home);
         MyAppliaction.activity = this;
+
         initview();
         initeven();
 
@@ -121,6 +127,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         toolbar_view = (RelativeLayout) findViewById(R.id.toolbar_view);
         back = (LinearLayout) findViewById(R.id.back);
         wifiap = (LinearLayout) findViewById(R.id.wifiap);
+        wifiap_txt = (TextView) findViewById(R.id.wifiap_txt);
         back_img = (ImageView) findViewById(R.id.back_img);
         back_txt = (TextView) findViewById(R.id.back_txt);
 
@@ -163,8 +170,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         namelist.add(name3);
         namelist.add(name4);
 
-        timeCount = new TimeCount(5000, 1000);
-
         imageView = (ImageView) findViewById(R.id.image);
         videoView = (VideoView) findViewById(R.id.video);
 
@@ -173,6 +178,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             LogUtil.e(TAG, "有图片");
             imageView.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(SaveUtils.getString(Save_Key.NewImageUrl), imageView);
+            timeCount = new TimeCount(5000, 1000);
             timeCount.start();
         }
 
@@ -196,8 +202,8 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 }
             });
             videoView.start();
-
         }
+
 
     }
 
@@ -346,7 +352,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 //下载图片
                 new DownUtil(this).downLoad(url, filename, false);
 
-
                 //记录文件名
                 switch (i) {
                     case 0:
@@ -445,24 +450,22 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     @Override
     public void onFocusChange(View view, boolean b) {
-
-        //得到焦点
-        if (b) {
-            if (view == setting) {
-                setting_txt.setTextColor(getResources().getColor(R.color.white));
-            }
-            if (view == back) {
-                back_txt.setTextColor(getResources().getColor(R.color.white));
-            }
-            enlargeAnim(view);
-        } else {
-            if (view == setting) {
-                setting_txt.setTextColor(getResources().getColor(R.color.gray));
-            }
-            if (view == back) {
-                back_txt.setTextColor(getResources().getColor(R.color.gray));
-            }
-            reduceAnim(view);
+        switch (view.getId()) {
+            case R.id.setting:
+                setting_txt.setTextColor(getResources().getColor(b == true ? R.color.white : R.color.gray));
+                break;
+            case R.id.back:
+                back_txt.setTextColor(getResources().getColor(b == true ? R.color.white : R.color.gray));
+                break;
+            case R.id.wifiap:
+                wifiap_txt.setTextColor(getResources().getColor(b == true ? R.color.white : R.color.gray));
+                break;
+            default:
+                if (b)
+                    enlargeAnim(view);
+                else
+                    reduceAnim(view);
+                break;
         }
     }
 
@@ -477,8 +480,10 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         //倒计时完成
         @Override
         public void onFinish() {
+            //如果有图片
+            if (SaveUtils.getBoolean(Save_Key.NewImage))
+                imageView.setVisibility(View.GONE);
 
-            imageView.setVisibility(View.GONE);
         }
 
         @Override

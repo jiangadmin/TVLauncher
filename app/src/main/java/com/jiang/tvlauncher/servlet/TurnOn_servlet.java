@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.dialog.Loading;
+import com.jiang.tvlauncher.dialog.NetWarningDialog;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -90,6 +91,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
         if (entity.getErrorcode() == 1000) {
             MyAppliaction.TurnOnS = true;
+
+            //归零
+            num = 0;
 
             Const.ID = entity.getResult().getDevInfo().getId();
 
@@ -186,6 +190,8 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         }
     }
 
+    public static int num = 0;
+
     /**
      * 计时器
      */
@@ -197,8 +203,17 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         //倒计时完成
         @Override
         public void onFinish() {
+            num++;
             //再次启动
             new TurnOn_servlet(context).execute();
+
+            //如果是有线网络接入
+            if (Tools.isLineConnected() && num == 3 && MyAppliaction.activity != null)
+                new NetWarningDialog(MyAppliaction.activity).show();
+
+            //如果是WIFI接入
+            if (Tools.isWifiConnected() && num == 10&& MyAppliaction.activity != null)
+                new NetWarningDialog(MyAppliaction.activity).show();
         }
 
         @Override
