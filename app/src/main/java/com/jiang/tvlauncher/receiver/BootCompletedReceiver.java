@@ -7,7 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 
 import com.jiang.tvlauncher.MyAppliaction;
-import com.jiang.tvlauncher.activity.Home_Activity;
+import com.jiang.tvlauncher.dialog.NetDialog;
 
 
 /**
@@ -30,6 +30,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 //            context.startActivity(start);
             //注册广播
 //            registerNetworkReceiver();
+
         }
     }
 

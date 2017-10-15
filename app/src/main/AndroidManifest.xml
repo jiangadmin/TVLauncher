@@ -30,6 +30,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALTER_WINDOW"/>
     <application
         android:name=".MyAppliaction"
         android:allowBackup="true"
@@ -58,6 +60,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".dialog.NetDialog$NetActivity"/>
         <activity android:name=".activity.APPList_Activity" />
 
         <activity android:name=".activity.NewAPPList_Activity" />

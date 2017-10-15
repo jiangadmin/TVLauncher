@@ -2,6 +2,7 @@ package com.jiang.tvlauncher.utils;
 
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -95,6 +96,22 @@ public class Wifi_APManager {
         return null;
     }
 
+   public void SDa(Context context){
+       try {
+           WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+           //拿到getWifiApConfiguration()方法
+           Method method = manager.getClass().getDeclaredMethod("getWifiApConfiguration");
+           //调用getWifiApConfiguration()方法，获取到 热点的WifiConfiguration
+           WifiConfiguration configuration = (WifiConfiguration) method.invoke(manager);
+          String ssid = configuration.SSID;
+       } catch (NoSuchMethodException e) {
+           e.printStackTrace();
+       } catch (InvocationTargetException e) {
+           e.printStackTrace();
+       } catch (IllegalAccessException e) {
+           e.printStackTrace();
+       }
+   }
     /**
      * 检查是否开启Wifi热点
      *
@@ -211,6 +228,12 @@ public class Wifi_APManager {
     }
     boolean flag = false;
 
+    /**
+     * 启动热点
+     * @param SSID
+     * @param preSharedKey
+     * @return
+     */
     public boolean createAp(String SSID, String preSharedKey) {
         //开启热点先关闭Wifi
         if (mWifiManager.isWifiEnabled()) {

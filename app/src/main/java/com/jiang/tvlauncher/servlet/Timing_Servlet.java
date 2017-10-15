@@ -41,7 +41,7 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
         try {
                 map.put("cpuTemp", MyAppliaction.apiManager.get("getTemp", null, null));
                 map.put("fanSpeed", MyAppliaction.apiManager.get("getWindSpeed", null, null));
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             map.put("cpuTemp", "0");
             map.put("fanSpeed", "0");

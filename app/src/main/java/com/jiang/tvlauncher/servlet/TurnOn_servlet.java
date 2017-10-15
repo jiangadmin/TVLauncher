@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.dialog.Loading;
-import com.jiang.tvlauncher.dialog.NetWarningDialog;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -97,20 +96,30 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
             Const.ID = entity.getResult().getDevInfo().getId();
 
+
             //存储ID
             SaveUtils.setString(Save_Key.ID, String.valueOf(entity.getResult().getDevInfo().getId()));
 
             //存储密码
-            SaveUtils.setString(Save_Key.Password, entity.getResult().getShadowcnf().getShadowPwd());
+            if (entity.getResult().getShadowcnf() != null && entity.getResult().getShadowcnf().getShadowPwd() != null)
+                SaveUtils.setString(Save_Key.Password, entity.getResult().getShadowcnf().getShadowPwd());
+            else
+                SaveUtils.setString(Save_Key.Password, "");
 
+            //先关闭热点
+            new Wifi_APManager(context).closeWifiAp();
             //判断是否是有线连接
-            if (Tools.isLineConnected()) {
-                SaveUtils.setString(Save_Key.WiFiName, entity.getResult().getShadowcnf().getWifi());
-                SaveUtils.setString(Save_Key.WiFiPwd, entity.getResult().getShadowcnf().getWifiPassword());
-                LogUtil.e(TAG, "SSID:" + entity.getResult().getShadowcnf().getWifi() + "  PassWord:" + entity.getResult().getShadowcnf().getWifiPassword());
-                //设置热点名  热点密码
-                new Wifi_APManager(context).closeWifiAp();
-                new Wifi_APManager(context).createAp(entity.getResult().getShadowcnf().getWifi(), entity.getResult().getShadowcnf().getWifiPassword());
+            if (Tools.isLineConnected() && entity.getResult().getShadowcnf() != null && entity.getResult().getShadowcnf().getWifi() != null && entity.getResult().getShadowcnf().getWifiPassword() != null) {
+
+                String SSID = entity.getResult().getShadowcnf().getWifi();
+                String APPWD = entity.getResult().getShadowcnf().getWifiPassword();
+
+                SaveUtils.setString(Save_Key.WiFiName, SSID);
+                SaveUtils.setString(Save_Key.WiFiPwd, APPWD);
+
+                LogUtil.e(TAG, "SSID:" + SSID + "  PassWord:" + APPWD);
+                //开启wifiAp
+                new Wifi_APManager(context).createAp(SSID, APPWD);
             }
 
             //更改开机动画
@@ -148,13 +157,15 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
 
                 //初始化投影方式
-                MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
+                if (entity.getResult().getShadowcnf() != null)
+                    MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
 
                 //初始化上电开机
-                if (entity.getResult().getShadowcnf().getPowerTurn() == 1)
-                    MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
-                else
-                    MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
+                if (entity.getResult().getShadowcnf() != null)
+                    if (entity.getResult().getShadowcnf().getPowerTurn() == 1)
+                        MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
+                    else
+                        MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
                 //初始化梯形数据
 
                 Point point = new Gson().fromJson(s, Point.class);
@@ -167,7 +178,8 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             }
 
             //存储间隔时间
-            SaveUtils.setInt(Save_Key.Timming, entity.getResult().getShadowcnf().getMonitRate());
+            if (entity.getResult().getShadowcnf() != null)
+                SaveUtils.setInt(Save_Key.Timming, entity.getResult().getShadowcnf().getMonitRate());
 
             //启动定时服务
             context.startService(new Intent(context, TimingService.class));
@@ -207,13 +219,19 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //再次启动
             new TurnOn_servlet(context).execute();
 
-            //如果是有线网络接入
-            if (Tools.isLineConnected() && num == 3 && MyAppliaction.activity != null)
-                new NetWarningDialog(MyAppliaction.activity).show();
-
-            //如果是WIFI接入
-            if (Tools.isWifiConnected() && num == 10&& MyAppliaction.activity != null)
-                new NetWarningDialog(MyAppliaction.activity).show();
+            //即没连接wifi也没插网线
+//            if (!Tools.isWifiConnected() && !Tools.isLineConnected() && !Tools.isNetworkConnected() && num == 1)
+//
+//                new NetWarningDialog(MyAppliaction.activity).show();
+//            else {
+//                //如果是有线网络接入
+//                if (Tools.isLineConnected() && num == 3 && MyAppliaction.activity != null)
+//                    new NetWarningDialog(MyAppliaction.activity).show();
+//
+//                //如果是WIFI接入
+//                if (Tools.isWifiConnected() && num == 10 && MyAppliaction.activity != null)
+//                    new NetWarningDialog(MyAppliaction.activity).show();
+//            }
         }
 
         @Override
