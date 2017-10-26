@@ -18,6 +18,7 @@ import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.servlet.SyncDevZoom_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
+import com.jiang.tvlauncher.utils.Tools;
 
 /**
  * Created by  jiang
@@ -101,11 +102,17 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
         switch (view.getId()) {
             //网络设置
             case R.id.setting_1:
-                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                //如果是有线连接
+                if (Tools.isLineConnected())
+                    //启动到有线连接页面
+                    startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                else
+                    //启动到无线连接页面
+                    startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                 break;
             //蓝牙设置
             case R.id.setting_2:
-                startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));//网络设置
+                startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS  ));
                 break;
             //梯形校正
             case R.id.setting_3:

@@ -34,6 +34,7 @@ import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
+import com.jiang.tvlauncher.utils.WifiApUtils;
 import com.jiang.tvlauncher.utils.Wifi_APManager;
 import com.jiang.tvlauncher.view.TitleView;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -207,8 +208,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             });
             videoView.start();
         }
-
-
     }
 
     private void initeven() {
@@ -243,10 +242,10 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (!new Wifi_APManager(this).isWifiApEnabled())
-            wifiap.setVisibility(View.GONE);
-        else
+        if (WifiApUtils.getInstance(this).checkWifiApStatus())
             wifiap.setVisibility(View.VISIBLE);
+        else
+            wifiap.setVisibility(View.GONE);
 
         switch (keyCode) {
             case KeyEvent.KEYCODE_HOME:
@@ -487,7 +486,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             //如果有图片
             if (SaveUtils.getBoolean(Save_Key.NewImage))
                 imageView.setVisibility(View.GONE);
-
         }
 
         @Override

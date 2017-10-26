@@ -34,6 +34,7 @@ public class SyncDevZoom_Servlet extends AsyncTask<String, Integer, BaseEntity> 
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         try {
             String point = MyAppliaction.apiManager.get("getKeyStoneData", null, null);
+            LogUtil.e(TAG,point);
             map.put("zoomVal", URLEncoder.encode(point, "UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();

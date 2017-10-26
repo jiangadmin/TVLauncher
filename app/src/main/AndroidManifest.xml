@@ -32,6 +32,7 @@
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
 
     <uses-permission android:name="android.permission.SYSTEM_ALTER_WINDOW"/>
+
     <application
         android:name=".MyAppliaction"
         android:allowBackup="true"

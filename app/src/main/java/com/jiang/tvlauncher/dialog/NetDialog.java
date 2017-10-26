@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
-import android.view.WindowManager;
 
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
@@ -28,15 +27,19 @@ public class NetDialog {
 
     //显示警告框
     public static void showW() {
-        if (MyAppliaction.activity != null&&netWarningDialog==null) {
+        if (MyAppliaction.activity != null && netWarningDialog == null) {
             netWarningDialog = new NetWarningDialog(MyAppliaction.activity);
-            netWarningDialog.show();
+            try {
+                netWarningDialog.show();
+            } catch (RuntimeException e) {
+
+            }
         }
     }
 
     //显示等待框
     public static void showL() {
-        if (MyAppliaction.activity != null&&netLoadingDialog==null) {
+        if (MyAppliaction.activity != null && netLoadingDialog == null) {
             netLoadingDialog = new NetLoadingDialog(MyAppliaction.activity);
             netLoadingDialog.show();
 
