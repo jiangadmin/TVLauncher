@@ -19,8 +19,6 @@ import com.jiang.tvlauncher.dialog.NetDialog;
  * update：
  */
 public class BootCompletedReceiver extends BroadcastReceiver {
-    private NetReceiver netReceiver = new NetReceiver();
-
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
@@ -32,13 +30,5 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 //            registerNetworkReceiver();
 
         }
-    }
-
-    /**
-     * 注册网络广播
-     */
-    private void registerNetworkReceiver() {
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        MyAppliaction.context.registerReceiver(netReceiver, filter);
     }
 }

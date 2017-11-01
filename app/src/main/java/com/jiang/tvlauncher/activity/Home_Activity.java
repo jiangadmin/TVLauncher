@@ -109,7 +109,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         new FindChannelList_Servlet(this).execute();
 
         //获取更新
-        new Update_Servlet(this).execute();
+//        new Update_Servlet(this).execute();
     }
 
     private void initview() {

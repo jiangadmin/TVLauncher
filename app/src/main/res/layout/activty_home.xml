@@ -29,10 +29,10 @@
             android:focusable="true">
 
             <ImageView
+                android:layout_marginBottom="30dp"
                 android:id="@+id/home_1_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:scaleType="fitXY"
@@ -45,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="40dp"
                 android:text="同步院线"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
@@ -60,6 +59,8 @@
             android:focusable="true">
 
             <ImageView
+                android:layout_marginBottom="30dp"
+
                 android:id="@+id/home_2_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -75,7 +76,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="40dp"
                 android:text="影视快搜"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
@@ -90,6 +90,8 @@
             android:focusable="true">
 
             <ImageView
+                android:layout_marginBottom="30dp"
+
                 android:id="@+id/home_3_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -103,7 +105,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="40dp"
                 android:text="电视直播"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
@@ -117,6 +118,7 @@
             android:focusable="true">
 
             <ImageView
+                android:layout_marginBottom="30dp"
                 android:id="@+id/home_4_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -133,7 +135,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="40dp"
                 android:text="最新推荐"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
