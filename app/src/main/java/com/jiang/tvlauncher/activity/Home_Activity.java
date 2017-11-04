@@ -28,14 +28,12 @@ import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
-import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.utils.WifiApUtils;
-import com.jiang.tvlauncher.utils.Wifi_APManager;
 import com.jiang.tvlauncher.view.TitleView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -321,56 +319,61 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         }
 
         if (channelList != null) {
-            for (int i = 0; i < channelList.getResult().size(); i++) {
-                String url = channelList.getResult().get(i).getBgUrl();
+                for (int i = 0; i < channelList.getResult().size(); i++) {
+                    //
 
-                LogUtil.e(TAG, "URL:" + url);
-                String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
-                LogUtil.e(TAG, "filename:" + filename);
-                namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
-                //判断有没有网络
-                if (Tools.isNetworkConnected())
-                    //网络加载图片
-                    ImageLoader.getInstance().displayImage(url, homebglist.get(i));
-                else
-                    LogUtil.e(TAG, "断开网络连接");
-                //本地加载图片
-                switch (i) {
-                    case 0:
-                        LogUtil.e(TAG, file + SaveUtils.getString(Save_Key.ItemImage0));
-                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage0))));
-                        break;
-                    case 1:
-                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage1))));
-                        break;
-                    case 2:
-                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage2))));
-                        break;
-                    case 3:
-                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage3))));
-                        break;
+                    if (i>3)
+                        return;
+
+                    String url = channelList.getResult().get(i).getBgUrl();
+
+                    LogUtil.e(TAG, "URL:" + url);
+                    String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
+                    LogUtil.e(TAG, "filename:" + filename);
+                    namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
+                    //判断有没有网络
+                    if (Tools.isNetworkConnected())
+                        //网络加载图片
+                        ImageLoader.getInstance().displayImage(url, homebglist.get(i));
+                    else
+                        LogUtil.e(TAG, "断开网络连接");
+                    //本地加载图片
+                    switch (i) {
+                        case 0:
+                            LogUtil.e(TAG, file + SaveUtils.getString(Save_Key.ItemImage0));
+                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage0))));
+                            break;
+                        case 1:
+                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage1))));
+                            break;
+                        case 2:
+                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage2))));
+                            break;
+                        case 3:
+                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage3))));
+                            break;
+                    }
+                    hometype.add(channelList.getResult().get(i).getContentType());
+
+                    //下载图片
+                    new DownUtil(this).downLoad(url, filename, false);
+
+                    //记录文件名
+                    switch (i) {
+                        case 0:
+                            SaveUtils.setString(Save_Key.ItemImage0, filename);
+                            break;
+                        case 1:
+                            SaveUtils.setString(Save_Key.ItemImage1, filename);
+                            break;
+                        case 2:
+                            SaveUtils.setString(Save_Key.ItemImage2, filename);
+                            break;
+                        case 3:
+                            SaveUtils.setString(Save_Key.ItemImage3, filename);
+                            break;
+                    }
                 }
-                hometype.add(channelList.getResult().get(i).getContentType());
-
-                //下载图片
-                new DownUtil(this).downLoad(url, filename, false);
-
-                //记录文件名
-                switch (i) {
-                    case 0:
-                        SaveUtils.setString(Save_Key.ItemImage0, filename);
-                        break;
-                    case 1:
-                        SaveUtils.setString(Save_Key.ItemImage1, filename);
-                        break;
-                    case 2:
-                        SaveUtils.setString(Save_Key.ItemImage2, filename);
-                        break;
-                    case 3:
-                        SaveUtils.setString(Save_Key.ItemImage3, filename);
-                        break;
-                }
-            }
         }
     }
 
