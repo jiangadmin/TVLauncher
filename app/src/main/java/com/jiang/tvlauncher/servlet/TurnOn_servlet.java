@@ -85,6 +85,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         Loading.dismiss();
 
         LogUtil.e(TAG, "=======================================================================================");
+        if (entity!=null&&entity.getErrormsg()!=null)
         LogUtil.e(TAG, entity.getErrormsg());
 //        Toast.makeText(context, "开机请求返回："+entity.getErrormsg(), Toast.LENGTH_SHORT).show();
         LogUtil.e(TAG, "=======================================================================================");
@@ -110,23 +111,23 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 SaveUtils.setString(Save_Key.Password, "");
 
             //更改开机动画
-            if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())) {
-                LogUtil.e(TAG, entity.getResult().getLaunch().getMediaUrl());
-                SaveUtils.setString(Save_Key.BootAn, entity.getResult().getLaunch().getMediaUrl());
-            }
+            if (entity.getResult().getLaunch() != null)
+                if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())) {
+                    LogUtil.e(TAG, entity.getResult().getLaunch().getMediaUrl());
+                    SaveUtils.setString(Save_Key.BootAn, entity.getResult().getLaunch().getMediaUrl());
+                }
 
             //方案类型（1=开机，2=屏保，3=互动）
-            if (entity.getResult().getLaunch().getLaunchType() == 1) {
+            if (entity.getResult().getLaunch() != null)
+                if (entity.getResult().getLaunch().getLaunchType() == 1) {
                 //非空判断
                 if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())) {
-
                     //图片
                     if (entity.getResult().getLaunch().getMediaType() == 1) {
                         SaveUtils.setBoolean(Save_Key.NewImage, true);
                         SaveUtils.setBoolean(Save_Key.NewVideo, false);
                         SaveUtils.setString(Save_Key.NewImageUrl, entity.getResult().getLaunch().getMediaUrl());
                     }
-
                     //视频
                     if (entity.getResult().getLaunch().getMediaType() == 2) {
                         SaveUtils.setBoolean(Save_Key.NewVideo, true);
