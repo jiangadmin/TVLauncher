@@ -29,12 +29,12 @@
             android:focusable="true">
 
             <ImageView
-                android:layout_marginBottom="30dp"
                 android:id="@+id/home_1_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
+                android:layout_marginBottom="30dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/bg_red" />
 
@@ -59,13 +59,13 @@
             android:focusable="true">
 
             <ImageView
-                android:layout_marginBottom="30dp"
-
                 android:id="@+id/home_2_bg"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_marginBottom="30dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/bg_yellow" />
 
@@ -90,11 +90,11 @@
             android:focusable="true">
 
             <ImageView
-                android:layout_marginBottom="30dp"
-
                 android:id="@+id/home_3_bg"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/bg_blue" />
 
@@ -118,13 +118,13 @@
             android:focusable="true">
 
             <ImageView
-                android:layout_marginBottom="30dp"
                 android:id="@+id/home_4_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
+                android:layout_marginBottom="30dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/bg_green" />
 
@@ -241,13 +241,13 @@
         android:visibility="gone" />
 
     <TextView
-        android:textSize="15sp"
-        android:layout_margin="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:id="@+id/ver"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:textSize="15sp" />
 
 
 </RelativeLayout>
