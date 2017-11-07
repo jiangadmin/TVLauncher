@@ -9,23 +9,24 @@
         android:layout_height="42dp"
         android:alpha="70"
         android:background="@color/title_bg">
+
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_mangotv" />
+            android:src="@mipmap/mg_logo" />
         <!--日期-->
         <TextView
-            android:visibility="gone"
             android:id="@+id/title_bar_date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="23sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <!--时间-->
         <TextView
@@ -35,7 +36,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="35sp" />
+            android:textSize="28sp" />
 
         <!--网络-->
         <ImageView
@@ -43,6 +44,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:visibility="gone" />
+
+        <!--控制台-->
+        <LinearLayout
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/setting_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_setting" />
+
+            <TextView
+                android:id="@+id/setting_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="控制台"
+                android:textColor="@color/gray"
+                android:textSize="18sp" />
+        </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

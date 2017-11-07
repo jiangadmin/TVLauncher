@@ -246,26 +246,23 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             wifiap.setVisibility(View.GONE);
 
         switch (keyCode) {
-            case KeyEvent.KEYCODE_HOME:
-                LogUtil.e(TAG, "点击了HOME键");
-                return true;
             case KeyEvent.KEYCODE_BACK:
                 return true;
             case KeyEvent.KEYCODE_DPAD_UP:
-                if (!toolbar_show) {
-                    toolbar_view.setVisibility(View.VISIBLE);
-                    AnimUtils.animupnum(this, toolbar_view, -42, 0);
-                    AnimUtils.animupnum(this, titleview, 0, -42);
-                    toolbar_show = true;
-                }
+//                if (!toolbar_show) {
+//                    toolbar_view.setVisibility(View.VISIBLE);
+//                    AnimUtils.animupnum(this, toolbar_view, -42, 0);
+//                    AnimUtils.animupnum(this, titleview, 0, -42);
+//                    toolbar_show = true;
+//                }
                 return false;
             case KeyEvent.KEYCODE_DPAD_DOWN:
-                if (toolbar_show) {
-                    AnimUtils.animupnum(this, toolbar_view, 0, -42);
-                    AnimUtils.animupnum(this, titleview, -42, 0);
-                    toolbar_view.setVisibility(View.GONE);
-                    toolbar_show = false;
-                }
+//                if (toolbar_show) {
+//                    AnimUtils.animupnum(this, toolbar_view, 0, -42);
+//                    AnimUtils.animupnum(this, titleview, -42, 0);
+//                    toolbar_view.setVisibility(View.GONE);
+//                    toolbar_show = false;
+//                }
                 return false;
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 return false;
