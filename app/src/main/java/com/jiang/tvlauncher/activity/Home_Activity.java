@@ -112,35 +112,35 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     private void initview() {
 
-        home1 = (RelativeLayout) findViewById(R.id.home_1);
-        home2 = (RelativeLayout) findViewById(R.id.home_2);
-        home3 = (RelativeLayout) findViewById(R.id.home_3);
-        home4 = (RelativeLayout) findViewById(R.id.home_4);
+        home1 =  findViewById(R.id.home_1);
+        home2 =  findViewById(R.id.home_2);
+        home3 =  findViewById(R.id.home_3);
+        home4 =  findViewById(R.id.home_4);
 
-        home1bg = (ImageView) findViewById(R.id.home_1_bg);
-        home2bg = (ImageView) findViewById(R.id.home_2_bg);
-        home3bg = (ImageView) findViewById(R.id.home_3_bg);
-        home4bg = (ImageView) findViewById(R.id.home_4_bg);
+        home1bg =  findViewById(R.id.home_1_bg);
+        home2bg =  findViewById(R.id.home_2_bg);
+        home3bg =  findViewById(R.id.home_3_bg);
+        home4bg =  findViewById(R.id.home_4_bg);
 
-        name1 = (TextView) findViewById(R.id.home_1_name);
-        name2 = (TextView) findViewById(R.id.home_2_name);
-        name3 = (TextView) findViewById(R.id.home_3_name);
-        name4 = (TextView) findViewById(R.id.home_4_name);
+        name1 =  findViewById(R.id.home_1_name);
+        name2 =  findViewById(R.id.home_2_name);
+        name3 =  findViewById(R.id.home_3_name);
+        name4 =  findViewById(R.id.home_4_name);
 
-        toolbar_view = (RelativeLayout) findViewById(R.id.toolbar_view);
-        back = (LinearLayout) findViewById(R.id.back);
-        wifiap = (LinearLayout) findViewById(R.id.wifiap);
-        wifiap_txt = (TextView) findViewById(R.id.wifiap_txt);
-        back_img = (ImageView) findViewById(R.id.back_img);
-        back_txt = (TextView) findViewById(R.id.back_txt);
+        toolbar_view =  findViewById(R.id.toolbar_view);
+        back =  findViewById(R.id.back);
+        wifiap =  findViewById(R.id.wifiap);
+        wifiap_txt =  findViewById(R.id.wifiap_txt);
+        back_img =  findViewById(R.id.back_img);
+        back_txt =  findViewById(R.id.back_txt);
 
-        setting = (LinearLayout) findViewById(R.id.setting);
-        setting_img = (ImageView) findViewById(R.id.setting_img);
-        setting_txt = (TextView) findViewById(R.id.setting_txt);
+        setting =  findViewById(R.id.setting);
+        setting_img =  findViewById(R.id.setting_img);
+        setting_txt =  findViewById(R.id.setting_txt);
 
-        titleview = (TitleView) findViewById(R.id.titleview);
+        titleview =  findViewById(R.id.titleview);
 
-        ver = (TextView) findViewById(R.id.ver);
+        ver =  findViewById(R.id.ver);
         ver.setText("V " + Tools.getVersionName(MyAppliaction.context));
 
         //获取屏幕宽度
@@ -173,8 +173,8 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         namelist.add(name3);
         namelist.add(name4);
 
-        imageView = (ImageView) findViewById(R.id.image);
-        videoView = (VideoView) findViewById(R.id.video);
+        imageView =  findViewById(R.id.image);
+        videoView =  findViewById(R.id.video);
 
         //如果有图片
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
@@ -316,61 +316,61 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         }
 
         if (channelList != null) {
-                for (int i = 0; i < channelList.getResult().size(); i++) {
-                    //
+            for (int i = 0; i < channelList.getResult().size(); i++) {
+                //
 
-                    if (i>3)
-                        return;
+                if (i > 3)
+                    return;
 
-                    String url = channelList.getResult().get(i).getBgUrl();
+                String url = channelList.getResult().get(i).getBgUrl();
 
-                    LogUtil.e(TAG, "URL:" + url);
-                    String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
-                    LogUtil.e(TAG, "filename:" + filename);
-                    namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
-                    //判断有没有网络
-                    if (Tools.isNetworkConnected())
-                        //网络加载图片
-                        ImageLoader.getInstance().displayImage(url, homebglist.get(i));
-                    else
-                        LogUtil.e(TAG, "断开网络连接");
-                    //本地加载图片
-                    switch (i) {
-                        case 0:
-                            LogUtil.e(TAG, file + SaveUtils.getString(Save_Key.ItemImage0));
-                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage0))));
-                            break;
-                        case 1:
-                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage1))));
-                            break;
-                        case 2:
-                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage2))));
-                            break;
-                        case 3:
-                            homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage3))));
-                            break;
-                    }
-                    hometype.add(channelList.getResult().get(i).getContentType());
-
-                    //下载图片
-                    new DownUtil(this).downLoad(url, filename, false);
-
-                    //记录文件名
-                    switch (i) {
-                        case 0:
-                            SaveUtils.setString(Save_Key.ItemImage0, filename);
-                            break;
-                        case 1:
-                            SaveUtils.setString(Save_Key.ItemImage1, filename);
-                            break;
-                        case 2:
-                            SaveUtils.setString(Save_Key.ItemImage2, filename);
-                            break;
-                        case 3:
-                            SaveUtils.setString(Save_Key.ItemImage3, filename);
-                            break;
-                    }
+                LogUtil.e(TAG, "URL:" + url);
+                String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
+                LogUtil.e(TAG, "filename:" + filename);
+                namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
+                //判断有没有网络
+                if (Tools.isNetworkConnected())
+                    //网络加载图片
+                    ImageLoader.getInstance().displayImage(url, homebglist.get(i));
+                else
+                    LogUtil.e(TAG, "断开网络连接");
+                //本地加载图片
+                switch (i) {
+                    case 0:
+                        LogUtil.e(TAG, file + SaveUtils.getString(Save_Key.ItemImage0));
+                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage0))));
+                        break;
+                    case 1:
+                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage1))));
+                        break;
+                    case 2:
+                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage2))));
+                        break;
+                    case 3:
+                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage3))));
+                        break;
                 }
+                hometype.add(channelList.getResult().get(i).getContentType());
+
+                //下载图片
+                new DownUtil(this).downLoad(url, filename, false);
+
+                //记录文件名
+                switch (i) {
+                    case 0:
+                        SaveUtils.setString(Save_Key.ItemImage0, filename);
+                        break;
+                    case 1:
+                        SaveUtils.setString(Save_Key.ItemImage1, filename);
+                        break;
+                    case 2:
+                        SaveUtils.setString(Save_Key.ItemImage2, filename);
+                        break;
+                    case 3:
+                        SaveUtils.setString(Save_Key.ItemImage3, filename);
+                        break;
+                }
+            }
         }
     }
 

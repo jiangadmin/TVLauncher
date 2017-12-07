@@ -35,7 +35,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALTER_WINDOW"/>
 
     <application
-        android:name=".MyAppliaction"
+        android:name="MyAppliaction"
         android:allowBackup="true"
         android:icon="@drawable/feekr"
         android:label="@string/app_name"
@@ -47,7 +47,6 @@
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
         </service>
-
 
         <activity
             android:name=".activity.Home_Activity"
@@ -62,7 +61,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".dialog.NetDialog$NetActivity"/>
         <activity android:name=".activity.APPList_Activity" />
 
         <activity android:name=".activity.NewAPPList_Activity" />
@@ -88,8 +86,8 @@
 
         <!--网络广播接收-->
         <receiver android:name=".receiver.NetReceiver">
-            <intent-filter>  
-                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />  
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
