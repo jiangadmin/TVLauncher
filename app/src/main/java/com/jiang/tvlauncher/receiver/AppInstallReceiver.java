@@ -3,9 +3,12 @@ package com.jiang.tvlauncher.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.jiang.tvlauncher.dialog.Loading;
+import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.utils.LogUtil;
+import com.jiang.tvlauncher.utils.SaveUtils;
 
 /**
  * Created by  jiang
@@ -25,29 +28,42 @@ public class AppInstallReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
             String packageName = intent.getData().getSchemeSpecificPart();
             Loading.dismiss();
-            LogUtil.e(TAG, "安装成功");
-            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+
+            //如果之前被卸载过
+            if (!TextUtils.isEmpty(SaveUtils.getString(Const.包)))
+                if (SaveUtils.getString(Const.包).contains(packageName)) {
+                    return;
+                }
+
             if ("com.jiang.tvlauncher".equals(packageName)) {
                 return;
             }
-            if (launchIntent != null) {
+
+            LogUtil.e(TAG, "安装成功");
+            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+            if (launchIntent != null)
                 context.startActivity(launchIntent);
-            }
         }
         //卸载
         if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
             String packageName = intent.getData().getSchemeSpecificPart();
+
+            //清楚数据
+            if (!TextUtils.isEmpty(SaveUtils.getString(Const.包)))
+                if (SaveUtils.getString(Const.包).length() > 1000) {
+                    SaveUtils.setString(Const.包, "");
+                }
+            //记录卸载过的包
+            SaveUtils.setString(Const.包, SaveUtils.getString(Const.包) + packageName);
+
             LogUtil.e(TAG, "卸载成功");
         }
         //替换
         if (intent.getAction().equals(Intent.ACTION_PACKAGE_REPLACED)) {
-            String packageName = intent.getData().getSchemeSpecificPart();
-            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-            if ("com.jiang.tvlauncher".equals(packageName)) {
-                return;
-            }
-            if (launchIntent != null)
-                context.startActivity(launchIntent);
+//            String packageName = intent.getData().getSchemeSpecificPart();
+//            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+//            if (launchIntent != null)
+//                context.startActivity(launchIntent);
             LogUtil.e(TAG, "替换成功");
         }
     }

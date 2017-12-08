@@ -22,6 +22,9 @@ public class Const {
 
     public static int seconds = 300;      //间隔时间
 
+    public static String 包 = "baobaobao";//超级直播
+
+
     public static String 芒果TV = "com.hunantv.license";//芒果TV
     public static String 随心听 = "com.xgimi.duobanfm";//随心听
     public static String 沙发管家 = "com.xgimi.duobanfm";//沙发管家
