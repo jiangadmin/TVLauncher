@@ -112,35 +112,35 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     private void initview() {
 
-        home1 =  findViewById(R.id.home_1);
-        home2 =  findViewById(R.id.home_2);
-        home3 =  findViewById(R.id.home_3);
-        home4 =  findViewById(R.id.home_4);
+        home1 = findViewById(R.id.home_1);
+        home2 = findViewById(R.id.home_2);
+        home3 = findViewById(R.id.home_3);
+        home4 = findViewById(R.id.home_4);
 
-        home1bg =  findViewById(R.id.home_1_bg);
-        home2bg =  findViewById(R.id.home_2_bg);
-        home3bg =  findViewById(R.id.home_3_bg);
-        home4bg =  findViewById(R.id.home_4_bg);
+        home1bg = findViewById(R.id.home_1_bg);
+        home2bg = findViewById(R.id.home_2_bg);
+        home3bg = findViewById(R.id.home_3_bg);
+        home4bg = findViewById(R.id.home_4_bg);
 
-        name1 =  findViewById(R.id.home_1_name);
-        name2 =  findViewById(R.id.home_2_name);
-        name3 =  findViewById(R.id.home_3_name);
-        name4 =  findViewById(R.id.home_4_name);
+        name1 = findViewById(R.id.home_1_name);
+        name2 = findViewById(R.id.home_2_name);
+        name3 = findViewById(R.id.home_3_name);
+        name4 = findViewById(R.id.home_4_name);
 
-        toolbar_view =  findViewById(R.id.toolbar_view);
-        back =  findViewById(R.id.back);
-        wifiap =  findViewById(R.id.wifiap);
-        wifiap_txt =  findViewById(R.id.wifiap_txt);
-        back_img =  findViewById(R.id.back_img);
-        back_txt =  findViewById(R.id.back_txt);
+        toolbar_view = findViewById(R.id.toolbar_view);
+        back = findViewById(R.id.back);
+        wifiap = findViewById(R.id.wifiap);
+        wifiap_txt = findViewById(R.id.wifiap_txt);
+        back_img = findViewById(R.id.back_img);
+        back_txt = findViewById(R.id.back_txt);
 
-        setting =  findViewById(R.id.setting);
-        setting_img =  findViewById(R.id.setting_img);
-        setting_txt =  findViewById(R.id.setting_txt);
+        setting = findViewById(R.id.setting);
+        setting_img = findViewById(R.id.setting_img);
+        setting_txt = findViewById(R.id.setting_txt);
 
-        titleview =  findViewById(R.id.titleview);
+        titleview = findViewById(R.id.titleview);
 
-        ver =  findViewById(R.id.ver);
+        ver = findViewById(R.id.ver);
         ver.setText("V " + Tools.getVersionName(MyAppliaction.context));
 
         //获取屏幕宽度
@@ -173,8 +173,8 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         namelist.add(name3);
         namelist.add(name4);
 
-        imageView =  findViewById(R.id.image);
-        videoView =  findViewById(R.id.video);
+        imageView = findViewById(R.id.image);
+        videoView = findViewById(R.id.video);
 
         //如果有图片
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
@@ -230,6 +230,10 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         back.setVisibility(View.GONE);
 
+        //切换焦点给第一个
+        home1.setFocusable(true);
+        home1.setFocusableInTouchMode(true);
+        home1.requestFocus();
     }
 
     @Override
