@@ -159,9 +159,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
 
                 //初始化投影方式
-                if (entity.getResult().getShadowcnf() != null)
-                    MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
-
+                if (entity.getResult().getShadowcnf() != null) {
+//                    MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
+                }
                 //初始化上电开机
                 if (entity.getResult().getShadowcnf() != null)
                     if (entity.getResult().getShadowcnf().getPowerTurn() == 1)
