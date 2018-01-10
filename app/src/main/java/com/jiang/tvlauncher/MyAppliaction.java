@@ -43,7 +43,7 @@ public class MyAppliaction extends Application {
 
     public static boolean IsLineNet = true;//是否是有线网络
     public static String modelNum = "Z5极光";
-    public static String ID = "DGX8H7761TAF";
+    public static String ID;
     public static String Temp = "FFFFFF";
     public static String WindSpeed = "FFFFFF";
     public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
@@ -84,8 +84,11 @@ public class MyAppliaction extends Application {
 
             try {
                 ID = apiManager.get("getMachineId", null, null);
+                SaveUtils.setString(Save_Key.ID, ID);
                 WindSpeed = apiManager.get("getWindSpeed", null, null);
+                SaveUtils.setString(Save_Key.WindSpeed, WindSpeed);
                 Temp = apiManager.get("getTemp", null, null);
+                SaveUtils.setString(Save_Key.Temp, Temp);
                 //允许开机自启动
 //                apiManager.set("setAutoStartApk","Feekr","true",null,null);
 
@@ -108,11 +111,15 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, "设置调焦距：" + apiManager.set("setFocusOnOff", "false", null, null, null));
                 LogUtil.e(TAG, "固件版本：" + Build.VERSION.INCREMENTAL);
                 modelNum = apiManager.get("getDeviceModel", null, null);
+                SaveUtils.setString(Save_Key.modelNum, modelNum);
 
                 if (Boolean.valueOf(apiManager.get("getPowerOnStartValue", null, null)))
                     turnType = "1";
                 else
                     turnType = "2";
+
+                SaveUtils.setString(Save_Key.turnType, turnType);
+
                 LogUtil.e(TAG, "梯形角度：" + apiManager.get("getKeyStoneData", null, null));
 
                 String jsonStr = apiManager.get("getKeyStoneData", null, null);
@@ -160,6 +167,4 @@ public class MyAppliaction extends Application {
         }
         return false;
     }
-
-
 }

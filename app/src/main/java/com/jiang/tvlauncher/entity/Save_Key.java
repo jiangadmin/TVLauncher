@@ -6,6 +6,10 @@ package com.jiang.tvlauncher.entity;
 
 public class Save_Key {
     public static String ID = "ID";
+    public static String turnType = "turnType";
+    public static String modelNum = "modelNum";
+    public static String WindSpeed = "WindSpeed";
+    public static String Temp = "Temp";
     public static String SerialNum = "serialNum";
     public static String FristTurnOn = "FristTurnOn";
     public static String NewImage = "NewImage";
