@@ -136,7 +136,10 @@ public class MyAppliaction extends Application {
                     SaveUtils.setString(Save_Key.SerialNum, ID);
 
 //                Toast.makeText(context, "发送开机请求", Toast.LENGTH_SHORT).show();
-                new TurnOn_servlet(context).execute();
+
+                if (!TurnOnS) {
+                    new TurnOn_servlet(context).execute();
+                }
 
             } catch (RemoteException e) {
                 e.printStackTrace();
