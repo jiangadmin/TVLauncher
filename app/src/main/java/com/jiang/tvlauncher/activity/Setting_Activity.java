@@ -80,12 +80,12 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
     }
 
     private void initview() {
-        setting1 = (LinearLayout) findViewById(R.id.setting_1);
-        setting2 = (LinearLayout) findViewById(R.id.setting_2);
-        setting3 = (LinearLayout) findViewById(R.id.setting_3);
-        setting4 = (LinearLayout) findViewById(R.id.setting_4);
-        setting5 = (LinearLayout) findViewById(R.id.setting_5);
-        setting6 = (LinearLayout) findViewById(R.id.setting_6);
+        setting1 =  findViewById(R.id.setting_1);
+        setting2 =  findViewById(R.id.setting_2);
+        setting3 =  findViewById(R.id.setting_3);
+        setting4 =  findViewById(R.id.setting_4);
+        setting5 =  findViewById(R.id.setting_5);
+        setting6 =  findViewById(R.id.setting_6);
     }
 
     private void initeven() {

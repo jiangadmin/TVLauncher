@@ -160,7 +160,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                 //初始化投影方式
                 if (entity.getResult().getShadowcnf() != null) {
-//                    MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
+                    MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
                 }
                 //初始化上电开机
                 if (entity.getResult().getShadowcnf() != null)
@@ -168,13 +168,12 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                         MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
                     else
                         MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
+
                 //初始化梯形数据
-
-
-                    Point point = new Gson().fromJson(s, Point.class);
-                    for (int i = 0; i < point.getPoint().size(); i++) {
-//                        MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
-                    }
+                Point point = new Gson().fromJson(s, Point.class);
+                for (int i = 0; i < point.getPoint().size(); i++) {
+                    MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
+                }
 
             } catch (Exception e) {
                 LogUtil.e(TAG, e.getMessage());

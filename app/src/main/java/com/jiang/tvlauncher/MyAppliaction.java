@@ -79,12 +79,17 @@ public class MyAppliaction extends Application {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             LogUtil.e(TAG, "连接AIDL成功");
+
+            if (TurnOnS) {
+                return;
+            }
             //得到远程服务
             apiManager = XgimiApiManager.Stub.asInterface(iBinder);
 
+
             try {
-                ID = apiManager.get("getMachineId", null, null);
-//                ID = "DG5CH33C1TAP";
+//                ID = apiManager.get("getMachineId", null, null);
+                ID = "DG5CH33C1TAP";
                 SaveUtils.setString(Save_Key.ID, ID);
                 WindSpeed = apiManager.get("getWindSpeed", null, null);
                 SaveUtils.setString(Save_Key.WindSpeed, WindSpeed);
