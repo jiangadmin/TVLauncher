@@ -84,13 +84,13 @@ public class TurnOnEntity extends BaseEntity {
             private int id;
             private int isDefault;
             private int isDelete;
-            private int projectModeFlag;
-            private int powerFlag;
             private int zoomFlag;
             private String ladderPwd;
             private int monitRate;
+            private int powerFlag;
             private int powerTurn;
             private int projectMode;
+            private int projectModeFlag;
             private String shadowName;
             private String shadowPwd;
             private int threeDim;

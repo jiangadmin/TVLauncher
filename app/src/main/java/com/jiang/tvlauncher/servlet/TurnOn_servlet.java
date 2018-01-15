@@ -158,12 +158,11 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 //初始化设备名称
                 MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
 
-
                 //初始化上电开机
                 if (entity.getResult().getShadowcnf() != null) {
 
                     //投影方式开关
-                    if (entity.getResult().getShadowcnf().getProjectMode()==1) {
+                    if (entity.getResult().getShadowcnf().getProjectModeFlag() == 1) {
                         MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
                     }
 
@@ -175,7 +174,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     }
 
                     //梯形校正开关
-                    if (entity.getResult().getShadowcnf().getZoomFlag()==1) {
+                    if (entity.getResult().getShadowcnf().getZoomFlag() == 1) {
                         //初始化梯形数据
                         Point point = new Gson().fromJson(s, Point.class);
                         for (int i = 0; i < point.getPoint().size(); i++) {
