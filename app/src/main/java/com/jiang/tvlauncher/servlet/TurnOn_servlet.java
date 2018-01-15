@@ -158,23 +158,31 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 //初始化设备名称
                 MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
 
-                //初始化投影方式
-                if (entity.getResult().getShadowcnf() != null) {
-                    MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
-                }
+
                 //初始化上电开机
-                if (entity.getResult().getShadowcnf() != null)
-                    if (entity.getResult().getShadowcnf().getPowerTurn() == 1)
+                if (entity.getResult().getShadowcnf() != null) {
+
+                    //投影方式开关
+                    if (entity.getResult().getShadowcnf().getProjectMode()==1) {
+                        MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
+                    }
+
+                    //上电开机开关
+                    if (entity.getResult().getShadowcnf().getPowerTurn() == 1) {
                         MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
-                    else
+                    } else {
                         MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
+                    }
 
-                //初始化梯形数据
-                Point point = new Gson().fromJson(s, Point.class);
-                for (int i = 0; i < point.getPoint().size(); i++) {
-                    MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
+                    //梯形校正开关
+                    if (entity.getResult().getShadowcnf().getZoomFlag()==1) {
+                        //初始化梯形数据
+                        Point point = new Gson().fromJson(s, Point.class);
+                        for (int i = 0; i < point.getPoint().size(); i++) {
+                            MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
+                        }
+                    }
                 }
-
             } catch (Exception e) {
                 LogUtil.e(TAG, e.getMessage());
             }
@@ -194,7 +202,10 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             }
 
             //判断是否是有线连接
-            if (Tools.isLineConnected() && entity.getResult().getShadowcnf() != null && entity.getResult().getShadowcnf().getWifi() != null && entity.getResult().getShadowcnf().getWifiPassword() != null) {
+            if (Tools.isLineConnected() && entity.getResult().getShadowcnf() != null
+                    && entity.getResult().getShadowcnf().getWifi() != null
+                    && entity.getResult().getShadowcnf().getWifiPassword() != null
+                    && entity.getResult().getShadowcnf().getHotPoint() == 1) {
 
                 String SSID = entity.getResult().getShadowcnf().getWifi();
                 String APPWD = entity.getResult().getShadowcnf().getWifiPassword();

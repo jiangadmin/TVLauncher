@@ -22,6 +22,7 @@ import com.jiang.tvlauncher.utils.Tools;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 import java.util.List;
 
@@ -58,6 +59,10 @@ public class MyAppliaction extends Application {
         super.onCreate();
 //        startService(new Intent(this, TimingService.class));
         context = this;
+
+        MiStatInterface.initialize(this, "2882303761517701199", "5501770168199", null);
+        //崩溃日志收集
+        MiStatInterface.enableExceptionCatcher(true);
 
         //初始化ImageLoader
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
