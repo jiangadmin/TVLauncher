@@ -167,10 +167,13 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     }
 
                     //上电开机开关
-                    if (entity.getResult().getShadowcnf().getPowerTurn() == 1) {
-                        MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
-                    } else {
-                        MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
+                    if (entity.getResult().getShadowcnf().getPowerFlag() == 1) {
+                        //上电开机
+                        if (entity.getResult().getShadowcnf().getPowerTurn() == 1) {
+                            MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
+                        } else {
+                            MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
+                        }
                     }
 
                     //梯形校正开关
