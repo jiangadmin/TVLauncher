@@ -93,8 +93,8 @@ public class MyAppliaction extends Application {
 
 
             try {
-//                ID = apiManager.get("getMachineId", null, null);
-                ID = "DG5CH33C1TAP";
+                ID = apiManager.get("getMachineId", null, null);
+//                ID = "DG5CH33C1TAP";
                 SaveUtils.setString(Save_Key.ID, ID);
                 WindSpeed = apiManager.get("getWindSpeed", null, null);
                 SaveUtils.setString(Save_Key.WindSpeed, WindSpeed);
