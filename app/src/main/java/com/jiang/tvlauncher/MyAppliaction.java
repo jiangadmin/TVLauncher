@@ -49,7 +49,6 @@ public class MyAppliaction extends Application {
     public static String WindSpeed = "FFFFFF";
     public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
     Point point;
-
     public static boolean TurnOnS = false;
 
     public static Activity activity;
