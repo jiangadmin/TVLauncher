@@ -223,8 +223,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                 //开启wifiAp
 //                new Wifi_APManager(context).createAp(SSID, APPWD);
-            } else
-                WifiApUtils.getInstance(context).closeWifiAp();
+            }
+//            else
+//                WifiApUtils.getInstance(context).closeWifiAp();
 
         } else if (entity.getErrorcode() == -2) {
             LogUtil.e(TAG, entity.getErrormsg());
