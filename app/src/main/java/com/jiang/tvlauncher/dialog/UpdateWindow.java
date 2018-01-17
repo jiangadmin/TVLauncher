@@ -49,8 +49,8 @@ public class UpdateWindow extends Base_Activity {
     }
 
     private void initview() {
-        jindutiao = (ProgressBar) findViewById(R.id.update_jindutiao);
-        jindu = (TextView) findViewById(R.id.update_jindu);
+        jindutiao =  findViewById(R.id.update_jindutiao);
+        jindu =  findViewById(R.id.update_jindu);
 
     }
 

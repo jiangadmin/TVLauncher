@@ -42,12 +42,12 @@ public class PwdDialog extends Dialog {
     }
 
     private void initview() {
-        pwd1 = (ImageView) findViewById(R.id.pwd1);
-        pwd2 = (ImageView) findViewById(R.id.pwd2);
-        pwd3 = (ImageView) findViewById(R.id.pwd3);
-        pwd4 = (ImageView) findViewById(R.id.pwd4);
-        pwd5 = (ImageView) findViewById(R.id.pwd5);
-        pwd6 = (ImageView) findViewById(R.id.pwd6);
+        pwd1 = findViewById(R.id.pwd1);
+        pwd2 = findViewById(R.id.pwd2);
+        pwd3 = findViewById(R.id.pwd3);
+        pwd4 = findViewById(R.id.pwd4);
+        pwd5 = findViewById(R.id.pwd5);
+        pwd6 = findViewById(R.id.pwd6);
     }
 
     @Override

@@ -81,6 +81,7 @@ public class TurnOnEntity extends BaseEntity {
             private String createAuthor;
             private String createTime;
             private int hotPoint;
+            private int hotPointFlag;
             private int id;
             private int isDefault;
             private int isDelete;
@@ -99,6 +100,14 @@ public class TurnOnEntity extends BaseEntity {
             private String updateTime;
             private String wifi;
             private String wifiPassword;
+
+            public int getHotPointFlag() {
+                return hotPointFlag;
+            }
+
+            public void setHotPointFlag(int hotPointFlag) {
+                this.hotPointFlag = hotPointFlag;
+            }
 
             public int getProjectModeFlag() {
                 return projectModeFlag;

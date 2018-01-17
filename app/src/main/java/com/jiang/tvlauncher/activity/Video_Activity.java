@@ -47,7 +47,7 @@ public class Video_Activity extends Base_Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         MyAppliaction.activity = this;
-        videoView = (VideoView) findViewById(R.id.videoView);
+        videoView =  findViewById(R.id.videoView);
 
         String videof = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/" + SaveUtils.getString(Save_Key.NewImageName);
 
@@ -71,6 +71,7 @@ public class Video_Activity extends Base_Activity {
                 finish();
             }
         }
+
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {

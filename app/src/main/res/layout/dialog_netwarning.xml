@@ -22,9 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="网络异常，请联系服务人员"
-            android:textSize="20sp" />
-
+            android:text="投影无网络，请联系服务人员"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

@@ -59,7 +59,12 @@ public class MyAppliaction extends Application {
 //        startService(new Intent(this, TimingService.class));
         context = this;
 
+        //初始化小米统计服务
         MiStatInterface.initialize(this, "2882303761517701199", "5501770168199", null);
+
+        //设置上报策略
+        MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_REALTIME, 0);
+
         //崩溃日志收集
         MiStatInterface.enableExceptionCatcher(true);
 

@@ -110,9 +110,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //归零
             num = 0;
 
-            //先关闭热点
-            WifiApUtils.getInstance(context).closeWifiAp();
-
             Const.ID = entity.getResult().getDevInfo().getId();
 
             //存储ID
@@ -203,29 +200,33 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 ((Home_Activity) MyAppliaction.activity).update();
             }
 
-            //判断是否是有线连接
+            //判断是否是有线连接 & 服务启用同步数据
             if (Tools.isLineConnected() && entity.getResult().getShadowcnf() != null
-                    && entity.getResult().getShadowcnf().getWifi() != null
-                    && entity.getResult().getShadowcnf().getWifiPassword() != null
-                    && entity.getResult().getShadowcnf().getHotPoint() == 1) {
+                    && entity.getResult().getShadowcnf().getHotPointFlag() == 1) {
+                if (entity.getResult().getShadowcnf().getHotPoint() == 1
+                        && entity.getResult().getShadowcnf().getWifi() != null
+                        && entity.getResult().getShadowcnf().getWifiPassword() != null) {                //开启热点
 
-                String SSID = entity.getResult().getShadowcnf().getWifi();
-                String APPWD = entity.getResult().getShadowcnf().getWifiPassword();
+                    //获取热点名称&热点密码
+                    String SSID = entity.getResult().getShadowcnf().getWifi();
+                    String APPWD = entity.getResult().getShadowcnf().getWifiPassword();
 
-                SaveUtils.setString(Save_Key.WiFiName, SSID);
-                SaveUtils.setString(Save_Key.WiFiPwd, APPWD);
+                    //存储热点名称&密码
+                    SaveUtils.setString(Save_Key.WiFiName, SSID);
+                    SaveUtils.setString(Save_Key.WiFiPwd, APPWD);
 
-                LogUtil.e(TAG, "SSID:" + SSID + "  PassWord:" + APPWD);
+                    LogUtil.e(TAG, "SSID:" + SSID + "  PassWord:" + APPWD);
 
-                //打开并设置热点信息.注意热点密码8-32位，只限制了英文密码位数。
-                if (WifiApUtils.getInstance(context).openWifiAp(SSID, APPWD))
-                    Toast.makeText(context, "热点开启成功！", Toast.LENGTH_SHORT).show();
+                    //打开并设置热点信息.注意热点密码8-32位，只限制了英文密码位数。
+                    //先关闭后打开
+                    WifiApUtils.getInstance(context).closeWifiAp();
+                    if (WifiApUtils.getInstance(context).openWifiAp(SSID, APPWD))
+                        Toast.makeText(context, "热点开启成功！", Toast.LENGTH_SHORT).show();
 
-                //开启wifiAp
-//                new Wifi_APManager(context).createAp(SSID, APPWD);
+                } else if (entity.getResult().getShadowcnf().getHotPoint() == 0) {            //关闭热点
+                    WifiApUtils.getInstance(context).closeWifiAp();
+                }
             }
-//            else
-//                WifiApUtils.getInstance(context).closeWifiAp();
 
         } else if (entity.getErrorcode() == -2) {
             LogUtil.e(TAG, entity.getErrormsg());
