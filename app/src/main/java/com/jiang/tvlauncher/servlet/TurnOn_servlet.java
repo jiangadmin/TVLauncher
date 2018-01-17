@@ -49,6 +49,21 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
     @Override
     protected TurnOnEntity doInBackground(String... strings) {
         Map map = new HashMap();
+        TurnOnEntity entity;
+
+        if (TextUtils.isEmpty(MyAppliaction.ID)) {
+            if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.ID))) {
+                MyAppliaction.ID = SaveUtils.getString(Save_Key.ID);
+                MyAppliaction.turnType = SaveUtils.getString(Save_Key.turnType);
+                MyAppliaction.modelNum = SaveUtils.getString(Save_Key.modelNum);
+            } else {
+                new TurnOn_servlet(context).execute();
+                entity = new TurnOnEntity();
+                entity.setErrorcode(-3);
+                entity.setErrormsg("数据缺失 再来一次");
+                return entity;
+            }
+        }
 
         map.put("serialNum", MyAppliaction.ID);
         map.put("turnType", MyAppliaction.turnType);
@@ -59,7 +74,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
         String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOn.do", map);
 
-        TurnOnEntity entity;
         if (res != null) {
             try {
                 entity = new Gson().fromJson(res, TurnOnEntity.class);
@@ -85,8 +99,8 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         Loading.dismiss();
 
         LogUtil.e(TAG, "=======================================================================================");
-        if (entity!=null&&entity.getErrormsg()!=null)
-        LogUtil.e(TAG, entity.getErrormsg());
+        if (entity != null && entity.getErrormsg() != null)
+            LogUtil.e(TAG, entity.getErrormsg());
 //        Toast.makeText(context, "开机请求返回："+entity.getErrormsg(), Toast.LENGTH_SHORT).show();
         LogUtil.e(TAG, "=======================================================================================");
 
@@ -105,11 +119,11 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             SaveUtils.setString(Save_Key.ID, String.valueOf(entity.getResult().getDevInfo().getId()));
 
             //存储密码
-            if (entity.getResult().getShadowcnf() != null && entity.getResult().getShadowcnf().getShadowPwd() != null)
+            if (entity.getResult().getShadowcnf() != null && entity.getResult().getShadowcnf().getShadowPwd() != null) {
                 SaveUtils.setString(Save_Key.Password, entity.getResult().getShadowcnf().getShadowPwd());
-            else
+            } else {
                 SaveUtils.setString(Save_Key.Password, "");
-
+            }
             //更改开机动画
             if (entity.getResult().getLaunch() != null)
                 if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())) {
@@ -120,22 +134,22 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //方案类型（1=开机，2=屏保，3=互动）
             if (entity.getResult().getLaunch() != null)
                 if (entity.getResult().getLaunch().getLaunchType() == 1) {
-                //非空判断
-                if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())) {
-                    //图片
-                    if (entity.getResult().getLaunch().getMediaType() == 1) {
-                        SaveUtils.setBoolean(Save_Key.NewImage, true);
-                        SaveUtils.setBoolean(Save_Key.NewVideo, false);
-                        SaveUtils.setString(Save_Key.NewImageUrl, entity.getResult().getLaunch().getMediaUrl());
-                    }
-                    //视频
-                    if (entity.getResult().getLaunch().getMediaType() == 2) {
-                        SaveUtils.setBoolean(Save_Key.NewVideo, true);
-                        SaveUtils.setBoolean(Save_Key.NewImage, false);
-                        SaveUtils.setString(Save_Key.NewVideoUrl, entity.getResult().getLaunch().getMediaUrl());
+                    //非空判断
+                    if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())) {
+                        //图片
+                        if (entity.getResult().getLaunch().getMediaType() == 1) {
+                            SaveUtils.setBoolean(Save_Key.NewImage, true);
+                            SaveUtils.setBoolean(Save_Key.NewVideo, false);
+                            SaveUtils.setString(Save_Key.NewImageUrl, entity.getResult().getLaunch().getMediaUrl());
+                        }
+                        //视频
+                        if (entity.getResult().getLaunch().getMediaType() == 2) {
+                            SaveUtils.setBoolean(Save_Key.NewVideo, true);
+                            SaveUtils.setBoolean(Save_Key.NewImage, false);
+                            SaveUtils.setString(Save_Key.NewVideoUrl, entity.getResult().getLaunch().getMediaUrl());
+                        }
                     }
                 }
-            }
 
             String s = entity.getResult().getDevInfo().getZoomVal();
             LogUtil.e(TAG, "梯形数据:" + s);
@@ -144,24 +158,34 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 //初始化设备名称
                 MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
 
-                //初始化投影方式
-                if (entity.getResult().getShadowcnf() != null)
-                    MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
-
                 //初始化上电开机
-                if (entity.getResult().getShadowcnf() != null)
-                    if (entity.getResult().getShadowcnf().getPowerTurn() == 1)
-                        MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
-                    else
-                        MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
-                //初始化梯形数据
+                if (entity.getResult().getShadowcnf() != null) {
 
-                Point point = new Gson().fromJson(s, Point.class);
-                for (int i = 0; i < point.getPoint().size(); i++) {
-                    MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
+                    //投影方式开关
+                    if (entity.getResult().getShadowcnf().getProjectModeFlag() == 1) {
+                        MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
+                    }
+
+                    //上电开机开关
+                    if (entity.getResult().getShadowcnf().getPowerFlag() == 1) {
+                        //上电开机
+                        if (entity.getResult().getShadowcnf().getPowerTurn() == 1) {
+                            MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
+                        } else {
+                            MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
+                        }
+                    }
+
+                    //梯形校正开关
+                    if (entity.getResult().getShadowcnf().getZoomFlag() == 1) {
+                        //初始化梯形数据
+                        Point point = new Gson().fromJson(s, Point.class);
+                        for (int i = 0; i < point.getPoint().size(); i++) {
+                            MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
+                        }
+                    }
                 }
             } catch (Exception e) {
-
                 LogUtil.e(TAG, e.getMessage());
             }
 
@@ -180,7 +204,10 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             }
 
             //判断是否是有线连接
-            if (Tools.isLineConnected() && entity.getResult().getShadowcnf() != null && entity.getResult().getShadowcnf().getWifi() != null && entity.getResult().getShadowcnf().getWifiPassword() != null) {
+            if (Tools.isLineConnected() && entity.getResult().getShadowcnf() != null
+                    && entity.getResult().getShadowcnf().getWifi() != null
+                    && entity.getResult().getShadowcnf().getWifiPassword() != null
+                    && entity.getResult().getShadowcnf().getHotPoint() == 1) {
 
                 String SSID = entity.getResult().getShadowcnf().getWifi();
                 String APPWD = entity.getResult().getShadowcnf().getWifiPassword();
@@ -196,8 +223,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                 //开启wifiAp
 //                new Wifi_APManager(context).createAp(SSID, APPWD);
-            } else
-                WifiApUtils.getInstance(context).closeWifiAp();
+            }
+//            else
+//                WifiApUtils.getInstance(context).closeWifiAp();
 
         } else if (entity.getErrorcode() == -2) {
             LogUtil.e(TAG, entity.getErrormsg());

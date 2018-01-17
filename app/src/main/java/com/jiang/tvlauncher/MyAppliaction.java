@@ -22,6 +22,7 @@ import com.jiang.tvlauncher.utils.Tools;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 import java.util.List;
 
@@ -43,12 +44,11 @@ public class MyAppliaction extends Application {
 
     public static boolean IsLineNet = true;//是否是有线网络
     public static String modelNum = "Z5极光";
-    public static String ID = "DGX8H7761TAF";
+    public static String ID;
     public static String Temp = "FFFFFF";
     public static String WindSpeed = "FFFFFF";
     public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
     Point point;
-
     public static boolean TurnOnS = false;
 
     public static Activity activity;
@@ -58,6 +58,10 @@ public class MyAppliaction extends Application {
         super.onCreate();
 //        startService(new Intent(this, TimingService.class));
         context = this;
+
+        MiStatInterface.initialize(this, "2882303761517701199", "5501770168199", null);
+        //崩溃日志收集
+        MiStatInterface.enableExceptionCatcher(true);
 
         //初始化ImageLoader
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
@@ -79,13 +83,21 @@ public class MyAppliaction extends Application {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             LogUtil.e(TAG, "连接AIDL成功");
+
             //得到远程服务
             apiManager = XgimiApiManager.Stub.asInterface(iBinder);
 
+            if (TurnOnS) {
+                return;
+            }
             try {
                 ID = apiManager.get("getMachineId", null, null);
+//                ID = "DG5CH33C1TAP";
+                SaveUtils.setString(Save_Key.ID, ID);
                 WindSpeed = apiManager.get("getWindSpeed", null, null);
+                SaveUtils.setString(Save_Key.WindSpeed, WindSpeed);
                 Temp = apiManager.get("getTemp", null, null);
+                SaveUtils.setString(Save_Key.Temp, Temp);
                 //允许开机自启动
 //                apiManager.set("setAutoStartApk","Feekr","true",null,null);
 
@@ -108,11 +120,15 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, "设置调焦距：" + apiManager.set("setFocusOnOff", "false", null, null, null));
                 LogUtil.e(TAG, "固件版本：" + Build.VERSION.INCREMENTAL);
                 modelNum = apiManager.get("getDeviceModel", null, null);
+                SaveUtils.setString(Save_Key.modelNum, modelNum);
 
                 if (Boolean.valueOf(apiManager.get("getPowerOnStartValue", null, null)))
                     turnType = "1";
                 else
                     turnType = "2";
+
+                SaveUtils.setString(Save_Key.turnType, turnType);
+
                 LogUtil.e(TAG, "梯形角度：" + apiManager.get("getKeyStoneData", null, null));
 
                 String jsonStr = apiManager.get("getKeyStoneData", null, null);
@@ -128,7 +144,10 @@ public class MyAppliaction extends Application {
                     SaveUtils.setString(Save_Key.SerialNum, ID);
 
 //                Toast.makeText(context, "发送开机请求", Toast.LENGTH_SHORT).show();
-                new TurnOn_servlet(context).execute();
+
+                if (!TurnOnS) {
+                    new TurnOn_servlet(context).execute();
+                }
 
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -160,6 +179,4 @@ public class MyAppliaction extends Application {
         }
         return false;
     }
-
-
 }

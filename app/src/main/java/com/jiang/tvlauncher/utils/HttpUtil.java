@@ -33,7 +33,7 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class HttpUtil {
     private static final String TAG = "HttpUtil";
-    private static final int TIMEOUT_IN_MILLIONS = 5 * 1000;
+    private static final int TIMEOUT_IN_MILLIONS = 20 * 1000;
 
     /**
      * Get 请求

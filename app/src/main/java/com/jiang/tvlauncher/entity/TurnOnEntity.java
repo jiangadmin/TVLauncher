@@ -84,10 +84,13 @@ public class TurnOnEntity extends BaseEntity {
             private int id;
             private int isDefault;
             private int isDelete;
+            private int zoomFlag;
             private String ladderPwd;
             private int monitRate;
+            private int powerFlag;
             private int powerTurn;
             private int projectMode;
+            private int projectModeFlag;
             private String shadowName;
             private String shadowPwd;
             private int threeDim;
@@ -96,6 +99,30 @@ public class TurnOnEntity extends BaseEntity {
             private String updateTime;
             private String wifi;
             private String wifiPassword;
+
+            public int getProjectModeFlag() {
+                return projectModeFlag;
+            }
+
+            public void setProjectModeFlag(int projectModeFlag) {
+                this.projectModeFlag = projectModeFlag;
+            }
+
+            public int getPowerFlag() {
+                return powerFlag;
+            }
+
+            public void setPowerFlag(int powerFlag) {
+                this.powerFlag = powerFlag;
+            }
+
+            public int getZoomFlag() {
+                return zoomFlag;
+            }
+
+            public void setZoomFlag(int zoomFlag) {
+                this.zoomFlag = zoomFlag;
+            }
 
             public String getCreateAuthor() {
                 return createAuthor;

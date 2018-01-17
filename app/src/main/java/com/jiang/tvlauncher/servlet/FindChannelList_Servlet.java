@@ -62,6 +62,7 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
                 channelList = new FindChannelList();
                 channelList.setErrorcode(-2);
                 channelList.setErrormsg("数据解析失败");
+                LogUtil.e(TAG,e.getMessage());
             }
         } else {
             channelList = new FindChannelList();
