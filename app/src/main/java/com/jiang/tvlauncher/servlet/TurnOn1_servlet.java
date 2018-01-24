@@ -187,9 +187,6 @@ public class TurnOn1_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //获取开屏
             new FindLanunch_Servlet().execute();
 
-            if (MyAppliaction.activity != null && MyAppliaction.activity.getClass() == Home_Activity.class) {
-                ((Home_Activity) MyAppliaction.activity).update();
-            }
 
             //判断是否是有线连接 & 服务启用同步数据
             if (Tools.isLineConnected() && entity.getResult().getShadowcnf() != null
@@ -244,6 +241,10 @@ public class TurnOn1_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         super.onPostExecute(entity);
         Const.Nets = false;
         Loading.dismiss();
+
+        if (MyAppliaction.activity != null && MyAppliaction.activity.getClass() == Home_Activity.class) {
+            ((Home_Activity) MyAppliaction.activity).update();
+        }
 
     }
 

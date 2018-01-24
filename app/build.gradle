@@ -6,7 +6,7 @@ android {
         jiang {
             keyAlias 'jiang'
             keyPassword 'jiangadmin'
-            storeFile file('/Users/jiangyao/Desktop/TVLauncher/Jiang.jks')
+            storeFile file('C:/Users/wwwfa/Desktop/TVLauncher/Jiang.jks')
             storePassword 'jiangadmin'
         }
     }
@@ -22,8 +22,8 @@ android {
         applicationId "com.jiang.tvlauncher"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 24
-        versionName "1.2.4"
+        versionCode 25
+        versionName "1.2.5"
         signingConfig signingConfigs.jiang
     }
 

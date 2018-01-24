@@ -105,7 +105,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     public void update() {
 //        Toast.makeText(Home_Activity.this, "开始获取主页数据", Toast.LENGTH_SHORT).show();
         new FindChannelList_Servlet(this).execute();
-
         //获取更新
 //        new Update_Servlet(this).execute();
     }
