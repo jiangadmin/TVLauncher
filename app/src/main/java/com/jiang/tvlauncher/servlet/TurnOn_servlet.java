@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.RemoteException;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -21,7 +22,6 @@ import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
-import com.jiang.tvlauncher.utils.WifiApUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -218,15 +218,24 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     LogUtil.e(TAG, "SSID:" + SSID + "  PassWord:" + APPWD);
 
                     //打开并设置热点信息.注意热点密码8-32位，只限制了英文密码位数。
-                    //先关闭后打开
-                    WifiApUtils.getInstance(context).closeWifiAp();
-                    if (WifiApUtils.getInstance(context).openWifiAp(SSID, APPWD))
-                        Toast.makeText(context, "热点开启成功！", Toast.LENGTH_SHORT).show();
-
+                    //使用极米开启/关闭热点接口
+                    try {
+                        String s1 = MyAppliaction.apiManager.set("setOpenWifiAp", SSID, APPWD, null, null);
+                        if (!TextUtils.isEmpty(s1) && Boolean.valueOf(s1.toLowerCase())) {
+                            Toast.makeText(context, "热点开启成功！", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 } else if (entity.getResult().getShadowcnf().getHotPoint() == 0) {            //关闭热点
-                    WifiApUtils.getInstance(context).closeWifiAp();
+                    try {
+                        MyAppliaction.apiManager.set("setCloseWifiAp", null, null, null, null);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
 
         } else if (entity.getErrorcode() == -2) {
             LogUtil.e(TAG, entity.getErrormsg());
