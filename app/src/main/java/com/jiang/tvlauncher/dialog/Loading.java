@@ -53,12 +53,9 @@ public class Loading {
     }
 
     public static class LoadingDialog extends Dialog {
-        public LoadingDialog(@NonNull Context context, @StyleRes int themeResId) {
-            super(context, themeResId);
-        }
 
         public LoadingDialog(@NonNull Context context) {
-            super(context);
+            super(context,  R.style.LoadingDialog);
         }
 
         /**
@@ -69,10 +66,10 @@ public class Loading {
                 message = "加载中...";
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View layout = inflater.inflate(R.layout.dialog_loading, null);
-            TextView txtInfo = (TextView) layout.findViewById(R.id.txt_info);
+            TextView txtInfo =  layout.findViewById(R.id.txt_info);
             txtInfo.setText(message);
 
-            LoadingDialog dialog = new LoadingDialog(context, R.style.LoadingDialog);
+            LoadingDialog dialog = new LoadingDialog(context);
             dialog.setCanceledOnTouchOutside(false);
             dialog.addContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             dialog.setContentView(layout);

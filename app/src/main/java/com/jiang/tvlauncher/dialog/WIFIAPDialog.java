@@ -37,9 +37,9 @@ public class WIFIAPDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_wifiap);
 
-        imageView = (ImageView) findViewById(R.id.qrcode);
-        ssid = (TextView) findViewById(R.id.ssid);
-        pwd = (TextView) findViewById(R.id.wifipwd);
+        imageView =  findViewById(R.id.qrcode);
+        ssid =  findViewById(R.id.ssid);
+        pwd =  findViewById(R.id.wifipwd);
 //
 //        imageView.setImageBitmap(ImageUtils.getQRcode("WIFI:T:WPA;P:\""+SaveUtils.getString(Save_Key.WiFiPwd)+"\";S:"+SaveUtils.getString(Save_Key.WiFiName)+";"));
 //        ssid.setText(SaveUtils.getString(Save_Key.WiFiName));

@@ -49,7 +49,7 @@ public class Image_Activity extends Base_Activity {
         super.onCreate(savedInstanceState);
         MyAppliaction.activity = this;
         setContentView(R.layout.activity_image);
-        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView =  findViewById(R.id.imageView);
         LogUtil.e(TAG, "图片展示");
 
         String imgf = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/" + SaveUtils.getString(Save_Key.NewImageName);
