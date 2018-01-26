@@ -210,7 +210,9 @@ public class TurnOn1_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     try {
                         String s1 = MyAppliaction.apiManager.set("setOpenWifiAp", SSID, APPWD, null, null);
                         if (!TextUtils.isEmpty(s1) && Boolean.valueOf(s1.toLowerCase())) {
-                            Toast.makeText(context, "热点开启成功！", Toast.LENGTH_SHORT).show();
+                            if (MyAppliaction.activity != null) {
+                                Toast.makeText(MyAppliaction.activity, "热点开启成功！", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     } catch (RemoteException e) {
                         e.printStackTrace();
