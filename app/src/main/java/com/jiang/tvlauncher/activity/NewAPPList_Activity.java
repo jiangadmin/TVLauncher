@@ -19,13 +19,13 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import java.util.List;
 
 /**
- * Created by  jiang
- * on 2017/6/12.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO NewAPP列表
- * update：
+ * @author: jiangadmin
+ * @date: 2017/6/12.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 新应用列表
  */
+
 public class NewAPPList_Activity extends Base_Activity implements AdapterView.OnItemClickListener {
     private static final String TAG = "APPList_Activity";
 

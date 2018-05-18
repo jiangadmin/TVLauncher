@@ -13,12 +13,11 @@ import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.WifiApUtils;
 
 /**
- * Created by  jiang
- * on 2017/9/29.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO Wifi热点
- * update：
+ * @author: jiangadmin
+ * @date: 2017/9/29.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: AP
  */
 
 public class WIFIAPDialog extends Dialog {

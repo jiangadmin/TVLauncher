@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 19
@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
-    compile 'com.google.zxing:core:3.3.0'
+    testImplementation 'junit:junit:4.12'
+    api 'com.google.zxing:core:3.3.0'
 
 }

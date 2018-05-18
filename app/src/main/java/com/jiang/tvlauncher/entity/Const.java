@@ -10,7 +10,8 @@ package com.jiang.tvlauncher.entity;
  */
 public class Const {
 
-    public static String URL = "http://api.feekrs.com/";
+//    public static String URL = "http://api.feekrs.com/";
+    public static String URL = "http://feekrtest.free.ngrok.cc/feekr_api/";
 
     public static int Timing = 30;
     public static int ID;
@@ -56,6 +57,14 @@ public class Const {
 
     public static String 优酷XL = "com.youku.tv.c";//影视资源
     public static String 魔力视频 = "com.molitv.android.v2";//影视资源
-    public static String 电视家新版 = "com.dianshijia.newlive";//影视资源
+
+
+    public static String ktcp_vuid = "";//腾讯视频ID
+    public static String ktcp_vtoken = "";//腾讯视频ID
+    public static String ktcp_accessToken = "";//腾讯视频ID
+
+
+
+
 
 }

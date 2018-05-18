@@ -18,13 +18,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by wwwfa
- * on 2017/8/23.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 同步梯形数据到服务器
- * update：
+ * @author: jiangadmin
+ * @date: 2017/8/23.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 上传梯形数据
  */
+
 public class SyncDevZoom_Servlet extends AsyncTask<String, Integer, BaseEntity> {
     private static final String TAG = "SyncDevZoom_Servlet";
     @Override

@@ -18,12 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by jiang
- * on 2017/8/9.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 获取栏目列表
- * update：
+ * @author: jiangadmin
+ * @date: 2017/8/9.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 获取可显示应用列表
  */
 
 public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChannelList> {

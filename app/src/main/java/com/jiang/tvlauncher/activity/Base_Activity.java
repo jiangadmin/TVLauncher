@@ -10,13 +10,13 @@ import android.view.animation.AnimationUtils;
 import com.jiang.tvlauncher.R;
 
 /**
- * Created by  jiang
- * on 2017/7/3.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 公共
- * update：
+ * @author: jiangadmin
+ * @date: 2017/7/3.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 公共
  */
+
 public class Base_Activity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

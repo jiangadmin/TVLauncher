@@ -98,11 +98,8 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         Const.Nets = false;
         Loading.dismiss();
 
-        LogUtil.e(TAG, "=======================================================================================");
         if (entity != null && entity.getErrormsg() != null)
-            LogUtil.e(TAG, entity.getErrormsg());
-//        Toast.makeText(context, "开机请求返回："+entity.getErrormsg(), Toast.LENGTH_SHORT).show();
-        LogUtil.e(TAG, "=======================================================================================");
+            LogUtil.e(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + entity.getErrormsg());
 
         if (entity.getErrorcode() == 1000) {
             MyAppliaction.TurnOnS = true;
@@ -187,8 +184,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             }
 
             //存储间隔时间
-            if (entity.getResult().getShadowcnf() != null)
+            if (entity.getResult().getShadowcnf() != null) {
                 SaveUtils.setInt(Save_Key.Timming, entity.getResult().getShadowcnf().getMonitRate());
+            }
 
             //启动定时服务
             context.startService(new Intent(context, TimingService.class));

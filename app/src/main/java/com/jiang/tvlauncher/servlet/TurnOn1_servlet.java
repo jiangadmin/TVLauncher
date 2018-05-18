@@ -26,12 +26,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by  jiang
- * on 2017/6/19.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 开机发送
- * update：
+ * @author: jiangadmin
+ * @date: 2017/6/19.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 开机发送
  */
 
 public class TurnOn1_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
@@ -51,8 +50,8 @@ public class TurnOn1_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         TurnOnEntity entity;
 
         if (TextUtils.isEmpty(MyAppliaction.ID)) {
-            if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.ID))) {
-                MyAppliaction.ID = SaveUtils.getString(Save_Key.ID);
+            if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.SerialNum))) {
+                MyAppliaction.ID = SaveUtils.getString(Save_Key.SerialNum);
                 MyAppliaction.turnType = SaveUtils.getString(Save_Key.turnType);
                 MyAppliaction.modelNum = SaveUtils.getString(Save_Key.modelNum);
             } else {
@@ -73,7 +72,11 @@ public class TurnOn1_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
         String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOn.do", map);
 
-        if (res != null) {
+        if (TextUtils.isEmpty(res)) {
+            entity = new TurnOnEntity();
+            entity.setErrorcode(-1);
+            entity.setErrormsg("连接服务器失败");
+        } else {
             try {
                 entity = new Gson().fromJson(res, TurnOnEntity.class);
             } catch (Exception e) {
@@ -82,10 +85,6 @@ public class TurnOn1_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 entity.setErrormsg("数据解析失败");
                 LogUtil.e(TAG, e.getMessage());
             }
-        } else {
-            entity = new TurnOnEntity();
-            entity.setErrorcode(-1);
-            entity.setErrormsg("连接服务器失败");
         }
 
         LogUtil.e(TAG, "=======================================================================================");
@@ -186,7 +185,6 @@ public class TurnOn1_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //获取开屏
             new FindLanunch_Servlet().execute();
 
-
             //判断是否是有线连接 & 服务启用同步数据
             if (Tools.isLineConnected() && entity.getResult().getShadowcnf() != null
                     && entity.getResult().getShadowcnf().getHotPointFlag() == 1) {
@@ -228,7 +226,7 @@ public class TurnOn1_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             LogUtil.e(TAG, entity.getErrormsg());
 
         } else {
-            timeCount.start();
+//            timeCount.start();
             LogUtil.e(TAG, "失败了" + entity.getErrormsg());
         }
 

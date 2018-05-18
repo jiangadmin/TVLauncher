@@ -1,8 +1,6 @@
 package com.jiang.tvlauncher.servlet;
 
 import android.os.AsyncTask;
-import android.os.RemoteException;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
@@ -39,8 +37,8 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
         map.put("memoryInfo", FileUtils.getAvailMemory());
         map.put("avaSpace", FileUtils.getFreeDiskSpaceS());
         try {
-                map.put("cpuTemp", MyAppliaction.apiManager.get("getTemp", null, null));
-                map.put("fanSpeed", MyAppliaction.apiManager.get("getWindSpeed", null, null));
+            map.put("cpuTemp", MyAppliaction.apiManager.get("getTemp", null, null));
+            map.put("fanSpeed", MyAppliaction.apiManager.get("getWindSpeed", null, null));
         } catch (Exception e) {
             e.printStackTrace();
             map.put("cpuTemp", "0");
@@ -68,9 +66,9 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
     @Override
     protected void onPostExecute(BaseEntity entity) {
         super.onPostExecute(entity);
-        if (sleep){
-            if (MyAppliaction.isForeground()){
-                
+        if (sleep) {
+            if (MyAppliaction.isForeground()) {
+
             }
         }
     }

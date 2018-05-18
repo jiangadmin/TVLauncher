@@ -1,7 +1,10 @@
 package com.jiang.tvlauncher.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.bluetooth.BluetoothDevice;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -31,6 +34,7 @@ import com.jiang.tvlauncher.MyAppliaction;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -515,6 +519,110 @@ public final class Tools {
         } else {
             return null;
         }
+    }
+
+
+    /**
+     * 获取当前系统时间
+     *
+     * @return
+     */
+    public static String NowTime() {
+        //获取当前时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmm");
+        Date curDate = new Date(System.currentTimeMillis());
+        return formatter.format(curDate);
+    }
+
+    /**
+     * 根据包名 启动应用
+     *
+     * @param context
+     * @param packageName
+     */
+    public static void StartApp(Activity context, String packageName) {
+        context.startActivity(new Intent(context.getPackageManager().getLaunchIntentForPackage(packageName)));
+    }
+
+    /**
+     * 根据包名关闭APP
+     *
+     * @param context
+     * @param packageName
+     */
+    public static void getRunningServiceInfo(Context context, String packageName) {
+        ActivityManager mActivityManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        // 通过调用ActivityManager的getRunningAppServicees()方法获得系统里所有正在运行的进程
+        List<ActivityManager.RunningServiceInfo> runServiceList = mActivityManager
+                .getRunningServices(50);
+        System.out.println(runServiceList.size());
+        // ServiceInfo Model类 用来保存所有进程信息
+        for (ActivityManager.RunningServiceInfo runServiceInfo : runServiceList) {
+            ComponentName serviceCMP = runServiceInfo.service;
+            String serviceName = serviceCMP.getShortClassName(); // service 的类名
+            String pkgName = serviceCMP.getPackageName(); // 包名
+
+            if (pkgName.equals(packageName)) {
+                mActivityManager.killBackgroundProcesses(packageName);
+
+            }
+
+        }
+    }
+
+    /**
+     * 判断 Root 权限
+     *
+     * @return
+     */
+    public static synchronized boolean isRoot() {
+        Process process = null;
+        DataOutputStream os = null;
+        try {
+            process = Runtime.getRuntime().exec("su");
+            os = new DataOutputStream(process.getOutputStream());
+            os.writeBytes("exit\n");
+            os.flush();
+            int exitValue = process.waitFor();
+            if (exitValue == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d("*** DEBUG ***", "Unexpected error - Here is what I know: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (os != null) {
+                    os.close();
+                }
+                process.destroy();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    /**
+     * 根据包名查找Pid
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static int PID(Context context, String packageName) {
+        ActivityManager mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+
+        List<ActivityManager.RunningAppProcessInfo> mRunningProcess = mActivityManager.getRunningAppProcesses();
+
+        int i = 1;
+
+        for (ActivityManager.RunningAppProcessInfo amProcess : mRunningProcess) {
+            LogUtil.e(TAG, (i++) + "PID: " + amProcess.pid + "(processName=" + amProcess.processName + "UID=" + amProcess.uid + ")");
+        }
+        return 0;
     }
 
 }

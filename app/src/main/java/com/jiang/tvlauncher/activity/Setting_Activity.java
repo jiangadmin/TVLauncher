@@ -21,13 +21,13 @@ import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.Tools;
 
 /**
- * Created by  jiang
- * on 2017/7/3.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 控制台
- * update：
+ * @author: jiangadmin
+ * @date: 2017/7/3.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 控制台
  */
+
 public class Setting_Activity extends Base_Activity implements View.OnClickListener {
     private static final String TAG = "Setting_Activity";
 

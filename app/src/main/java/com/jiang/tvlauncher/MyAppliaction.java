@@ -16,7 +16,6 @@ import com.google.gson.Gson;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.TurnOn1_servlet;
-import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
@@ -45,7 +44,7 @@ public class MyAppliaction extends Application {
 
     public static boolean IsLineNet = true;//是否是有线网络
     public static String modelNum = "Z5极光";
-    public static String ID;
+    public static String ID = "";
     public static String Temp = "FFFFFF";
     public static String WindSpeed = "FFFFFF";
     public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
@@ -54,11 +53,17 @@ public class MyAppliaction extends Application {
 
     public static Activity activity;
 
+    /**
+     * 判定是否是极米设备
+     */
+    public static boolean isxgimi = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
 //        startService(new Intent(this, TimingService.class));
         context = this;
+
 
         //初始化小米统计服务
         MiStatInterface.initialize(this, "2882303761517701199", "5501770168199", null);
@@ -78,17 +83,24 @@ public class MyAppliaction extends Application {
 
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
 
+        //发送开机请求
+        new TurnOn1_servlet(context).execute();
+
         LogUtil.e(TAG, "准备连接AIDL");
         ComponentName componentName = new ComponentName("com.xgimi.xgimiapiservice", "com.xgimi.xgimiapiservice.XgimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);
 
     }
 
+
     ServiceConnection serviceConnection = new ServiceConnection() {
         //绑定上服务的时候
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             LogUtil.e(TAG, "连接AIDL成功");
+
+            //设定为极米设备
+            isxgimi = true;
 
             //得到远程服务
             apiManager = XgimiApiManager.Stub.asInterface(iBinder);
@@ -99,7 +111,7 @@ public class MyAppliaction extends Application {
             try {
                 ID = apiManager.get("getMachineId", null, null);
 //                ID = "DG5CH33C1TAP";
-                SaveUtils.setString(Save_Key.ID, ID);
+                SaveUtils.setString(Save_Key.SerialNum, ID);
                 WindSpeed = apiManager.get("getWindSpeed", null, null);
                 SaveUtils.setString(Save_Key.WindSpeed, WindSpeed);
                 Temp = apiManager.get("getTemp", null, null);

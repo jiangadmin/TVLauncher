@@ -33,4 +33,7 @@ public class Save_Key {
     public static String ItemImage3 = "ItemImage3";
 
     public static String BootAn = "BootAn";
+
+    public static String TurnOnTime = "TurnOnTime";
+    public static String TurnOffTime = "TurnOffTime";
 }

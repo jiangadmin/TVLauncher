@@ -7,13 +7,13 @@ import android.content.Intent;
 import com.jiang.tvlauncher.utils.LogUtil;
 
 /**
- * Created by  jiang
- * on 2017/6/19.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 亮屏息屏广播接收
- * update：
+ * @author: jiangadmin
+ * @date: 2017/6/19.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 亮/熄屏广播监听
  */
+
 public class ScreenStatusReceiver extends BroadcastReceiver {
     private static final String TAG = "ScreenStatusReceiver";
     String SCREEN_ON = "android.intent.action.SCREEN_ON";

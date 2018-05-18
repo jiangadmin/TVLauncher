@@ -3,6 +3,8 @@ package com.jiang.tvlauncher.servlet;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import java.net.URL;
  * Purpose:TODO 下载
  * update：
  */
+
 public class DownUtil {
     private static final String TAG = "DownUtil";
     Activity activity;
@@ -40,7 +43,7 @@ public class DownUtil {
         // 进度条对话框
         pd = new ProgressDialog(activity);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        pd.setMessage("下载中...");
+        pd.setMessage("下载中，精彩马上呈现，请稍后...");
         pd.setCanceledOnTouchOutside(false);
         pd.setCancelable(false);
         // 监听返回键--防止下载的时候点击返回
@@ -76,13 +79,30 @@ public class DownUtil {
                         if (showpd)
                             pd.dismiss(); // 结束掉进度条对话框
                         //如果是安装包
-                        if (fileName.contains(".apk"))
-                            MyAppliaction.apiManager.set("setInstallApk", file.getPath(), null, null, null);
+                        if (fileName.contains(".apk")) {
+                            LogUtil.e(TAG, "安装包");
+
+                            //是极米设备
+                            if (MyAppliaction.isxgimi) {
+                                //调用极米静默安装
+                                MyAppliaction.apiManager.set("setInstallApk", file.getPath(), null, null, null);
+
+                            } else {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+                                activity.startActivity(intent);
+                            }
+
+                        }
                         //如果是资源文件
-                        if (fileName.contains(".zip"))
+                        if (fileName.contains(".zip")) {
+                            LogUtil.e(TAG, "资源文件");
+
                             MyAppliaction.apiManager.set("setBootStartPlayer", file.getPath(), null, null, null);
+                        }
                     } catch (Exception e) {
-                        LogUtil.e(TAG, "文件下载失败了");
+                        LogUtil.e(TAG, "文件下载失败了" + e.getMessage());
+
                         Loading.dismiss();
                         if (showpd)
                             pd.dismiss();

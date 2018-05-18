@@ -12,13 +12,13 @@ import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.SaveUtils;
 
 /**
- * Created by  jiang
- * on 2017/7/3.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 密码输入
- * update：
+ * @author: jiangadmin
+ * @date: 2017/7/3.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 密码输入框
  */
+
 
 public class PwdDialog extends Dialog {
     private static final String TAG = "PwdDialog";

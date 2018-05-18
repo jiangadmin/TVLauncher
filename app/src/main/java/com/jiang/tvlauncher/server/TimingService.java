@@ -21,6 +21,7 @@ import java.util.TimerTask;
  * Purpose:TODO 定时服务
  * update：
  */
+
 public class TimingService extends Service {
     private static final String TAG = "MyService";
 

@@ -11,13 +11,13 @@ import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.utils.Tools;
 
 /**
- * Created by  jiang
- * on 2017/8/29.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 网络异常
- * update：
+ * @author: jiangadmin
+ * @date: 2017/8/29.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 网络状态提示
  */
+
 public class NetDialog {
 
     private static NetWarningDialog netWarningDialog;
@@ -25,7 +25,9 @@ public class NetDialog {
 
     static TimeCount timeCount;
 
-    //显示警告框
+    /**
+     * 显示警告框
+     */
     public static void showW() {
         if (MyAppliaction.activity != null && netWarningDialog == null) {
             netWarningDialog = new NetWarningDialog(MyAppliaction.activity);
@@ -37,7 +39,9 @@ public class NetDialog {
         }
     }
 
-    //显示等待框
+    /**
+     * 显示等待框
+     */
     public static void showL() {
         if (MyAppliaction.activity != null && netLoadingDialog == null) {
             netLoadingDialog = new NetLoadingDialog(MyAppliaction.activity);
@@ -48,7 +52,9 @@ public class NetDialog {
         }
     }
 
-    //关闭
+    /**
+     * 关闭
+     */
     public static void dismiss() {
         try {
             //关闭等待框

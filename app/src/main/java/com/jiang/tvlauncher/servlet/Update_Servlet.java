@@ -16,13 +16,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by  jiang
- * on 2017/6/19.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 检查更新请求
- * update：
+ * @author: jiangadmin
+ * @date: 2017/6/19.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 检查更新
  */
+
 public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
     private static final String TAG = "Update_Servlet";
     Activity activity;

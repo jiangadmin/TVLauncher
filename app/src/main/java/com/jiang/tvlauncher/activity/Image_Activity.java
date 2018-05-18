@@ -22,13 +22,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.io.File;
 
 /**
- * Created by wwwfa
- * on 2017/8/22.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 图片展示
- * update：
+ * @author: jiangadmin
+ * @date: 2017/8/22.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 图片展示
  */
+
 public class Image_Activity extends Base_Activity {
     private static final String TAG = "Image_Activity";
     private static final String URL = "url";

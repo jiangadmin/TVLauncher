@@ -20,13 +20,13 @@ import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 
 /**
- * Created by wwwfa
- * on 2017/8/22.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 视频播放
- * update：
+ * @author: jiangadmin
+ * @date: 2017/8/22.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 视频播放
  */
+
 public class Video_Activity extends Base_Activity {
     private static final String TAG = "Video_Activity";
     private static final String URL = "url";

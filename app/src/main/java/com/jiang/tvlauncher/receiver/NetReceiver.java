@@ -12,13 +12,13 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;
 
 /**
- * Created by  jiang
- * on 2017/7/15.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 网络广播
- * update：
+ * @author: jiangadmin
+ * @date: 2017/7/15.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 网络变化广播监听
  */
+
 public class NetReceiver extends BroadcastReceiver {
     private static final String TAG = "NetReceiver";
 

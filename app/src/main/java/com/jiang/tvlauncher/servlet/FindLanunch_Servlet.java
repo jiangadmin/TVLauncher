@@ -15,12 +15,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by jiang
- * on 2017/8/9.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 获取开屏图片
- * update：
+ * @author: jiangadmin
+ * @date: 2017/8/9.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 获取开屏图片
  */
 
 public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch> {

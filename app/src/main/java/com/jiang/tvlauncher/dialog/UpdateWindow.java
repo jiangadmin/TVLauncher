@@ -17,12 +17,13 @@ import com.jiang.tvlauncher.server.MyDownService;
 import java.io.File;
 
 /**
- * Created by jiangmac
- * on 15/12/16.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:下载更新
+ * @author: jiangadmin
+ * @date: 2015/12/16.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 下载更新
  */
+
 public class UpdateWindow extends Base_Activity {
 
     ProgressBar jindutiao;

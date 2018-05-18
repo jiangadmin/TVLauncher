@@ -8,16 +8,16 @@
         android:layout_width="match_parent"
         android:layout_height="42dp" />
 
-        <GridView
-            android:transcriptMode="alwaysScroll"
-            android:id="@+id/app_grid"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:descendantFocusability="afterDescendants"
-            android:horizontalSpacing="10dp"
-            android:numColumns="5"
-            android:scrollbars="none"
-            android:verticalSpacing="10dp" />
+    <GridView
+        android:id="@+id/app_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:descendantFocusability="afterDescendants"
+        android:horizontalSpacing="10dp"
+        android:numColumns="5"
+        android:scrollbars="none"
+        android:transcriptMode="alwaysScroll"
+        android:verticalSpacing="10dp" />
 
 </LinearLayout>

@@ -42,13 +42,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by  jiang
- * on 2017/7/3.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 主页
- * update：
+ * @author: jiangadmin
+ * @date: 2017/7/3.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 主页
  */
+
 public class Home_Activity extends Base_Activity implements View.OnClickListener, View.OnFocusChangeListener {
     private static final String TAG = "Home_Activity";
     RelativeLayout toolbar_view;
@@ -100,6 +100,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             NetDialog.showL();
 
         update();
+
     }
 
     public void update() {
@@ -316,6 +317,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
             LogUtil.e(TAG, "开始下载");
             new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn), Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
+
         }
 
         if (channelList != null) {
@@ -388,10 +390,11 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 break;
             case R.id.setting:
                 LogUtil.e(TAG, "Password:" + SaveUtils.getString(Save_Key.Password));
-                if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.Password)))
+                if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.Password))) {
                     Setting_Activity.start(this);
-                else
+                } else {
                     new PwdDialog(this, R.style.MyDialog).show();
+                }
                 break;
             case R.id.home_1:
                 open(0);
