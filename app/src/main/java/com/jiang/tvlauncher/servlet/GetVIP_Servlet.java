@@ -1,7 +1,5 @@
 package com.jiang.tvlauncher.servlet;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.RemoteException;
 import android.text.TextUtils;
@@ -84,8 +82,8 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
             String msg = "get vuid error";
             long vuid = entity.getResult().getVuid();
 
-            Const.ktcp_vuid  = String.valueOf(entity.getResult().getVuid());
-            Const.ktcp_vtoken  = entity.getResult().getVtoken();
+            Const.ktcp_vuid = String.valueOf(entity.getResult().getVuid());
+            Const.ktcp_vtoken = entity.getResult().getVtoken();
 
             params.put("vuid", vuid);
             params.put("vtoken", entity.getResult().getVtoken());
@@ -101,7 +99,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
             //杀死应用
             LogUtil.e(TAG, "");
 
-            ((ActivityManager) MyAppliaction.context.getSystemService(Context.ACTIVITY_SERVICE)).killBackgroundProcesses("com.ktcp.tvvideo");
+//            ((ActivityManager) MyAppliaction.context.getSystemService(Context.ACTIVITY_SERVICE)).killBackgroundProcesses("com.ktcp.tvvideo");
 
 //            Tools.getRunningServiceInfo(MyAppliaction.context, "com.ktcp.tvvideo");
 
@@ -110,7 +108,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
 //                Process.killProcess();
 
                 //启动应用
-//                Tools.StartApp(MyAppliaction.activity, "com.ktcp.video");
+                Tools.StartApp(MyAppliaction.activity, "com.ktcp.video");
 
 
             }

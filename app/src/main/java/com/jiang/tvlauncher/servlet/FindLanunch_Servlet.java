@@ -90,6 +90,7 @@ public class FindLanunch_Servlet extends AsyncTask<String, Integer, FindLanunch>
                 }
                 //再来
                 new FindLanunch_Servlet().execute();
+                LogUtil.e(TAG,"二次触发");
             }
         }
     }

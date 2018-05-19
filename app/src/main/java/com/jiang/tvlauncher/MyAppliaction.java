@@ -83,9 +83,6 @@ public class MyAppliaction extends Application {
 
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
 
-        //发送开机请求
-        new TurnOn1_servlet(context).execute();
-
         LogUtil.e(TAG, "准备连接AIDL");
         ComponentName componentName = new ComponentName("com.xgimi.xgimiapiservice", "com.xgimi.xgimiapiservice.XgimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);

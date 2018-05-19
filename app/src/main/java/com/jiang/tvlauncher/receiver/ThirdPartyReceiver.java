@@ -7,9 +7,11 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
 import com.jiang.tvlauncher.servlet.VIPCallBack_Servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
+import com.jiang.tvlauncher.utils.Tools;
 import com.ktcp.video.thirdagent.JsonUtils;
 import com.ktcp.video.thirdagent.ThirdPartyAgent;
 import com.ktcp.video.thirdagent.inter.IThirdPartyAgentListener;
@@ -38,16 +40,25 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
             String channel = intent.getStringExtra("channel");
             String data = intent.getStringExtra("data");
             Log.i(TAG, "channel=" + channel + ",data=" + data);
+
+            Toast.makeText(MyAppliaction.context, "channel=" + channel + ",data=" + data, Toast.LENGTH_LONG).show();
+
             JSONObject dataObj = JsonUtils.getJsonObj(data);
 
+            //启动APP
             if (dataObj.optInt("type") == ThirdPartyAgent.TYPE_LOGIN) {
                 ThirdPartyAgent.getInstance().setOnThirdPartyAgentListener(this);
                 ThirdPartyAgent.getInstance().doAuthLogin(channel);
+
+                //退出登录
+//                HashMap params = new HashMap<String, Object>();
+//                params.put("channel", "");
+//                ThirdPartyAgent.getInstance().noticeClient(MyAppliaction.context, ThirdPartyAgent.EVENT_SERVER_LOGOUT, JsonUtils.addJsonValue(params));
+
             }
 
             //登录返回
             if (dataObj.optInt("type") == ThirdPartyAgent.TYPE_NOTICE) {
-
 
                 String extra = dataObj.optString("extra");
                 JSONObject extraObj = JsonUtils.getJsonObj(extra);
@@ -56,7 +67,6 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
                 String msg = extraObj.optString("msg");
                 String vtoken = extraObj.optString("vtoken");
                 String vuid = (String.valueOf(extraObj.optLong("vuid")));
-
 
                 VIPCallBack_Servlet.TencentVip vip = new VIPCallBack_Servlet.TencentVip();
                 vip.setCode(String.valueOf(code));
@@ -67,8 +77,10 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
 
                 //关闭当前应用
 
-                //启动常规腾讯视频
-//                    Tools.StartApp(MyAppliaction.activity,"com.ktcp.video");
+                if (code != 0) {
+                    //启动常规腾讯视频
+                    Tools.StartApp(MyAppliaction.activity, "com.ktcp.video");
+                }
 
             }
 
@@ -84,7 +96,6 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
             }
         }
     }
-
 
     @Override
     public void getAccount(String channel, final IThirdPartyAuthCallback thirdPartyAuthCallback) {
@@ -111,4 +122,5 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
             e.printStackTrace();
         }
     }
+
 }

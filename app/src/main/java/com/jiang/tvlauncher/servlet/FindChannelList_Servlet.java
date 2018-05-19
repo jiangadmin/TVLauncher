@@ -101,7 +101,7 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
         @Override
         public void onFinish() {
             //再次启动
-            new FindChannelList_Servlet(activity).execute();
+            new  FindChannelList_Servlet(activity).execute();
         }
 
         @Override

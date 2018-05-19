@@ -74,7 +74,7 @@ public class NewAppAdapter extends BaseAdapter {
         if (Tools.isAppInstalled(appBean.getPackageName())) {
             mHolder.icon.setImageDrawable(getAppIcon(appBean.getPackageName()));
         } else {
-            mHolder.icon.setImageResource(R.mipmap.ic_launcher);
+            mHolder.icon.setImageResource(R.drawable.feekr);
         }
         mHolder.name.setText(appBean.getAppName());
         return convertView;
