@@ -45,28 +45,31 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
     protected FindChannelList doInBackground(String... strings) {
         Map map = new HashMap();
         FindChannelList channelList;
+
         if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.ID))) {
             channelList = new FindChannelList();
             channelList.setErrorcode(-3);
             channelList.setErrormsg("数据缺失");
             return channelList;
         }
+
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         res = HttpUtil.doPost(Const.URL + "cms/channelController/findChannelList.do", map);
 
-        if (res != null) {
+        if (TextUtils.isEmpty(res)) {
+            channelList = new FindChannelList();
+            channelList.setErrorcode(-1);
+            channelList.setErrormsg("连接服务器失败");
+        } else {
+
             try {
                 channelList = new Gson().fromJson(res, FindChannelList.class);
             } catch (Exception e) {
                 channelList = new FindChannelList();
                 channelList.setErrorcode(-2);
                 channelList.setErrormsg("数据解析失败");
-                LogUtil.e(TAG,e.getMessage());
+                LogUtil.e(TAG, e.getMessage());
             }
-        } else {
-            channelList = new FindChannelList();
-            channelList.setErrorcode(-1);
-            channelList.setErrormsg("连接服务器失败");
         }
         return channelList;
     }
@@ -75,18 +78,26 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
     protected void onPostExecute(FindChannelList channelList) {
         super.onPostExecute(channelList);
         Loading.dismiss();
-//        Toast.makeText(activity, "主页请求返回："+channelList.getErrormsg(), Toast.LENGTH_SHORT).show();
-        LogUtil.e(TAG, channelList.getErrormsg());
-        if (channelList.getErrorcode() == 1000) {
-            SaveUtils.setString(Save_Key.Channe, res);
-            activity.updateshow(channelList);
-        }
-        //资源缺失，持续发送直到有资源
-        if (channelList.getErrorcode() == -3)
-            timeCount.start();
 
-        if (channelList.getErrorcode() == -1)
-            activity.updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+        LogUtil.e(TAG, channelList.getErrormsg());
+
+        switch (channelList.getErrorcode()) {
+            case 1000:
+                SaveUtils.setString(Save_Key.Channe, res);
+                activity.updateshow(channelList);
+                break;
+
+            case -3:
+                if (Const.FindChannelList < 5) {
+                    Const.FindChannelList++;
+                    timeCount.start();
+                }
+                break;
+            case -1:
+                activity.updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+                break;
+        }
+
     }
 
     /**
@@ -101,7 +112,7 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
         @Override
         public void onFinish() {
             //再次启动
-            new  FindChannelList_Servlet(activity).execute();
+            new FindChannelList_Servlet(activity).execute();
         }
 
         @Override

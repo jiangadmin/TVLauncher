@@ -26,6 +26,7 @@ public class Save_Key {
     public static String Timming = "Timming";
     public static String Channe = "Channe";
     public static String MachineId = "MachineId";
+    public static String PARAMS = "params";
 
     public static String ItemImage0 = "ItemImage0";
     public static String ItemImage1 = "ItemImage1";

@@ -240,8 +240,12 @@ public class TurnOn1_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         Const.Nets = false;
         Loading.dismiss();
 
-        if (MyAppliaction.activity != null && MyAppliaction.activity.getClass() == Home_Activity.class) {
-            ((Home_Activity) MyAppliaction.activity).update();
+        switch (entity.getErrorcode()){
+            case 1000:
+                if (MyAppliaction.activity != null && MyAppliaction.activity.getClass() == Home_Activity.class) {
+                    ((Home_Activity) MyAppliaction.activity).update();
+                }
+                break;
         }
 
     }

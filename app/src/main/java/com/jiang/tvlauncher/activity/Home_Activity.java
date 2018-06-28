@@ -3,6 +3,7 @@ package com.jiang.tvlauncher.activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -18,16 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.dialog.PwdDialog;
 import com.jiang.tvlauncher.dialog.WIFIAPDialog;
+import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
+import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
@@ -101,11 +105,16 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         update();
 
+        //首先显示本地资源
+        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
+            updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+        }
+
     }
 
     public void update() {
 //        Toast.makeText(Home_Activity.this, "开始获取主页数据", Toast.LENGTH_SHORT).show();
-        new FindChannelList_Servlet(this).execute();
+        new FindChannelList_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         //获取更新
 //        new Update_Servlet(this).execute();
     }
@@ -253,23 +262,8 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             case KeyEvent.KEYCODE_BACK:
                 return true;
             case KeyEvent.KEYCODE_DPAD_UP:
-//                if (!toolbar_show) {
-//                    toolbar_view.setVisibility(View.VISIBLE);
-//                    AnimUtils.animupnum(this, toolbar_view, -42, 0);
-//                    AnimUtils.animupnum(this, titleview, 0, -42);
-//                    toolbar_show = true;
-//                }
-                return false;
             case KeyEvent.KEYCODE_DPAD_DOWN:
-//                if (toolbar_show) {
-//                    AnimUtils.animupnum(this, toolbar_view, 0, -42);
-//                    AnimUtils.animupnum(this, titleview, -42, 0);
-//                    toolbar_view.setVisibility(View.GONE);
-//                    toolbar_show = false;
-//                }
-                return false;
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                return false;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 return false;
         }
@@ -297,13 +291,14 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     @Override
     protected void onRestart() {
+        super.onRestart();
         //禁止调焦
         try {
             MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        super.onRestart();
+
     }
 
     /**
@@ -316,14 +311,16 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         //更改开机动画
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
             LogUtil.e(TAG, "开始下载");
-            new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn), Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
+
+            new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
+                    Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
 
         }
 
         if (channelList != null) {
             for (int i = 0; i < channelList.getResult().size(); i++) {
-                //
 
+                //限制最大个数
                 if (i > 3)
                     return;
 
@@ -425,14 +422,24 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 break;
             //启动指定APP
             case 1:
-                if (channelList.getResult().get(i).getAppList() != null && channelList.getResult().get(i).getAppList().size() > 0)
-                    if (Tools.isAppInstalled(channelList.getResult().get(i).getAppList().get(0).getPackageName()))
-                        startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(channelList.getResult().get(i).getAppList().get(0).getPackageName())));
-                    else {
+
+                if (channelList.getResult().get(i).getAppList() != null && channelList.getResult().get(i).getAppList().size() > 0) {
+                    String packname = channelList.getResult().get(i).getAppList().get(0).getPackageName();
+                    //验证是否有此应用
+                    if (Tools.isAppInstalled(packname)) {
+                        //如果要启动定制版腾讯视频
+                        if (packname.equals(Const.TvViedo)) {
+                            Loading.show(this, "请稍后");
+                            //获取VIP账号
+                            new GetVIP_Servlet().execute();
+                        } else {
+                            startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
+                        }
+                    } else {
                         Loading.show(this, "请稍后");
                         new DownUtil(this).downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
                     }
-                else
+                } else
                     Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
                 break;
             //启动APP列表

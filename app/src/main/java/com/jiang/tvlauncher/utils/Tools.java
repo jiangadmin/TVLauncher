@@ -15,6 +15,8 @@ import android.location.LocationListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,8 +36,11 @@ import com.jiang.tvlauncher.MyAppliaction;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -44,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -608,6 +614,7 @@ public final class Tools {
 
     /**
      * 根据包名查找Pid
+     *
      * @param context
      * @param packageName
      * @return
@@ -625,4 +632,30 @@ public final class Tools {
         return 0;
     }
 
+
+
+
+    /**
+     * 获取Ethernet的MAC地址
+     * @return
+     */
+    public static String getMacAddress() {
+        try {
+            return loadFileAsString("/sys/class/net/eth0/address").toUpperCase(Locale.ENGLISH).substring(0, 17);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private static String loadFileAsString(String filePath) throws java.io.IOException{
+        StringBuffer fileData = new StringBuffer(1000);
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        char[] buf = new char[1024]; int numRead=0;
+        while((numRead=reader.read(buf)) != -1){
+            String readData = String.valueOf(buf, 0, numRead);
+            fileData.append(readData);
+        }
+        reader.close();
+        return fileData.toString();
+    }
 }

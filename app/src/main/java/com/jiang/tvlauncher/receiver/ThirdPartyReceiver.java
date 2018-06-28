@@ -8,9 +8,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
 import com.jiang.tvlauncher.servlet.VIPCallBack_Servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
+import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.ktcp.video.thirdagent.JsonUtils;
 import com.ktcp.video.thirdagent.ThirdPartyAgent;
@@ -77,10 +79,10 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
 
                 //关闭当前应用
 
-                if (code != 0) {
-                    //启动常规腾讯视频
-                    Tools.StartApp(MyAppliaction.activity, "com.ktcp.video");
-                }
+//                if (code != 0) {
+//                    //启动常规腾讯视频
+//                    Tools.StartApp(MyAppliaction.activity, "com.ktcp.video");
+//                }
 
             }
 
@@ -102,8 +104,12 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
         //fixme 由厂商实现的接口 成功获取到接口vuid,vtoken,accessToken必须通过data回调给视频客户端，需要视频处理的错误定义好提示文案放errTip中
         Toast.makeText(context, "正在为您提供会员服务", Toast.LENGTH_LONG).show();
 
-        //获取VIP账号
-        new GetVIP_Servlet(thirdPartyAuthCallback).execute();
+        try {
+            thirdPartyAuthCallback.authInfo(0, "get vuid error", SaveUtils.getString(Save_Key.PARAMS)); //data需要返回vuid,vtoken,accesssToken
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
 
     }
 

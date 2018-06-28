@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="同步院线"
+                android:text="超级影视vip"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="影视快搜"
+                android:text="音乐"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="电视直播"
+                android:text="会员中心"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </RelativeLayout>
@@ -132,10 +132,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="最新推荐"
+                android:text="观影帮助"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </RelativeLayout>
+
     </LinearLayout>
 
     <!--顶部控制-->

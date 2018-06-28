@@ -11,7 +11,7 @@ package com.jiang.tvlauncher.entity;
 public class Const {
 
 //    public static String URL = "http://api.feekrs.com/";
-    public static String URL = "http://feekrtest.free.ngrok.cc/feekr_api/";
+    public static String URL = " http://testapi.feekrs.com/";
 
     public static int Timing = 30;
     public static int ID;
@@ -21,10 +21,12 @@ public class Const {
 
     public static int seconds = 300;      //间隔时间
 
+    public static int FindChannelList = 0;
+
     public static String 包 = "baobaobao";//超级直播
 
-
-    public static String 芒果TV = "com.hunantv.license";//芒果TV
+    public static String TvViedo = "com.ktcp.tvvideo";//定制版腾讯视频
+    public static String TencentViedo = "com.ktcp.video";//腾讯视频
     public static String 随心听 = "com.xgimi.duobanfm";//随心听
     public static String 沙发管家 = "com.xgimi.duobanfm";//沙发管家
     public static String 超级直播 = "com.hd.zhibo";//超级直播
@@ -62,9 +64,5 @@ public class Const {
     public static String ktcp_vuid = "";//腾讯视频ID
     public static String ktcp_vtoken = "";//腾讯视频ID
     public static String ktcp_accessToken = "";//腾讯视频ID
-
-
-
-
 
 }
