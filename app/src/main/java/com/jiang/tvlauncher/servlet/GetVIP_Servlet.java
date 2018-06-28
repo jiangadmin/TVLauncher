@@ -47,7 +47,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
         String res = HttpUtil.doPost(Const.URL + "tencent/tencentVideoController/getVuidInfo.do", map);
 
         //空判断
-        if (res.contains(",\"result\":\"\"")) {
+        if (res != null && res.contains(",\"result\":\"\"")) {
             res = res.replaceAll(",\"result\":\"\"", "");
         }
 

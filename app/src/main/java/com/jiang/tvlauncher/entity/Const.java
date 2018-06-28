@@ -26,7 +26,7 @@ public class Const {
     public static String 包 = "baobaobao";//超级直播
 
     public static String TvViedo = "com.ktcp.tvvideo";//定制版腾讯视频
-    public static String TencentViedo = "com.ktcp.video";//腾讯视频
+    public static String TencentViedo = "com.ktcp.video";//腾讯视频ktcp
     public static String 随心听 = "com.xgimi.duobanfm";//随心听
     public static String 沙发管家 = "com.xgimi.duobanfm";//沙发管家
     public static String 超级直播 = "com.hd.zhibo";//超级直播
