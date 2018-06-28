@@ -28,10 +28,7 @@ public class Save_Key {
     public static String MachineId = "MachineId";
     public static String PARAMS = "params";
 
-    public static String ItemImage0 = "ItemImage0";
-    public static String ItemImage1 = "ItemImage1";
-    public static String ItemImage2 = "ItemImage2";
-    public static String ItemImage3 = "ItemImage3";
+    public static String ItemImage = "ItemImage";
 
     public static String BootAn = "BootAn";
 

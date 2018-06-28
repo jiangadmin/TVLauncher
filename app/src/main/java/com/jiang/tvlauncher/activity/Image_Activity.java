@@ -13,11 +13,12 @@ import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
+import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -49,21 +50,24 @@ public class Image_Activity extends Base_Activity {
         super.onCreate(savedInstanceState);
         MyAppliaction.activity = this;
         setContentView(R.layout.activity_image);
-        imageView =  findViewById(R.id.imageView);
+        imageView = findViewById(R.id.imageView);
         LogUtil.e(TAG, "图片展示");
 
         String imgf = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/" + SaveUtils.getString(Save_Key.NewImageName);
-        LogUtil.e(TAG, "地址：" + imgf);
 
         //如果有网络
         if (Tools.isNetworkConnected()) {
             imageurl = getIntent().getStringExtra(URL);
             imagename = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
             //加载网络图片
-            ImageLoader.getInstance().displayImage(imageurl, imageView);
+            Picasso.with(this).load(imageurl).into(imageView);
             SaveUtils.setString(Save_Key.NewImageName, imagename);
-            //下载网络图片
-            new DownUtil(this).downLoad(imageurl, imagename, false);
+
+            //检查本地图片是否存在
+            if (!FileUtils.checkFileExists(imagename)) {
+                //下载网络图片
+                new DownUtil(this).downLoad(imageurl, imagename, false);
+            }
         } else {
             //判断是否有记录
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.NewImageName))) {

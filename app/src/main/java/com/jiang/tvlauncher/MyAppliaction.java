@@ -19,8 +19,6 @@ import com.jiang.tvlauncher.servlet.TurnOn1_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
@@ -73,9 +71,6 @@ public class MyAppliaction extends Application {
 
         //崩溃日志收集
         MiStatInterface.enableExceptionCatcher(true);
-
-        //初始化ImageLoader
-        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
 
         LogUtil.e(TAG, "有线连接：" + Tools.isLineConnected());
         Tools.setScreenOffTime(24 * 60 * 60 * 1000);

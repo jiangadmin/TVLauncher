@@ -1,6 +1,7 @@
 package com.jiang.tvlauncher.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -33,13 +34,14 @@ import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
+import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.utils.WifiApUtils;
 import com.jiang.tvlauncher.view.TitleView;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -75,10 +77,10 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     TextView ver;
 
-    List<TextView> namelist = new ArrayList();
-    List<ImageView> homebglist = new ArrayList();
-    List<RelativeLayout> homelist = new ArrayList();
-    List<Integer> hometype = new ArrayList();
+    List<TextView> namelist = new ArrayList<>();
+    List<ImageView> homebglist = new ArrayList<>();
+    List<RelativeLayout> homelist = new ArrayList<>();
+    List<Integer> hometype = new ArrayList<>();
 
     boolean toolbar_show = false;
     boolean ifnet = false;//判断有无网络使用
@@ -189,7 +191,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
             LogUtil.e(TAG, "有图片");
             imageView.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(SaveUtils.getString(Save_Key.NewImageUrl), imageView);
+            Picasso.with(this).load(SaveUtils.getString(Save_Key.NewImageUrl)).into(imageView);
             timeCount = new TimeCount(5000, 1000);
             timeCount.start();
         }
@@ -310,11 +312,13 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         //更改开机动画
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
-            LogUtil.e(TAG, "开始下载");
 
-            new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
-                    Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
-
+            //判断文件是否存在
+            if (!FileUtils.checkFileExists(Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)))) {
+                LogUtil.e(TAG, "开始下载");
+                new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
+                        Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
+            }
         }
 
         if (channelList != null) {
@@ -323,54 +327,24 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 //限制最大个数
                 if (i > 3)
                     return;
-
+                //图片网络地址
                 String url = channelList.getResult().get(i).getBgUrl();
-
-                LogUtil.e(TAG, "URL:" + url);
+                //图片文件名
                 String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
-                LogUtil.e(TAG, "filename:" + filename);
+                //设置栏目名称
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
-                //判断有没有网络
-                if (Tools.isNetworkConnected())
-                    //网络加载图片
-                    ImageLoader.getInstance().displayImage(url, homebglist.get(i));
-                else
-                    LogUtil.e(TAG, "断开网络连接");
-                //本地加载图片
-                switch (i) {
-                    case 0:
-                        LogUtil.e(TAG, file + SaveUtils.getString(Save_Key.ItemImage0));
-                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage0))));
-                        break;
-                    case 1:
-                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage1))));
-                        break;
-                    case 2:
-                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage2))));
-                        break;
-                    case 3:
-                        homebglist.get(i).setImageBitmap(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage3))));
-                        break;
-                }
+                //加载图片 优先本地
+                Picasso.with(this).load(url).placeholder(new BitmapDrawable(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i))))).into(homebglist.get(i));
+
                 hometype.add(channelList.getResult().get(i).getContentType());
 
-                //下载图片
-                new DownUtil(this).downLoad(url, filename, false);
+                //判断文件是否存在
+                if (!FileUtils.checkFileExists(filename)) {
+                    //下载图片
+                    new DownUtil(this).downLoad(url, filename, false);
 
-                //记录文件名
-                switch (i) {
-                    case 0:
-                        SaveUtils.setString(Save_Key.ItemImage0, filename);
-                        break;
-                    case 1:
-                        SaveUtils.setString(Save_Key.ItemImage1, filename);
-                        break;
-                    case 2:
-                        SaveUtils.setString(Save_Key.ItemImage2, filename);
-                        break;
-                    case 3:
-                        SaveUtils.setString(Save_Key.ItemImage3, filename);
-                        break;
+                    //记录文件名
+                    SaveUtils.setString(Save_Key.ItemImage + i, filename);
                 }
             }
         }

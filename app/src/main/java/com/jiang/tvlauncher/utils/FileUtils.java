@@ -326,8 +326,8 @@ public class FileUtils {
     public static boolean checkFileExists(String name) {
         boolean status;
         if (!name.equals("")) {
-            File path = Environment.getExternalStorageDirectory();
-            File newPath = new File(path.toString() + name);
+            File path = Environment.getExternalStorageDirectory() ;
+            File newPath = new File(path.toString() + "/feekr/Download/"+ name);
             status = newPath.exists();
         } else {
             status = false;
