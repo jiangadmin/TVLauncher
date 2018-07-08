@@ -38,6 +38,7 @@ import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
+import com.jiang.tvlauncher.utils.ShellUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.utils.WifiApUtils;
 import com.jiang.tvlauncher.view.TitleView;
@@ -403,9 +404,15 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                     if (Tools.isAppInstalled(packname)) {
                         //如果要启动定制版腾讯视频
                         if (packname.equals(Const.TvViedo)) {
-                            Loading.show(this, "请稍后");
-                            //获取VIP账号
-                            new GetVIP_Servlet().execute();
+
+                            //判断时候已经运行
+                            if (!TextUtils.isEmpty(ShellUtils.execCommand("ps |grep com.ktcp.tvvideo:webview", false).successMsg)) {
+                                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
+                            } else {
+                                Loading.show(this, "请稍后");
+                                //获取VIP账号
+                                new GetVIP_Servlet().execute();
+                            }
                         } else {
                             startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
                         }
@@ -440,6 +447,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     @Override
     public void onFocusChange(View view, boolean b) {
+
         switch (view.getId()) {
             case R.id.setting:
                 setting_txt.setTextColor(getResources().getColor(b == true ? R.color.white : R.color.gray));

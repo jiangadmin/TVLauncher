@@ -73,6 +73,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
         super.onPostExecute(entity);
         Loading.dismiss();
 
+        Const.IsGetVip = true;
         if (entity.getErrorcode() == 1000) {
             HashMap<String, Object> params = new HashMap<>();
 

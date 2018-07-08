@@ -10,7 +10,7 @@ package com.jiang.tvlauncher.entity;
  */
 public class Const {
 
-//    public static String URL = "http://api.feekrs.com/";
+    //    public static String URL = "http://api.feekrs.com/";
     public static String URL = " http://testapi.feekrs.com/";
 
     public static int Timing = 30;
@@ -22,6 +22,8 @@ public class Const {
     public static int seconds = 300;      //间隔时间
 
     public static int FindChannelList = 0;
+
+    public static boolean IsGetVip = false;  //本次开机时候获取过Vip
 
     public static String 包 = "baobaobao";//超级直播
 
