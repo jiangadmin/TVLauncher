@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 
@@ -28,20 +29,30 @@ public class AppInstallReceiver extends BroadcastReceiver {
             String packageName = intent.getData().getSchemeSpecificPart();
             Loading.dismiss();
 
-            //如果之前被卸载过
+            //如果之前被卸载过（应用自升级）
             if (!TextUtils.isEmpty(SaveUtils.getString(Const.包)))
                 if (SaveUtils.getString(Const.包).contains(packageName)) {
                     return;
                 }
-
+            //自己的APP
             if ("com.jiang.tvlauncher".equals(packageName)) {
+                return;
+            }
+
+            //如果要启动定制版腾讯视频
+            if (packageName.equals(Const.TvViedo)) {
+
+                //获取VIP账号,备用
+                new GetVIP_Servlet(true).execute();
+
                 return;
             }
 
             LogUtil.e(TAG, "安装成功");
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-            if (launchIntent != null)
+            if (launchIntent != null) {
                 context.startActivity(launchIntent);
+            }
         }
         //卸载
         if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {

@@ -7,6 +7,7 @@ import java.util.List;
  */
 
 public class FindChannelList extends BaseEntity {
+    private static final String TAG = "FindChannelList";
 
     /**
      * errorcode : 1000
@@ -211,6 +212,7 @@ public class FindChannelList extends BaseEntity {
             }
 
             public void setDownloadUrl(String downloadUrl) {
+
                 this.downloadUrl = downloadUrl;
             }
 

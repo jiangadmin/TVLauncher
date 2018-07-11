@@ -30,6 +30,12 @@ import java.util.Map;
 public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
     private static final String TAG = "GetVIP_Servlet";
 
+    boolean IsOpen = true;
+
+    public GetVIP_Servlet(boolean isOpen) {
+        IsOpen = isOpen;
+    }
+
     @Override
     protected VIP_Entity doInBackground(String... strings) {
         Map map = new HashMap();
@@ -89,8 +95,9 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
 
             //启动应用
             LogUtil.e(TAG, "启动会员版");
-            Tools.StartApp(MyAppliaction.activity, Const.TvViedo);
-
+            if (IsOpen) {
+                Tools.StartApp(MyAppliaction.activity, Const.TvViedo);
+            }
         } else {
 
             if (Tools.isAppInstalled(Const.TencentViedo)) {

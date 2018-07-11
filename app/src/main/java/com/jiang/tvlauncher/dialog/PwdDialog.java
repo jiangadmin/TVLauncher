@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.activity.Home_Activity;
+import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.SaveUtils;
+import com.jiang.tvlauncher.utils.Tools;
 
 /**
  * @author: jiangadmin
@@ -97,6 +100,12 @@ public class PwdDialog extends Dialog {
             case 6:
                 pwd6.setImageResource(resid);
                 dismiss();
+
+                if (password.equals("822228")) {
+                    SaveUtils.setString(Const.包, null);
+                    Toast.makeText(activity,"清楚成功",Toast.LENGTH_SHORT).show();
+                }
+
                 if (password.equals(SaveUtils.getString(Save_Key.Password)))
                     activity.PwdRe();
                 break;

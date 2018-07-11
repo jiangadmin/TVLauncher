@@ -1,9 +1,6 @@
 package com.jiang.tvlauncher.activity;
 
-import android.app.Service;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -11,8 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -26,7 +21,6 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.FeekrApiManager;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
@@ -98,7 +92,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     ImageView imageView;
     VideoView videoView;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -341,6 +334,12 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
                 //设置栏目名称
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
+                //记录下载地址
+                if (channelList.getResult().get(i).getContentType() == 1 && channelList.getResult().get(i).getAppList().get(0).getPackageName().equals(Const.TvViedo)) {
+                    SaveUtils.setString(Const.TvViedoDow, channelList.getResult().get(i).getAppList().get(0).getDownloadUrl());
+                    LogUtil.e(TAG,"记录定制版云视听下载地址");
+                }
+
                 //加载图片 优先本地
                 Picasso.with(this).load(url).placeholder(new BitmapDrawable(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i))))).into(homebglist.get(i));
 
@@ -418,12 +417,14 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                             } else {
                                 Loading.show(this, "请稍后");
                                 //获取VIP账号
-                                new GetVIP_Servlet().execute();
+                                new GetVIP_Servlet(true).execute();
                             }
                         } else {
+
                             startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
                         }
                     } else {
+
                         Loading.show(this, "请稍后");
                         new DownUtil(this).downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
                     }
