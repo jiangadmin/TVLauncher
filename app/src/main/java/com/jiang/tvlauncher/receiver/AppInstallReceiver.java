@@ -60,12 +60,13 @@ public class AppInstallReceiver extends BroadcastReceiver {
 
             //清楚数据
             if (!TextUtils.isEmpty(SaveUtils.getString(Const.包)))
-                if (SaveUtils.getString(Const.包).length() > 1000) {
-                    SaveUtils.setString(Const.包, "");
+                if (SaveUtils.getString(Const.包).length() > 10000) {
+                    SaveUtils.setString(Const.包, null);
                 }
             //记录卸载过的包
-            SaveUtils.setString(Const.包, SaveUtils.getString(Const.包) + packageName);
-
+            if (!SaveUtils.getString(Const.包).contains(packageName)) {
+                SaveUtils.setString(Const.包, SaveUtils.getString(Const.包) + packageName);
+            }
             LogUtil.e(TAG, "卸载成功");
         }
         //替换

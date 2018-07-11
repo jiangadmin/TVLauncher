@@ -25,7 +25,7 @@ public class Const {
 
     public static boolean IsGetVip = false;  //本次开机时候获取过Vip
 
-    public static String 包 = "baobaobao";//超级直播
+    public static String 包 = "baobaobao";
     public static String TvViedoDow = "TvViedoDow";//定制版腾讯视频下载地址
 
     public static String TvViedo = "com.ktcp.tvvideo";//定制版腾讯视频
