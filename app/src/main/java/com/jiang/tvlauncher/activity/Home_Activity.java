@@ -1,6 +1,9 @@
 package com.jiang.tvlauncher.activity;
 
+import android.app.Service;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -8,6 +11,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -21,6 +26,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.gson.Gson;
+import com.jiang.tvlauncher.FeekrApiManager;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
@@ -92,6 +98,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     ImageView imageView;
     VideoView videoView;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -284,23 +291,23 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             toolbar_show = false;
         }
 
-        //禁止调焦
-        try {
-            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        //禁止调焦
+//        try {
+//            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         //禁止调焦
-        try {
-            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 

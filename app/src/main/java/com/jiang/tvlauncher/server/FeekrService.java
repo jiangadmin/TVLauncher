@@ -7,6 +7,7 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
 import com.jiang.tvlauncher.FeekrApiManager;
+import com.jiang.tvlauncher.utils.LogUtil;
 
 /**
  * @author: jiangyao
@@ -16,6 +17,7 @@ import com.jiang.tvlauncher.FeekrApiManager;
  * TODO:
  */
 public class FeekrService extends Service {
+    private static final String TAG = "FeekrService";
 
     public FeekrService() {
     }
@@ -30,6 +32,7 @@ public class FeekrService extends Service {
 
         @Override
         public void StartTencentVideo() throws RemoteException {
+            LogUtil.e(TAG,"发送广播");
             sendBroadcast(new Intent("FEEKR"));
         }
     }

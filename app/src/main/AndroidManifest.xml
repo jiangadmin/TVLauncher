@@ -145,6 +145,12 @@
             </intent-filter>
         </receiver>
 
+        <service
+            android:name=".server.FeekrService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":aidl"/>
+
     </application>
 
 </manifest>
