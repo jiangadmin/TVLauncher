@@ -1,7 +1,5 @@
 package com.jiang.tvlauncher.servlet;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
@@ -101,27 +99,16 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
         } else {
 
             if (Tools.isAppInstalled(Const.TencentViedo)) {
+
                 //启动应用
                 LogUtil.e(TAG, "启动云视听");
                 Tools.StartApp(MyAppliaction.activity, Const.TencentViedo);
 
             } else {
 
-                if (TextUtils.isEmpty(SaveUtils.getString(Const.TvViedoDow))) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MyAppliaction.activity);
-                    builder.setTitle("抱歉");
-                    builder.setMessage("资源缺失<云视听>，请联系服务人员!");
-                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    builder.show();
-                } else {
-                    new DownUtil(MyAppliaction.activity).downLoad(SaveUtils.getString(Const.TvViedoDow), Const.TvViedoDow + ".apk", true);
-                    Loading.show(MyAppliaction.activity, "请稍后");
-                }
+                Loading.show(MyAppliaction.activity, "请稍后");
+                new DownUtil(MyAppliaction.activity).downLoad(Const.云视听Url, "云视听.apk", true);
+
             }
         }
     }

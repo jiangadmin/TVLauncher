@@ -199,13 +199,31 @@ public class FindChannelList extends BaseEntity {
             private String createTime;
             private String iconUrl;
             private String downloadUrl;
+            private String downloadUrlBak;
             private int id;
             private int isDelete;
             private String packageName;
+            private String packageNameBak;
             private String remark;
             private String updateAuthor;
             private String updateTime;
             private int useState;
+
+            public String getDownloadUrlBak() {
+                return downloadUrlBak;
+            }
+
+            public void setDownloadUrlBak(String downloadUrlBak) {
+                this.downloadUrlBak = downloadUrlBak;
+            }
+
+            public String getPackageNameBak() {
+                return packageNameBak;
+            }
+
+            public void setPackageNameBak(String packageNameBak) {
+                this.packageNameBak = packageNameBak;
+            }
 
             public String getDownloadUrl() {
                 return downloadUrl;

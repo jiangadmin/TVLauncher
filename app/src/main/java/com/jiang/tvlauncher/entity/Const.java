@@ -28,6 +28,10 @@ public class Const {
     public static String 包 = "baobaobao";
     public static String TvViedoDow = "TvViedoDow";//定制版腾讯视频下载地址
 
+
+    public static String 云视听 = "KtcpVideo";//云视听
+    public static String 云视听Url = "KtcpVideoUrl";//下载地址
+
     public static String TvViedo = "com.ktcp.tvvideo";//定制版腾讯视频
     public static String TencentViedo = "com.ktcp.video";//腾讯视频ktcp
     public static String 随心听 = "com.xgimi.duobanfm";//随心听

@@ -93,6 +93,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     ImageView imageView;
     VideoView videoView;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -334,12 +335,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
                 //设置栏目名称
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
-                //记录下载地址
-                if (channelList.getResult().get(i).getContentType() == 1 && channelList.getResult().get(i).getAppList().get(0).getPackageName().equals(Const.TvViedo)) {
-                    SaveUtils.setString(Const.TvViedoDow, channelList.getResult().get(i).getAppList().get(0).getDownloadUrl());
-                    LogUtil.e(TAG,"记录定制版云视听下载地址");
-                }
-
                 //加载图片 优先本地
                 Picasso.with(this).load(url).placeholder(new BitmapDrawable(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i))))).into(homebglist.get(i));
 
@@ -406,6 +401,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
                 if (channelList.getResult().get(i).getAppList() != null && channelList.getResult().get(i).getAppList().size() > 0) {
                     String packname = channelList.getResult().get(i).getAppList().get(0).getPackageName();
+
                     //验证是否有此应用
                     if (Tools.isAppInstalled(packname)) {
                         //如果要启动定制版腾讯视频
@@ -417,14 +413,16 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                             } else {
                                 Loading.show(this, "请稍后");
                                 //获取VIP账号
-                                new GetVIP_Servlet(true).execute();
+                                new GetVIP_Servlet().execute();
                             }
                         } else {
-
                             startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
                         }
                     } else {
-
+                        //如果要启动定制版腾讯视频
+                        if (packname.equals(Const.TvViedo)) {
+                            Const.云视听Url = channelList.getResult().get(i).getAppList().get(0).getDownloadUrlBak();
+                        }
                         Loading.show(this, "请稍后");
                         new DownUtil(this).downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
                     }

@@ -45,11 +45,8 @@
     <application
         android:hardwareAccelerated="false"
         android:name="MyAppliaction"
-        android:allowBackup="true"
         android:icon="@drawable/feekr"
         android:label="@string/app_name"
-        android:resizeableActivity="true"
-        android:supportsRtl="true"
         android:theme="@style/StartTheme">
 
         <service android:name=".server.KeyCodeService">
