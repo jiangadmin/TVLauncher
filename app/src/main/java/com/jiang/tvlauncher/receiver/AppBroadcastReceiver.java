@@ -10,6 +10,7 @@ import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
+import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.ShellUtils;
 import com.jiang.tvlauncher.utils.Tools;
@@ -30,19 +31,19 @@ public class AppBroadcastReceiver extends BroadcastReceiver {
         //验证是否有此应用
         if (Tools.isAppInstalled(packname)) {
             //如果要启动定制版腾讯视频
-            if (packname.equals(Const.TvViedo)) {
-                //判断是否已经运行
-                if (!TextUtils.isEmpty(ShellUtils.execCommand("ps |grep com.ktcp.tvvideo:webview", false).successMsg)) {
-                    MyAppliaction.activity.startActivity(new Intent(MyAppliaction.activity.getPackageManager().getLaunchIntentForPackage(packname)));
-                } else {
-                    Loading.show(MyAppliaction.activity, "请稍后");
-                    //获取VIP账号
-                    new GetVIP_Servlet(true).execute();
-                }
-            } else {
+            //判断是否已经运行
+            if (!TextUtils.isEmpty(ShellUtils.execCommand("ps |grep com.ktcp.tvvideo:webview", false).successMsg)) {
+                LogUtil.e(TAG, "直接启动");
                 MyAppliaction.activity.startActivity(new Intent(MyAppliaction.activity.getPackageManager().getLaunchIntentForPackage(packname)));
+            } else {
+                LogUtil.e(TAG, "获取账号");
+                Loading.show(MyAppliaction.activity, "请稍后");
+                //获取VIP账号
+                new GetVIP_Servlet(true).execute();
             }
+
         } else {
+            LogUtil.e(TAG, "下载应用");
             Loading.show(MyAppliaction.activity, "请稍后");
             new DownUtil(MyAppliaction.activity).downLoad(SaveUtils.getString(Const.TvViedoDow), packname + ".apk", true);
         }

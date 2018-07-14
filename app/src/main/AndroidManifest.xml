@@ -43,6 +43,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALTER_WINDOW" />
 
     <application
+        android:hardwareAccelerated="false"
         android:name="MyAppliaction"
         android:allowBackup="true"
         android:icon="@drawable/feekr"

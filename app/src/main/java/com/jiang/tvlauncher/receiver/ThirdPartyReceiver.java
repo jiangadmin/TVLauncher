@@ -52,11 +52,6 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
                 ThirdPartyAgent.getInstance().setOnThirdPartyAgentListener(this);
                 ThirdPartyAgent.getInstance().doAuthLogin(channel);
 
-                //退出登录
-//                HashMap params = new HashMap<String, Object>();
-//                params.put("channel", "");
-//                ThirdPartyAgent.getInstance().noticeClient(MyAppliaction.context, ThirdPartyAgent.EVENT_SERVER_LOGOUT, JsonUtils.addJsonValue(params));
-
             }
 
             //登录返回
@@ -76,13 +71,7 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
                 new VIPCallBack_Servlet().execute(vip);
 
                 //登录失败
-
                 //关闭当前应用
-
-//                if (code != 0) {
-//                    //启动常规腾讯视频
-//                    Tools.StartApp(MyAppliaction.activity, "com.ktcp.video");
-//                }
 
             }
 
@@ -98,6 +87,12 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
             }
         }
     }
+
+    //退出登录
+//                HashMap params = new HashMap<String, Object>();
+//                params.put("channel", "");
+//                ThirdPartyAgent.getInstance().noticeClient(MyAppliaction.context, ThirdPartyAgent.EVENT_SERVER_LOGOUT, JsonUtils.addJsonValue(params));
+
 
     @Override
     public void getAccount(String channel, final IThirdPartyAuthCallback thirdPartyAuthCallback) {
