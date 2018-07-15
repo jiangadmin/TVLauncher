@@ -402,6 +402,11 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 if (channelList.getResult().get(i).getAppList() != null && channelList.getResult().get(i).getAppList().size() > 0) {
                     String packname = channelList.getResult().get(i).getAppList().get(0).getPackageName();
 
+                    //如果要启动定制版腾讯视频
+                    if (packname.equals(Const.TvViedo)) {
+                        Const.云视听Url = channelList.getResult().get(i).getAppList().get(0).getDownloadUrlBak();
+                    }
+
                     //验证是否有此应用
                     if (Tools.isAppInstalled(packname)) {
                         //如果要启动定制版腾讯视频
@@ -419,10 +424,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                             startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
                         }
                     } else {
-                        //如果要启动定制版腾讯视频
-                        if (packname.equals(Const.TvViedo)) {
-                            Const.云视听Url = channelList.getResult().get(i).getAppList().get(0).getDownloadUrlBak();
-                        }
+
                         Loading.show(this, "请稍后");
                         new DownUtil(this).downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
                     }

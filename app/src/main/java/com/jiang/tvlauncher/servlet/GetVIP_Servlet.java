@@ -1,5 +1,7 @@
 package com.jiang.tvlauncher.servlet;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
@@ -106,9 +108,23 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
 
             } else {
 
-                Loading.show(MyAppliaction.activity, "请稍后");
-                new DownUtil(MyAppliaction.activity).downLoad(Const.云视听Url, "云视听.apk", true);
+                if (TextUtils.isEmpty(Const.云视听Url)){
 
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MyAppliaction.activity);
+                    builder.setTitle("抱歉");
+                    builder.setMessage("应用 云视听 资源缺失，请联系服务人员");
+                    builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+
+                }else {
+                    Loading.show(MyAppliaction.activity, "请稍后");
+                    new DownUtil(MyAppliaction.activity).downLoad(Const.云视听Url, "云视听.apk", true);
+                }
             }
         }
     }
