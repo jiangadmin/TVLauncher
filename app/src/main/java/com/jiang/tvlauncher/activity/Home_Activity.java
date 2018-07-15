@@ -404,6 +404,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
                     //如果要启动定制版腾讯视频
                     if (packname.equals(Const.TvViedo)) {
+                        SaveUtils.setString(Const.TvViedoDow, channelList.getResult().get(i).getAppList().get(0).getDownloadUrl());
                         Const.云视听Url = channelList.getResult().get(i).getAppList().get(0).getDownloadUrlBak();
                     }
 
