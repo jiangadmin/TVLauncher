@@ -1,7 +1,9 @@
 package com.jiang.tvlauncher.receiver;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
 
@@ -44,8 +46,21 @@ public class AppBroadcastReceiver extends BroadcastReceiver {
 
         } else {
             LogUtil.e(TAG, "下载应用");
-            Loading.show(MyAppliaction.activity, "请稍后");
-            new DownUtil(MyAppliaction.activity).downLoad(SaveUtils.getString(Const.TvViedoDow), packname + ".apk", true);
+            if (TextUtils.isEmpty(SaveUtils.getString(Const.TvViedoDow))) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyAppliaction.activity);
+                builder.setTitle("抱歉");
+                builder.setMessage("资源缺失<云视听>，请联系服务人员!");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.show();
+            } else {
+                Loading.show(MyAppliaction.activity, "请稍后");
+                new DownUtil(MyAppliaction.activity).downLoad(SaveUtils.getString(Const.TvViedoDow), packname + ".apk", true);
+            }
         }
     }
 }
