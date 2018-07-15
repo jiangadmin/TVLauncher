@@ -413,7 +413,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                             } else {
                                 Loading.show(this, "请稍后");
                                 //获取VIP账号
-                                new GetVIP_Servlet().execute();
+                                new GetVIP_Servlet(true).execute();
                             }
                         } else {
                             startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
