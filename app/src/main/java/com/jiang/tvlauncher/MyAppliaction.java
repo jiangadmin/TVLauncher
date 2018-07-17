@@ -112,7 +112,7 @@ public class MyAppliaction extends Application {
 //                apiManager.set("setAutoStartApk","Feekr","true",null,null);
 
                 //禁止调焦
-                apiManager.set("setFocusOnOff", "false", null, null, null);
+                apiManager.set("setFocusOnOff", "true", null, null, null);
 
                 LogUtil.e(TAG, " 序列号 ：" + apiManager.get("getMachineId", null, null));
                 LogUtil.e(TAG, "全局缩放：" + apiManager.get("getZoomValue", null, null));
@@ -127,7 +127,7 @@ public class MyAppliaction extends Application {
                 LogUtil.e(TAG, " 开机源 ：" + apiManager.get("getBootSource", null, null));
                 LogUtil.e(TAG, "上电开机：" + apiManager.get("getPowerOnStartValue", null, null));
                 LogUtil.e(TAG, "设备型号：" + apiManager.get("getDeviceModel", null, null));
-                LogUtil.e(TAG, "设置调焦距：" + apiManager.set("setFocusOnOff", "false", null, null, null));
+//                LogUtil.e(TAG, "设置调焦距：" + apiManager.set("setFocusOnOff", "false", null, null, null));
                 LogUtil.e(TAG, "固件版本：" + Build.VERSION.INCREMENTAL);
                 modelNum = apiManager.get("getDeviceModel", null, null);
                 SaveUtils.setString(Save_Key.modelNum, modelNum);
