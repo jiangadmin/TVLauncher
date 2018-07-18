@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
@@ -32,6 +33,7 @@ public class AppInstallReceiver extends BroadcastReceiver {
             //如果之前被卸载过（应用自升级）
             if (!TextUtils.isEmpty(SaveUtils.getString(Const.包)))
                 if (SaveUtils.getString(Const.包).contains(packageName)) {
+                    Toast.makeText(context, "不是第一次启动，跳过", Toast.LENGTH_LONG).show();
                     return;
                 }
             //自己的APP
@@ -41,6 +43,8 @@ public class AppInstallReceiver extends BroadcastReceiver {
 
             //如果要启动定制版腾讯视频
             if (packageName.equals(Const.TvViedo)) {
+
+                Toast.makeText(context, "第一次启动，获取账号", Toast.LENGTH_LONG).show();
 
                 //获取VIP账号,备用
                 new GetVIP_Servlet(true).execute();
@@ -64,7 +68,8 @@ public class AppInstallReceiver extends BroadcastReceiver {
                     SaveUtils.setString(Const.包, null);
                 }
             //记录卸载过的包
-            if (!SaveUtils.getString(Const.包).contains(packageName)) {
+
+            if (TextUtils.isEmpty(SaveUtils.getString(Const.包)) || !SaveUtils.getString(Const.包).contains(packageName)) {
                 SaveUtils.setString(Const.包, SaveUtils.getString(Const.包) + packageName);
             }
             LogUtil.e(TAG, "卸载成功");
