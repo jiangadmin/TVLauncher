@@ -43,7 +43,7 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
             String data = intent.getStringExtra("data");
             Log.i(TAG, "channel=" + channel + ",data=" + data);
 
-            Toast.makeText(MyAppliaction.context, "channel=" + channel + ",data=" + data, Toast.LENGTH_LONG).show();
+//            Toast.makeText(MyAppliaction.context, "channel=" + channel + ",data=" + data, Toast.LENGTH_LONG).show();
 
             JSONObject dataObj = JsonUtils.getJsonObj(data);
 

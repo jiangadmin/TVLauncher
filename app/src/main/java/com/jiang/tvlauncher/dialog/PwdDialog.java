@@ -101,10 +101,10 @@ public class PwdDialog extends Dialog {
                 pwd6.setImageResource(resid);
                 dismiss();
 
-                if (password.equals("822228")) {
-                    SaveUtils.setString(Const.包, null);
-                    Toast.makeText(activity,"清楚成功",Toast.LENGTH_SHORT).show();
-                }
+//                if (password.equals("822228")) {
+//                    SaveUtils.setString(Const.包, null);
+//                    Toast.makeText(activity,"清楚成功",Toast.LENGTH_SHORT).show();
+//                }
 
                 if (password.equals(SaveUtils.getString(Save_Key.Password)))
                     activity.PwdRe();
