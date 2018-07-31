@@ -27,6 +27,7 @@ public class Const {
 
     public static String 包 = "baobaobao";
     public static String TvViedoDow = "TvViedoDow";//定制版腾讯视频下载地址
+    public static String ViedoDow = "ViedoDow";//腾讯视频下载地址
 
 
     public static String 云视听 = "KtcpVideo";//云视听
@@ -66,7 +67,6 @@ public class Const {
 
     public static String 优酷XL = "com.youku.tv.c";//影视资源
     public static String 魔力视频 = "com.molitv.android.v2";//影视资源
-
 
     public static String ktcp_vuid = "";//腾讯视频ID
     public static String ktcp_vtoken = "";//腾讯视频ID

@@ -32,8 +32,9 @@ public class VIPCallBack_Servlet extends AsyncTask<VIPCallBack_Servlet.TencentVi
         map.put("serialNum", MyAppliaction.ID);
         map.put("code", vip.getCode());
         map.put("msg", vip.getMsg());
+        map.put("eventId", vip.getEventId());
 
-        String res = HttpUtil.doPost(Const.URL + "tencent/tencentVideoController/loginCallBack.do", map);
+        String res = HttpUtil.doPost(Const.URL + "tencent/tencentVideoController/tencentNoticeCallBack.do", map);
 
         BaseEntity entity;
         if (TextUtils.isEmpty(res)) {
@@ -67,6 +68,7 @@ public class VIPCallBack_Servlet extends AsyncTask<VIPCallBack_Servlet.TencentVi
         private String serialNum;
         private String code;
         private String msg;
+        private String eventId;
 
         public String getVuid() {
             return vuid;
@@ -106,6 +108,14 @@ public class VIPCallBack_Servlet extends AsyncTask<VIPCallBack_Servlet.TencentVi
 
         public void setMsg(String msg) {
             this.msg = msg;
+        }
+
+        public String getEventId() {
+            return eventId;
+        }
+
+        public void setEventId(String eventId) {
+            this.eventId = eventId;
         }
     }
 }
