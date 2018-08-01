@@ -64,7 +64,7 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
 
                 // 2 账户登录回调 3 退出登录 4 APP退出
                 LogUtil.e(TAG,"状态码："+eveintId);
-
+                Toast.makeText(context, "状态码："+eveintId, Toast.LENGTH_SHORT).show();
                 VIPCallBack_Servlet.TencentVip vip = new VIPCallBack_Servlet.TencentVip();
                 switch (eveintId) {
                     case 2:         //账户登录回调
