@@ -16,6 +16,8 @@ public class Const {
     public static int Timing = 30;
     public static int ID;
 
+    public static int BussFlag = 1;      //账户状态
+
     public static int ShowType = 1; //1:图片  2 ：视频
     public static boolean Nets = true; //网络状态  控制发请求
 

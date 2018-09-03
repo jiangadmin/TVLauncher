@@ -1,15 +1,21 @@
 package com.jiang.tvlauncher.servlet;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.dialog.WarnDialog;
 import com.jiang.tvlauncher.entity.BaseEntity;
 import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.entity.MonitorResEntity;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
+import com.jiang.tvlauncher.utils.ShellUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,14 +28,14 @@ import java.util.Map;
  * Purpose:TODO 定时发送
  * update：
  */
-public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
+public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity> {
 
     private static final String TAG = "Timing_Servlet";
 
     private static boolean sleep = false;
 
     @Override
-    protected BaseEntity doInBackground(String... infos) {
+    protected MonitorResEntity doInBackground(String... infos) {
         Map map = new HashMap();
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         map.put("netSpeed", "1");
@@ -45,18 +51,18 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
             map.put("fanSpeed", "0");
         }
         String res = HttpUtil.doPost(Const.URL + "dev/devRunStateController/monitorRunState.do", map);
-        BaseEntity entity;
+        MonitorResEntity entity;
         if (res != null) {
             try {
-                entity = new Gson().fromJson(res, BaseEntity.class);
+                entity = new Gson().fromJson(res, MonitorResEntity.class);
             } catch (Exception e) {
-                entity = new BaseEntity();
+                entity = new MonitorResEntity();
                 entity.setErrorcode(-2);
                 entity.setErrormsg("数据解析失败");
             }
 
         } else {
-            entity = new BaseEntity();
+            entity = new MonitorResEntity();
             entity.setErrorcode(-1);
             entity.setErrormsg("连接服务器失败");
         }
@@ -64,12 +70,26 @@ public class Timing_Servlet extends AsyncTask<String, Integer, BaseEntity> {
     }
 
     @Override
-    protected void onPostExecute(BaseEntity entity) {
+    protected void onPostExecute(MonitorResEntity entity) {
         super.onPostExecute(entity);
-        if (sleep) {
-            if (MyAppliaction.isForeground()) {
+        switch (entity.getErrorcode()) {
+            case 1000:
+                if (entity.getResult().getBussFlag() == 0) {
 
-            }
+                    Const.BussFlag = 0;
+                    try {
+                        ShellUtils.execCommand("input keyevent 3", false);
+                    } catch (Exception ex) {
+                        Log.e(TAG, "onPostExecute: " + ex.getMessage());
+                    }
+
+                } else if (entity.getResult().getBussFlag() == 1) {
+                    Const.BussFlag = 1;
+                }
+
+                EventBus.getDefault().post(String.valueOf(entity.getResult().getBussFlag()));
+                break;
         }
+
     }
 }

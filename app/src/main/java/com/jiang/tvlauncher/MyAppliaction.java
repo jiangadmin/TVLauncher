@@ -15,7 +15,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
-import com.jiang.tvlauncher.servlet.TurnOn1_servlet;
+import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
@@ -156,7 +156,7 @@ public class MyAppliaction extends Application {
 //                Toast.makeText(context, "发送开机请求", Toast.LENGTH_SHORT).show();
 
                 if (!TurnOnS) {
-                    new TurnOn1_servlet(context).execute();
+                    new TurnOn_servlet(context).execute();
                 }
 
             } catch (RemoteException e) {

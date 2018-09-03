@@ -16,7 +16,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:gravity="center"
-            />
+            android:src="@mipmap/mg_logo" />
+
         <!--日期-->
         <TextView
             android:id="@+id/title_bar_date"
@@ -73,5 +74,7 @@
                 android:textColor="@color/gray"
                 android:textSize="18sp" />
         </LinearLayout>
+
     </RelativeLayout>
+
 </RelativeLayout>

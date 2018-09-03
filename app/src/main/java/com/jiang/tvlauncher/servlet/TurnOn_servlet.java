@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
@@ -23,16 +22,17 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by  jiang
- * on 2017/6/19.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 开机发送
- * update：
+ * @author: jiangadmin
+ * @date: 2017/6/19.
+ * @Email: www.fangmu@qq.com
+ * @Phone: 186 6120 1018
+ * TODO: 开机发送
  */
 
 public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
@@ -52,8 +52,8 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         TurnOnEntity entity;
 
         if (TextUtils.isEmpty(MyAppliaction.ID)) {
-            if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.ID))) {
-                MyAppliaction.ID = SaveUtils.getString(Save_Key.ID);
+            if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.SerialNum))) {
+                MyAppliaction.ID = SaveUtils.getString(Save_Key.SerialNum);
                 MyAppliaction.turnType = SaveUtils.getString(Save_Key.turnType);
                 MyAppliaction.modelNum = SaveUtils.getString(Save_Key.modelNum);
             } else {
@@ -74,7 +74,11 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
         String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOn.do", map);
 
-        if (res != null) {
+        if (TextUtils.isEmpty(res)) {
+            entity = new TurnOnEntity();
+            entity.setErrorcode(-1);
+            entity.setErrormsg("连接服务器失败");
+        } else {
             try {
                 entity = new Gson().fromJson(res, TurnOnEntity.class);
             } catch (Exception e) {
@@ -83,23 +87,13 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 entity.setErrormsg("数据解析失败");
                 LogUtil.e(TAG, e.getMessage());
             }
-        } else {
-            entity = new TurnOnEntity();
-            entity.setErrorcode(-1);
-            entity.setErrormsg("连接服务器失败");
         }
 
-        return entity;
-    }
-
-    @Override
-    protected void onPostExecute(TurnOnEntity entity) {
-        super.onPostExecute(entity);
-        Const.Nets = false;
-        Loading.dismiss();
-
+        LogUtil.e(TAG, "=======================================================================================");
         if (entity != null && entity.getErrormsg() != null)
-            LogUtil.e(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + entity.getErrormsg());
+            LogUtil.e(TAG, entity.getErrormsg());
+//        Toast.makeText(context, "开机请求返回："+entity.getErrormsg(), Toast.LENGTH_SHORT).show();
+        LogUtil.e(TAG, "=======================================================================================");
 
         if (entity.getErrorcode() == 1000) {
             MyAppliaction.TurnOnS = true;
@@ -184,19 +178,11 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             }
 
             //存储间隔时间
-            if (entity.getResult().getShadowcnf() != null) {
+            if (entity.getResult().getShadowcnf() != null)
                 SaveUtils.setInt(Save_Key.Timming, entity.getResult().getShadowcnf().getMonitRate());
-            }
 
             //启动定时服务
             context.startService(new Intent(context, TimingService.class));
-
-            //获取开屏
-            new FindLanunch_Servlet().execute();
-
-            if (MyAppliaction.activity != null && MyAppliaction.activity.getClass() == Home_Activity.class) {
-                ((Home_Activity) MyAppliaction.activity).update();
-            }
 
             //判断是否是有线连接 & 服务启用同步数据
             if (Tools.isLineConnected() && entity.getResult().getShadowcnf() != null
@@ -220,7 +206,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     try {
                         String s1 = MyAppliaction.apiManager.set("setOpenWifiAp", SSID, APPWD, null, null);
                         if (!TextUtils.isEmpty(s1) && Boolean.valueOf(s1.toLowerCase())) {
-                            Toast.makeText(context, "热点开启成功！", Toast.LENGTH_SHORT).show();
+                            LogUtil.e(TAG, "热点开机成功！");
                         }
                     } catch (RemoteException e) {
                         e.printStackTrace();
@@ -242,6 +228,24 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             timeCount.start();
             LogUtil.e(TAG, "失败了" + entity.getErrormsg());
         }
+
+        return entity;
+    }
+
+    @Override
+    protected void onPostExecute(TurnOnEntity entity) {
+        super.onPostExecute(entity);
+        Const.Nets = false;
+        Loading.dismiss();
+
+        switch (entity.getErrorcode()) {
+            case 1000:
+
+                EventBus.getDefault().post("update");
+
+                break;
+        }
+
     }
 
     public static int num = 0;
@@ -261,19 +265,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //再次启动
             new TurnOn_servlet(context).execute();
 
-            //即没连接wifi也没插网线
-//            if (!Tools.isWifiConnected() && !Tools.isLineConnected() && !Tools.isNetworkConnected() && num == 1)
-//
-//                new NetWarningDialog(MyAppliaction.activity).show();
-//            else {
-//                //如果是有线网络接入
-//                if (Tools.isLineConnected() && num == 3 && MyAppliaction.activity != null)
-//                    new NetWarningDialog(MyAppliaction.activity).show();
-//
-//                //如果是WIFI接入
-//                if (Tools.isWifiConnected() && num == 10 && MyAppliaction.activity != null)
-//                    new NetWarningDialog(MyAppliaction.activity).show();
-//            }
         }
 
         @Override

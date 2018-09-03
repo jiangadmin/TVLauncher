@@ -422,6 +422,7 @@ public class TurnOnEntity extends BaseEntity {
             public void setZoomVal(String zoomVal) {
                 this.zoomVal = zoomVal;
             }
+
         }
 
         public static class LaunchBean {

@@ -1,5 +1,7 @@
 package com.jiang.tvlauncher.activity;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
@@ -8,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -33,6 +36,7 @@ import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
+import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.ImageUtils;
@@ -43,6 +47,10 @@ import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.utils.WifiApUtils;
 import com.jiang.tvlauncher.view.TitleView;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -93,10 +101,12 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     ImageView imageView;
     VideoView videoView;
 
+    WarningDialog warningDialog = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activty_home);
         MyAppliaction.activity = this;
 
@@ -107,7 +117,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         if (!Tools.isNetworkConnected())
             NetDialog.showL();
 
-        update();
+        onMessage("update");
 
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
@@ -116,11 +126,36 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     }
 
-    public void update() {
-//        Toast.makeText(Home_Activity.this, "开始获取主页数据", Toast.LENGTH_SHORT).show();
-        new FindChannelList_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        //获取更新
-//        new Update_Servlet(this).execute();
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+    public void onMessage(String showwarn) {
+        switch (showwarn) {
+            case "0":
+                if (warningDialog == null) {
+                    warningDialog = new WarningDialog(this);
+                }
+                warningDialog.show();
+                break;
+            case "1":
+                if (warningDialog != null) {
+                    warningDialog.dismiss();
+                }
+                break;
+
+            case "update":
+                //检查更新
+                new Update_Servlet(this).execute();
+                new FindChannelList_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+                break;
+            default:
+                break;
+        }
     }
 
     private void initview() {
@@ -285,25 +320,8 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             toolbar_show = false;
         }
 
-//        //禁止调焦
-//        try {
-//            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        //禁止调焦
-//        try {
-//            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-    }
 
     /**
      * 更新页面
@@ -354,6 +372,16 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
+
+        //账户（信号源）判断
+        if (Const.BussFlag == 0) {
+            if (warningDialog == null) {
+                warningDialog = new WarningDialog(this);
+            }
+            warningDialog.show();
+            return;
+        }
+
         switch (view.getId()) {
             case R.id.wifiap:
                 new WIFIAPDialog(this).show();
@@ -494,6 +522,24 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         @Override
         public void onTick(long millisUntilFinished) {//计时过程显示
+
+        }
+    }
+
+    /**
+     * 警告框
+     */
+    public static class WarningDialog extends Dialog {
+        public WarningDialog(@NonNull Context context) {
+            super(context, R.style.MyDialog);
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dialog_warning);
+            setCanceledOnTouchOutside(false);
+            setCancelable(false);
 
         }
     }
