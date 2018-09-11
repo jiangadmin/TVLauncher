@@ -314,17 +314,17 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         super.onResume();
 
         if (toolbar_show) {
-            AnimUtils.animupnum(this, toolbar_view, 0, -42);
-            AnimUtils.animupnum(this, titleview, -42, 0);
+            AnimUtils.Y( toolbar_view, 0, -42);
+            AnimUtils.Y( titleview, -42, 0);
             toolbar_view.setVisibility(View.GONE);
             toolbar_show = false;
         }
 
     }
 
-
     /**
      * 更新页面
+     * @param channelList
      */
     public void updateshow(FindChannelList channelList) {
         this.channelList = channelList;
@@ -412,6 +412,10 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         }
     }
 
+    /**
+     * 启动栏目
+     * @param i
+     */
     public void open(int i) {
         //数据缺失的情况
         if (hometype.size() <= i) {

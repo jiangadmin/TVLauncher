@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.utils.AnimUtils;
 
 /**
  * @author: jiangadmin
@@ -24,34 +25,14 @@ public class Base_Activity extends Activity {
     }
 
     public void enlargeAnim(View v) {
-        Animation a = AnimationUtils.loadAnimation(v.getContext(), R.anim.uikit_enlarge);
-        a.setAnimationListener(new Animation.AnimationListener() {
+        AnimUtils.S(v, 1, 1.2F);
 
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-            }
-        });
-        a.setFillAfter(true);
-        v.clearAnimation();
-        v.setAnimation(a);
-        a.start();
     }
 
     public void reduceAnim(View v) {
-        Animation a = AnimationUtils.loadAnimation(v.getContext(), R.anim.uikit_reduce);
-        a.setFillAfter(true);
-        v.clearAnimation();
-        v.startAnimation(a);
-        a.start();
+
+        AnimUtils.S(v, 1.2F, 1);
+
     }
 
 }

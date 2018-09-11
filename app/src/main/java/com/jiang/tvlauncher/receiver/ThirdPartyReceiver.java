@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.VIPCallBack_Servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
@@ -40,8 +42,6 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
             String data = intent.getStringExtra("data");
             Log.i(TAG, "channel=" + channel + ",data=" + data);
 
-//            Toast.makeText(MyAppliaction.context, "channel=" + channel + ",data=" + data, Toast.LENGTH_LONG).show();
-
             JSONObject dataObj = JsonUtils.getJsonObj(data);
 
             //启动APP
@@ -63,46 +63,13 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
                 }
 
                 // 2 账户登录回调 3 退出登录 4 APP退出
-                LogUtil.e(TAG,"状态码："+eveintId);
-                Toast.makeText(context, "状态码："+eveintId, Toast.LENGTH_SHORT).show();
+                LogUtil.e(TAG, "状态码：" + eveintId);
                 VIPCallBack_Servlet.TencentVip vip = new VIPCallBack_Servlet.TencentVip();
-                switch (eveintId) {
-                    case 2:         //账户登录回调
-                        vip.setCode(String.valueOf(code));
-                        vip.setMsg(msg);
-                        vip.setEventId(String.valueOf(eveintId));
-                        new VIPCallBack_Servlet().execute(vip);
-                        break;
-                    case 3:         //退出登录
-                        vip.setCode(String.valueOf(code));
-                        vip.setMsg(msg);
-                        vip.setEventId(String.valueOf(eveintId));
-                        new VIPCallBack_Servlet().execute(vip);
-                        break;
-                    case 4:         //APP退出
-                        vip.setCode(String.valueOf(code));
-                        vip.setMsg(msg);
-                        vip.setEventId(String.valueOf(eveintId));
-                        new VIPCallBack_Servlet().execute(vip);
-                        break;
-                }
 
-//
-//                String extra = dataObj.optString("extra");
-//                JSONObject extraObj = JsonUtils.getJsonObj(extra);
-//
-//                int code = extraObj.optInt("code");
-//                String msg = extraObj.optString("msg");
-//                String vtoken = extraObj.optString("vtoken");
-//                String vuid = (String.valueOf(extraObj.optLong("vuid")));
-//
-//                VIPCallBack_Servlet.TencentVip vip = new VIPCallBack_Servlet.TencentVip();
-//                vip.setCode(String.valueOf(code));
-//                vip.setMsg(msg);
-//                new VIPCallBack_Servlet().execute(vip);
-
-                //登录失败
-                //关闭当前应用
+                vip.setCode(String.valueOf(code));
+                vip.setMsg(msg);
+                vip.setEventId(String.valueOf(eveintId));  // 2 账户登录回调 3 退出登录  4 APP退出
+                new VIPCallBack_Servlet().execute(vip);
 
             }
 
@@ -119,23 +86,28 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
         }
     }
 
-    //退出登录
-//                HashMap params = new HashMap<String, Object>();
-//                params.put("channel", "");
-//                ThirdPartyAgent.getInstance().noticeClient(MyAppliaction.context, ThirdPartyAgent.EVENT_SERVER_LOGOUT, JsonUtils.addJsonValue(params));
-
-
     @Override
     public void getAccount(String channel, final IThirdPartyAuthCallback thirdPartyAuthCallback) {
         //fixme 由厂商实现的接口 成功获取到接口vuid,vtoken,accessToken必须通过data回调给视频客户端，需要视频处理的错误定义好提示文案放errTip中
         Toast.makeText(context, "正在为您提供会员服务", Toast.LENGTH_LONG).show();
 
         try {
-            thirdPartyAuthCallback.authInfo(0, "get vuid error", SaveUtils.getString(Save_Key.PARAMS)); //data需要返回vuid,vtoken,accesssToken
+            int vuid = 0;
+            if (!TextUtils.isEmpty(Const.ktcp_vuid)) {
+                vuid = Integer.getInteger(Const.ktcp_vuid, 0);
+            }
+            String vtoken = "get vuid error";
+            String accessToken = SaveUtils.getString(Save_Key.PARAMS);
+
+            if (TextUtils.isEmpty(accessToken)) {
+                Toast.makeText(context, "未获得服务，请重试", Toast.LENGTH_LONG).show();
+                return;
+            }
+            thirdPartyAuthCallback.authInfo(vuid, vtoken, accessToken); //data需要返回vuid,vtoken,accesssToken
         } catch (RemoteException e) {
             e.printStackTrace();
+            LogUtil.e(TAG, e.getMessage());
         }
-
 
     }
 
@@ -152,6 +124,7 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
             thirdPartyAuthCallback.orderResult(status, msg, params.toString());
         } catch (RemoteException e) {
             e.printStackTrace();
+            LogUtil.e(TAG, e.getMessage());
         }
     }
 

@@ -3,9 +3,7 @@ package com.jiang.tvlauncher.utils;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 /**
@@ -13,10 +11,9 @@ import android.view.animation.LinearInterpolator;
  * on 15/6/24.
  * Email: jiangyaoyao@chinarb.cn
  * Phone：18605296932
- * Purpose: TODO 动画类
+ * Purpose: 动画类
  */
 public class AnimUtils {
-
     //左右摇晃
     public static void animyaohuang(View v) {
         ObjectAnimator animator0 = ObjectAnimator.ofFloat(v, "translationX", 0, 20);
@@ -35,98 +32,140 @@ public class AnimUtils {
         set.start();
     }
 
-    //旋转
-    public static void animxuanzhuan(View v) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "rotation", 0, 1440);
+    /**
+     * 原点旋转
+     * @param v
+     * @param from
+     * @param to
+     */
+    public static void R(View v,float from,float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "rotation", from, to);
         AnimatorSet set = new AnimatorSet();
         set.playSequentially(animator);
-        set.setDuration(1600);
-        set.setInterpolator(new LinearInterpolator());
-        set.start();
-    }
-
-    //头像旋转
-    public static void animxuanzhuan90(View v) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "rotation", 0, 90);
-        AnimatorSet set = new AnimatorSet();
-        set.playSequentially(animator);
-        set.setDuration(1);
-        set.setInterpolator(new LinearInterpolator());
-        set.start();
-    }
-
-    //头像旋转还原
-    public static void animxuanzhuan270(View v) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "rotation", 90, 0);
-        AnimatorSet set = new AnimatorSet();
-        set.playSequentially(animator);
-        set.setDuration(1);
-        set.setInterpolator(new LinearInterpolator());
-        set.start();
-    }
-
-    //向上
-    public static void animxiangshang(View v) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "translationY", 1920, 0);
-        AnimatorSet set = new AnimatorSet();
-        set.playSequentially(animator);
-        set.setDuration(120);
-        set.setInterpolator(new AccelerateInterpolator());
-        set.start();
-    }
-
-    //向下
-    public static void animxiangxia(View v) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "translationY", 0, 1920);
-        AnimatorSet set = new AnimatorSet();
-        set.playSequentially(animator);
-        set.setDuration(120);
-        set.setInterpolator(new AccelerateInterpolator());
-        set.start();
-    }
-
-    //向左
-    public static void animxiangzuo(View v) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "translationX", 1080, 0);
-        AnimatorSet set = new AnimatorSet();
-        set.playSequentially(animator);
-        set.setDuration(200);
-        set.setInterpolator(new LinearInterpolator());
-        set.start();
-    }
-
-    //向右
-    public static void animxiangyou(View v) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "translationX", 0, 1080);
-        AnimatorSet set = new AnimatorSet();
-        set.playSequentially(animator);
-        set.setDuration(200);
-        set.setInterpolator(new LinearInterpolator());
-        set.start();
-    }
-
-    //向右一点点
-    public static void animxiangyouynum(View v, int num) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "translationX", 0, num);
-        AnimatorSet set = new AnimatorSet();
-        set.playSequentially(animator);
-        set.setDuration(200);
+        set.setDuration(100);
         set.setInterpolator(new LinearInterpolator());
         set.start();
     }
 
     /**
-     * 控制控件上下移动
-     * @param v 控件
-     * @param from 开始位置
-     * @param to 结束位置
+     * Y 轴移动
+     * @param v
+     * @param from
+     * @param to
      */
-    public static void animupnum(Context context, View v, int from, int to) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "translationY", Tools.dp2px(context, from), Tools.dp2px(context, to));
+    public static void Y(View v,float from,float to)  {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "translationY", from, to);
         AnimatorSet set = new AnimatorSet();
         set.playSequentially(animator);
-        set.setDuration(200);
+        set.setDuration(100);
         set.setInterpolator(new LinearInterpolator());
         set.start();
     }
+
+    /**
+     * X 轴移动
+     * @param v
+     * @param from
+     * @param to
+     */
+    public static void X(View v, int from, float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "translationX", from, to);
+        AnimatorSet set = new AnimatorSet();
+        set.playSequentially(animator);
+        set.setDuration(100);
+        set.setInterpolator(new LinearInterpolator());
+        set.start();
+    }
+
+
+    /**
+     * Z 轴移动
+     * @param v
+     * @param from
+     * @param to
+     */
+    public static void Z(View v, float from, float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "translationZ", from, to);
+        AnimatorSet set = new AnimatorSet();
+        set.playSequentially(animator);
+        set.setDuration(100);
+        set.setInterpolator(new LinearInterpolator());
+        set.start();
+    }
+
+    /**
+     * X 轴旋转
+     * @param v
+     * @param from
+     * @param to
+     */
+    public static void RX(View v,float from,float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "rotationX", from, to);
+        AnimatorSet set = new AnimatorSet();
+        set.playSequentially(animator);
+        set.setDuration(100);
+        set.setInterpolator(new LinearInterpolator());
+        set.start();
+    }
+
+    /**
+     * Y 轴旋转
+     * @param v
+     * @param from
+     * @param to
+     */
+    public static void RY(View v,float from,float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "rotationY", from, to);
+        AnimatorSet set = new AnimatorSet();
+        set.playSequentially(animator);
+        set.setDuration(100);
+        set.setInterpolator(new LinearInterpolator());
+        set.start();
+    }
+ /**
+     * Y 轴缩放
+     * @param v
+     * @param from
+     * @param to
+     */
+    public static void SY(View v,float from,float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "scaleY", from, to);
+        AnimatorSet set = new AnimatorSet();
+        set.playSequentially(animator);
+        set.setDuration(100);
+        set.setInterpolator(new LinearInterpolator());
+        set.start();
+    }
+
+ /**
+     * X 轴缩放
+     * @param v
+     * @param from
+     * @param to
+     */
+    public static void SX(View v,float from,float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(v, "scaleX", from, to);
+        AnimatorSet set = new AnimatorSet();
+        set.playSequentially(animator);
+        set.setDuration(100);
+        set.setInterpolator(new LinearInterpolator());
+        set.start();
+    }
+
+ /**
+     * 缩放
+     * @param v
+     * @param from
+     * @param to
+     */
+    public static void S(View v,float from,float to) {
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(v, "scaleY", from, to);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(v, "scaleX", from, to);
+        AnimatorSet set = new AnimatorSet();
+        set.play(scaleX).with(scaleY);//两个动画同时开始
+        set.setDuration(100);
+        set.setInterpolator(new LinearInterpolator());
+        set.start();
+    }
+
 }
