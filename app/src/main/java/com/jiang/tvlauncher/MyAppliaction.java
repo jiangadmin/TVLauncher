@@ -19,8 +19,8 @@ import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
-import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 import java.util.List;
 
@@ -62,15 +62,8 @@ public class MyAppliaction extends Application {
 //        startService(new Intent(this, TimingService.class));
         context = this;
 
-
-        //初始化小米统计服务
-        MiStatInterface.initialize(this, "2882303761517701199", "5501770168199", null);
-
-        //设置上报策略
-        MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_REALTIME, 0);
-
-        //崩溃日志收集
-        MiStatInterface.enableExceptionCatcher(true);
+        //崩溃检测
+        CrashReport.initCrashReport(getApplicationContext(), "948ab2c9a7", false);
 
         LogUtil.e(TAG, "有线连接：" + Tools.isLineConnected());
         Tools.setScreenOffTime(24 * 60 * 60 * 1000);

@@ -22,6 +22,8 @@
     <!--系统启动完成广播接收器-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
@@ -59,11 +61,6 @@
             android:name=".activity.Home_Activity"
             android:launchMode="singleInstance"
             android:screenOrientation="landscape">
-
-        </activity>
-
-        <activity android:name=".activity.Log_Activity"
-            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -71,6 +68,10 @@
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.Log_Activity"
+            android:screenOrientation="landscape">
 
         </activity>
 

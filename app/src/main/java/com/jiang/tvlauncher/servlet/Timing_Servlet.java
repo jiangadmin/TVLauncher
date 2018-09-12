@@ -1,5 +1,6 @@
 package com.jiang.tvlauncher.servlet;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -77,11 +78,19 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
                 if (entity.getResult().getBussFlag() == 0) {
 
                     Const.BussFlag = 0;
-                    try {
-                        ShellUtils.execCommand("input keyevent 3", false);
-                    } catch (Exception ex) {
-                        Log.e(TAG, "onPostExecute: " + ex.getMessage());
-                    }
+
+                    Intent backHome = new Intent(Intent.ACTION_MAIN);
+
+                    backHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    backHome.addCategory(Intent.CATEGORY_HOME);
+
+                    MyAppliaction.activity.startActivity(backHome);
+//                    try {
+//                        ShellUtils.execCommand("input keyevent 3", false);
+//                    } catch (Exception ex) {
+//                        Log.e(TAG, "onPostExecute: " + ex.getMessage());
+//                    }
 
                 } else if (entity.getResult().getBussFlag() == 1) {
                     Const.BussFlag = 1;
