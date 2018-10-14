@@ -40,9 +40,9 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
     protected VIP_Entity doInBackground(String... strings) {
         Map map = new HashMap();
         VIP_Entity entity;
-        if (!TextUtils.isEmpty(MyAppliaction.ID)) {
+        if (!TextUtils.isEmpty(MyAppliaction.SN)) {
 
-            map.put("serialNum", MyAppliaction.ID);
+            map.put("serialNum", MyAppliaction.SN);
             map.put("mac", Tools.getMacAddress());
         } else {
             entity = new VIP_Entity();

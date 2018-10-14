@@ -1,11 +1,14 @@
 package com.jiang.tvlauncher.servlet;
 
+import android.app.Activity;
+import android.app.LauncherActivity;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.activity.Home_Activity;
+import com.jiang.tvlauncher.activity.Launcher_Activity;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindChannelList;
@@ -28,14 +31,14 @@ import java.util.Map;
 public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChannelList> {
 
     private static final String TAG = "FindChannelList_Servlet";
-    Home_Activity activity;
+    Activity activity;
 
     public static int num = 1;
     String res;
 
     TimeCount timeCount;
 
-    public FindChannelList_Servlet(Home_Activity activity) {
+    public FindChannelList_Servlet(Activity activity) {
         this.activity = activity;
 
         timeCount = new TimeCount(3000, 1000);
@@ -84,7 +87,12 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
         switch (channelList.getErrorcode()) {
             case 1000:
                 SaveUtils.setString(Save_Key.Channe, res);
-                activity.updateshow(channelList);
+                if (activity instanceof Home_Activity) {
+                    ((Home_Activity)activity).updateshow(channelList);
+                }
+                if (activity instanceof Launcher_Activity){
+                    ((Launcher_Activity)activity).updateshow(channelList);
+                }
                 break;
 
             case -3:
@@ -94,7 +102,12 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
                 }
                 break;
             case -1:
-                activity.updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+                if (activity instanceof Home_Activity) {
+                    ((Home_Activity)activity).updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+                }
+                if (activity instanceof Launcher_Activity) {
+                    ((Launcher_Activity)activity).updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+                }
                 break;
         }
 

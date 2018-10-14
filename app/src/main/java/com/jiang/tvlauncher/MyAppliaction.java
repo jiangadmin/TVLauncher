@@ -10,7 +10,6 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.entity.Point;
@@ -43,6 +42,7 @@ public class MyAppliaction extends Application {
     public static boolean IsLineNet = true;//是否是有线网络
     public static String modelNum = "Z5极光";
     public static String ID = "";
+    public static String SN = "";
     public static String Temp = "FFFFFF";
     public static String WindSpeed = "FFFFFF";
     public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
@@ -75,6 +75,7 @@ public class MyAppliaction extends Application {
         ComponentName componentName = new ComponentName("com.xgimi.xgimiapiservice", "com.xgimi.xgimiapiservice.XgimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);
 
+
     }
 
 
@@ -94,29 +95,30 @@ public class MyAppliaction extends Application {
                 return;
             }
             try {
-                ID = apiManager.get("getMachineId", null, null);
 //                ID = "DG5CH33C1TAP";
-                SaveUtils.setString(Save_Key.SerialNum, ID);
+                //设备SN
+                SN = apiManager.get("getMachineId", null, null);
+                SaveUtils.setString(Save_Key.SerialNum, SN);
+                //风速
                 WindSpeed = apiManager.get("getWindSpeed", null, null);
                 SaveUtils.setString(Save_Key.WindSpeed, WindSpeed);
+                //温度
                 Temp = apiManager.get("getTemp", null, null);
                 SaveUtils.setString(Save_Key.Temp, Temp);
-                //允许开机自启动
-//                apiManager.set("setAutoStartApk","Feekr","true",null,null);
 
                 //禁止调焦
                 apiManager.set("setFocusOnOff", "true", null, null, null);
 
-                LogUtil.e(TAG, " 序列号 ：" + apiManager.get("getMachineId", null, null));
+                LogUtil.e(TAG, " 序列号 ：" + SN);
                 LogUtil.e(TAG, "全局缩放：" + apiManager.get("getZoomValue", null, null));
                 LogUtil.e(TAG, "横向缩放：" + apiManager.get("getHorizentalValue", null, null));
                 LogUtil.e(TAG, "纵向缩放：" + apiManager.get("getVerticalValue", null, null));
                 LogUtil.e(TAG, "标识数据：" + apiManager.get("getMachineSignal", null, null));
                 LogUtil.e(TAG, "设备名称：" + apiManager.get("getDeviceName", null, null));
                 LogUtil.e(TAG, "亮度模式：" + apiManager.get("getLedMode", null, null));
-                LogUtil.e(TAG, "风   速：" + apiManager.get("getWindSpeed", null, null));
+                LogUtil.e(TAG, "风   速：" + WindSpeed);
                 LogUtil.e(TAG, "投影模式：" + apiManager.get("getProjectionMode", null, null));
-                LogUtil.e(TAG, "温   度：" + apiManager.get("getTemp", null, null));
+                LogUtil.e(TAG, "温   度：" + Temp);
                 LogUtil.e(TAG, " 开机源 ：" + apiManager.get("getBootSource", null, null));
                 LogUtil.e(TAG, "上电开机：" + apiManager.get("getPowerOnStartValue", null, null));
                 LogUtil.e(TAG, "设备型号：" + apiManager.get("getDeviceModel", null, null));
@@ -142,11 +144,6 @@ public class MyAppliaction extends Application {
                     LogUtil.e(TAG, e.getMessage());
                     point = null;
                 }
-
-                if (!TextUtils.isEmpty(ID))
-                    SaveUtils.setString(Save_Key.SerialNum, ID);
-
-//                Toast.makeText(context, "发送开机请求", Toast.LENGTH_SHORT).show();
 
                 if (!TurnOnS) {
                     new TurnOn_servlet(context).execute();

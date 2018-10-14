@@ -1,5 +1,6 @@
 package com.jiang.tvlauncher.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.activity.Home_Activity;
+import com.jiang.tvlauncher.activity.Launcher_Activity;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.SaveUtils;
@@ -28,11 +30,11 @@ public class PwdDialog extends Dialog {
 
     ImageView pwd1, pwd2, pwd3, pwd4, pwd5, pwd6;
 
-    Home_Activity activity;
+    Activity activity;
 
     String password = "";
 
-    public PwdDialog(Home_Activity activity, int theme) {
+    public PwdDialog(Activity activity, int theme) {
         super(activity, theme);
         this.activity = activity;
     }
@@ -106,8 +108,15 @@ public class PwdDialog extends Dialog {
 //                    Toast.makeText(activity,"清楚成功",Toast.LENGTH_SHORT).show();
 //                }
 
-                if (password.equals(SaveUtils.getString(Save_Key.Password)))
-                    activity.PwdRe();
+                if (password.equals(SaveUtils.getString(Save_Key.Password))) {
+                    if (activity instanceof Home_Activity) {
+                        ((Home_Activity) activity).PwdRe();
+                    }
+
+                    if (activity instanceof Launcher_Activity){
+                        ((Launcher_Activity)activity).PwdRe();
+                    }
+                }
                 break;
         }
     }

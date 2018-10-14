@@ -49,7 +49,8 @@
         android:name="MyAppliaction"
         android:icon="@drawable/feekr"
         android:label="@string/app_name"
-        android:theme="@style/StartTheme">
+        android:theme="@style/StartTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <service android:name=".server.KeyCodeService">
             <intent-filter>
@@ -61,6 +62,12 @@
             android:name=".activity.Home_Activity"
             android:launchMode="singleInstance"
             android:screenOrientation="landscape">
+
+        </activity>
+
+        <activity android:name=".activity.Launcher_Activity"
+            android:screenOrientation="landscape"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -68,6 +75,7 @@
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
         </activity>
 
         <activity android:name=".activity.Log_Activity"

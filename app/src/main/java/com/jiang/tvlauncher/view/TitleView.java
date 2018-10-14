@@ -55,9 +55,9 @@ public class TitleView extends RelativeLayout {
     public void initTitleView() {
 
         view = LayoutInflater.from(context).inflate(R.layout.titleview, this, true);
-        tvTime = (TextView) view.findViewById(R.id.title_bar_hour);
-        tvDate = (TextView) view.findViewById(R.id.title_bar_date);
-        imgNetWorkState = (ImageView) view.findViewById(R.id.title_bar_network_state);
+        tvTime =  view.findViewById(R.id.title_bar_hour);
+        tvDate =  view.findViewById(R.id.title_bar_date);
+        imgNetWorkState =  view.findViewById(R.id.title_bar_network_state);
         typeface = Typeface.createFromAsset(context.getAssets(), "helvetica_neueltpro_thex.otf");
         tvTime.setTypeface(typeface);
         tvDate.setTypeface(typeface);

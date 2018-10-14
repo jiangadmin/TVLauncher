@@ -85,7 +85,7 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
 
                     backHome.addCategory(Intent.CATEGORY_HOME);
 
-                    MyAppliaction.activity.startActivity(backHome);
+                    MyAppliaction.context.startActivity(backHome);
 //                    try {
 //                        ShellUtils.execCommand("input keyevent 3", false);
 //                    } catch (Exception ex) {

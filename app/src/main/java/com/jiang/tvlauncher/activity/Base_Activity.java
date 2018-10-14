@@ -25,14 +25,15 @@ public class Base_Activity extends Activity {
     }
 
     public void enlargeAnim(View v) {
-        AnimUtils.S(v, 1, 1.2F);
+        AnimUtils.S(v, 1, 1.1F);
+        AnimUtils.Z(v,0,5);
 
     }
 
     public void reduceAnim(View v) {
 
-        AnimUtils.S(v, 1.2F, 1);
-
+        AnimUtils.S(v, 1.1F, 1);
+        AnimUtils.Z(v,5,0);
     }
 
 }
