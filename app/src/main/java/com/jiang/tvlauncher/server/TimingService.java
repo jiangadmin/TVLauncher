@@ -38,9 +38,9 @@ public class TimingService extends Service {
         super.onCreate();
         timer = new Timer();
         if (SaveUtils.getInt(Save_Key.Timming) == 0)
-            timer.schedule(new RemindTask(), 5*60*1000, 5*60*1000);
+            timer.schedule(new RemindTask(), 1000, 5 * 60 * 1000);
         else
-            timer.schedule(new RemindTask(), SaveUtils.getInt(Save_Key.Timming), SaveUtils.getInt(Save_Key.Timming));
+            timer.schedule(new RemindTask(), 1000, SaveUtils.getInt(Save_Key.Timming));
         LogUtil.e(TAG, "启动服务");
 
     }

@@ -59,6 +59,10 @@ public class Image_Activity extends Base_Activity {
         if (Tools.isNetworkConnected()) {
             imageurl = getIntent().getStringExtra(URL);
             imagename = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
+            if (TextUtils.isEmpty(imageurl)){
+                finish();
+                return;
+            }
             //加载网络图片
             Picasso.with(this).load(imageurl).into(imageView);
             SaveUtils.setString(Save_Key.NewImageName, imagename);
