@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -330,6 +331,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         return;
     }
 
+
+    boolean showToast = true;
+    long[] mHits = new long[7];
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -344,11 +349,17 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
                 return true;
             case KeyEvent.KEYCODE_MENU:
-                LogUtil.e(TAG, "Password:" + SaveUtils.getString(Save_Key.Password));
-                if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.Password))) {
-                    Setting_Activity.start(this);
+                System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);// 数组向左移位操作
+                mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+                if (mHits[0] >= (SystemClock.uptimeMillis() - 5000)) {
+                    LogUtil.e(TAG, "Password:" + SaveUtils.getString(Save_Key.Password));
+                    if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.Password))) {
+                        Setting_Activity.start(this);
+                    } else {
+                        new PwdDialog(this, R.style.MyDialog).show();
+                    }
                 } else {
-                    new PwdDialog(this, R.style.MyDialog).show();
+                    showToast = true;
                 }
                 return true;
             case KeyEvent.KEYCODE_BACK:
