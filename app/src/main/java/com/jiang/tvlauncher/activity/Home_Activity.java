@@ -121,7 +121,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
-            updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
         }
 
     }
@@ -150,7 +150,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             case "update":
                 //检查更新
                 new Update_Servlet(this).execute();
-                new FindChannelList_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                new FindChannelList_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                 break;
             default:
@@ -292,14 +292,16 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (WifiApUtils.getInstance(this).checkWifiApStatus())
-            wifiap.setVisibility(View.VISIBLE);
-        else
-            wifiap.setVisibility(View.GONE);
+//        if (WifiApUtils.getInstance(this).checkWifiApStatus())
+//            wifiap.setVisibility(View.VISIBLE);
+//        else
+//            wifiap.setVisibility(View.GONE);
 
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 return true;
+            case KeyEvent.KEYCODE_MENU:
+                break;
             case KeyEvent.KEYCODE_DPAD_UP:
             case KeyEvent.KEYCODE_DPAD_DOWN:
             case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -326,7 +328,8 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
      * 更新页面
      * @param channelList
      */
-    public void updateshow(FindChannelList channelList) {
+    @Subscribe
+    public void onMessage(FindChannelList channelList) {
         this.channelList = channelList;
         String file = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
 

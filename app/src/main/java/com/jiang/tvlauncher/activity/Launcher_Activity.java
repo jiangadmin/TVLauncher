@@ -49,13 +49,11 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.ShellUtils;
 import com.jiang.tvlauncher.utils.Tools;
-import com.jiang.tvlauncher.utils.WifiApUtils;
 import com.jiang.tvlauncher.view.TitleView;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,10 +86,12 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     TitleView titleview;
 
     ImageView home1, home2, home3, home4;
+    TextView name1, name2, name3, name4;
 
     TextView ver;
 
     List<ImageView> homelist = new ArrayList<>();
+    List<TextView> namelist = new ArrayList<>();
     List<Integer> hometype = new ArrayList<>();
 
     boolean toolbar_show = false;
@@ -118,7 +118,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         setContentView(R.layout.activty_launcher);
         MyAppliaction.activity = this;
 
@@ -133,7 +135,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
-            updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
         }
 
         //加载本地上一次主题方案
@@ -179,10 +181,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     }
 
-
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         super.onDestroy();
     }
 
@@ -200,7 +203,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+    @Subscribe
     public void onMessage(String showwarn) {
         switch (showwarn) {
             case "0":
@@ -218,9 +221,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             case "update":
                 //检查更新
                 new Update_Servlet(this).execute();
-                new FindChannelList_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+                new FindChannelList_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 //获取主题
-                new Get_Theme_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                new Get_Theme_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 break;
             default:
                 break;
@@ -242,6 +246,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         home3 = findViewById(R.id.home_3);
         home4 = findViewById(R.id.home_4);
 
+        name1 = findViewById(R.id.home_1_name);
+        name2 = findViewById(R.id.home_2_name);
+        name3 = findViewById(R.id.home_3_name);
+        name4 = findViewById(R.id.home_4_name);
+
         toolbar_view = findViewById(R.id.toolbar_view);
         back = findViewById(R.id.back);
         wifiap = findViewById(R.id.wifiap);
@@ -262,6 +271,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         homelist.add(home2);
         homelist.add(home3);
         homelist.add(home4);
+
+        namelist.add(name1);
+        namelist.add(name2);
+        namelist.add(name3);
+        namelist.add(name4);
 
         imageView = findViewById(R.id.image);
         videoView = findViewById(R.id.video);
@@ -335,19 +349,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     boolean showToast = true;
     long[] mHits = new long[7];
 
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        Toast.makeText(this, "" + keyCode, Toast.LENGTH_SHORT).show();
-        if (WifiApUtils.getInstance(this).checkWifiApStatus())
-            wifiap.setVisibility(View.VISIBLE);
-        else
-            wifiap.setVisibility(View.GONE);
-
         switch (keyCode) {
-            case KeyEvent.ACTION_DOWN:
-
-                return true;
             case KeyEvent.KEYCODE_MENU:
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);// 数组向左移位操作
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
@@ -393,7 +398,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      *
      * @param bean
      */
-    public void Callback(Theme_Entity.ResultBean bean) {
+    @Subscribe
+    public void onMessage(Theme_Entity.ResultBean bean) {
         if (bean != null) {
             //赋值背景 前景显示
             Glide.with(this).load(bean.getBgImg()).into(main_bg);
@@ -453,9 +459,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      *
      * @param channelList
      */
-    public void updateshow(FindChannelList channelList) {
+    @Subscribe
+    public void onMessage(FindChannelList channelList) {
         this.channelList = channelList;
-
 
         //更改开机动画
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
@@ -479,7 +485,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 //图片文件名
                 String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
                 //设置栏目名称
-//                namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
+                namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
                 //加载图片 优先本地
                 Picasso.with(this).load(url).placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i))))).into(homelist.get(i));
 

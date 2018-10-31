@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Process;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.entity.Point;
@@ -20,6 +22,9 @@ import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.xgimi.xgimiapiservice.XgimiApiManager;
+import com.xiaomi.channel.commonutils.logger.LoggerInterface;
+import com.xiaomi.mipush.sdk.Logger;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.List;
 
@@ -55,12 +60,40 @@ public class MyAppliaction extends Application {
      * 判定是否是极米设备
      */
     public static boolean isxgimi = false;
+    private String MIPUSH_APP_ID = "2882303761517701199";
+    private String MIPUSH_APP_KEY = "5501770168199";
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        LogUtil.e(TAG,Build.SERIAL);
 //        startService(new Intent(this, TimingService.class));
         context = this;
+        //初始化push推送服务
+        if (shouldInit()) {
+            MiPushClient.registerPush(this, MIPUSH_APP_ID, MIPUSH_APP_KEY);
+        }
+
+        //打开Log
+        LoggerInterface newLogger = new LoggerInterface() {
+
+            @Override
+            public void setTag(String tag) {
+                // ignore
+            }
+
+            @Override
+            public void log(String content, Throwable t) {
+                Log.d(TAG, content, t);
+            }
+
+            @Override
+            public void log(String content) {
+                Log.d(TAG, content);
+            }
+        };
+        Logger.setLogger(this, newLogger);
 
         //崩溃检测
         CrashReport.initCrashReport(getApplicationContext(), "948ab2c9a7", false);
@@ -75,9 +108,20 @@ public class MyAppliaction extends Application {
         ComponentName componentName = new ComponentName("com.xgimi.xgimiapiservice", "com.xgimi.xgimiapiservice.XgimiApiService");
         bindService(new Intent().setComponent(componentName), serviceConnection, Context.BIND_AUTO_CREATE);
 
-
     }
 
+    private boolean shouldInit() {
+        ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
+        List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+        String mainProcessName = getPackageName();
+        int myPid = Process.myPid();
+        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
+            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     ServiceConnection serviceConnection = new ServiceConnection() {
         //绑定上服务的时候
@@ -99,6 +143,7 @@ public class MyAppliaction extends Application {
                 //设备SN
                 SN = apiManager.get("getMachineId", null, null);
                 SaveUtils.setString(Save_Key.SerialNum, SN);
+                MiPushClient.setUserAccount(context, SN, null);
                 //风速
                 WindSpeed = apiManager.get("getWindSpeed", null, null);
                 SaveUtils.setString(Save_Key.WindSpeed, WindSpeed);
