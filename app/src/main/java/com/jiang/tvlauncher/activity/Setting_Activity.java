@@ -6,11 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
@@ -19,6 +17,7 @@ import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.servlet.SyncDevZoom_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.Tools;
+import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 
 /**
  * @author: jiangadmin
@@ -28,11 +27,8 @@ import com.jiang.tvlauncher.utils.Tools;
  * TODO: 控制台
  */
 
-public class Setting_Activity extends Base_Activity implements View.OnClickListener {
+public class Setting_Activity extends Base_Activity {
     private static final String TAG = "Setting_Activity";
-
-    //网络，蓝牙，设置，文件，更新，关于
-    LinearLayout setting1, setting2, setting3, setting4, setting5, setting6;
 
     public static void start(Context context) {
         Intent intent = new Intent();
@@ -45,59 +41,9 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         MyAppliaction.activity = this;
-        initview();
-        initeven();
 
-//        try {
-//            MyAppliaction.apiManager.set("setFocusOnOff", "true", null, null, null);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
     }
 
-    @Override
-    protected void onStop() {
-
-//        try {
-//            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-//
-//        try {
-//            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-
-        super.onDestroy();
-    }
-
-    private void initview() {
-        setting1 =  findViewById(R.id.setting_1);
-        setting2 =  findViewById(R.id.setting_2);
-        setting3 =  findViewById(R.id.setting_3);
-        setting4 =  findViewById(R.id.setting_4);
-        setting5 =  findViewById(R.id.setting_5);
-        setting6 =  findViewById(R.id.setting_6);
-    }
-
-    private void initeven() {
-        setting1.setOnClickListener(this);
-        setting2.setOnClickListener(this);
-        setting3.setOnClickListener(this);
-        setting4.setOnClickListener(this);
-        setting5.setOnClickListener(this);
-        setting6.setOnClickListener(this);
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             //网络设置
@@ -110,9 +56,12 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
                     //启动到无线连接页面
                     startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                 break;
-            //蓝牙设置
+            //逻辑科技
             case R.id.setting_2:
-                startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS  ));
+                LgeekTVSdkMrg.getInstance().init(this);
+                LgeekTVSdkMrg.getInstance().openSettings();
+//                LgeekTVSdkMrg.getInstance().openMainAct();
+//                startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
                 break;
             //梯形校正
             case R.id.setting_3:

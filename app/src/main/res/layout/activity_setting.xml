@@ -15,6 +15,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:onClick="onClick"
             android:id="@+id/setting_1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -45,6 +46,7 @@
             android:layout_height="match_parent" />
 
         <LinearLayout
+            android:onClick="onClick"
             android:id="@+id/setting_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -55,15 +57,15 @@
             android:orientation="vertical">
 
             <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginBottom="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_setting_bluetooth" />
+                android:src="@drawable/lgeek" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/setting_2"
+                android:text="逻辑科技"
                 android:textColor="@color/white"
                 android:textSize="26sp" />
 
@@ -74,6 +76,7 @@
             android:background="@drawable/line_v1"
             android:layout_height="match_parent" />
         <LinearLayout
+            android:onClick="onClick"
             android:id="@+id/setting_3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -112,6 +115,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:onClick="onClick"
             android:id="@+id/setting_4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -142,6 +146,7 @@
             android:layout_height="match_parent" />
 
         <LinearLayout
+            android:onClick="onClick"
             android:id="@+id/setting_5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -172,6 +177,7 @@
             android:layout_height="match_parent" />
 
         <LinearLayout
+            android:onClick="onClick"
             android:id="@+id/setting_6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -63,7 +63,6 @@ public class Get_Theme_Servlet extends AsyncTask<String, Integer, Theme_Entity> 
         switch (entity.getErrorcode()) {
             case 1000:
                 EventBus.getDefault().post(entity.getResult());
-
                 break;
             default:
                 break;

@@ -148,6 +148,7 @@
         tools:ignore="ContentDescription,MissingConstraints" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/home_1_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -161,6 +162,7 @@
         app:layout_constraintTop_toBottomOf="@+id/home_1" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/home_2_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -174,6 +176,7 @@
         app:layout_constraintTop_toBottomOf="@+id/home_2" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/home_3_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -187,6 +190,7 @@
         app:layout_constraintTop_toBottomOf="@+id/home_3" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/home_4_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

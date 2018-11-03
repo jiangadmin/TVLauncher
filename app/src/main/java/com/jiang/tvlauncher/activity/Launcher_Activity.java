@@ -50,6 +50,7 @@ import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.ShellUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.view.TitleView;
+import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -167,6 +168,25 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (SaveUtils.getInt(Save_Key.TipShowFlag) != -1) {
             title_view.setVisibility(SaveUtils.getInt(Save_Key.TipShowFlag) == 1 ? View.VISIBLE : View.GONE);
         }
+
+        //读取本地控制台是否显示
+        if (SaveUtils.getInt(Save_Key.ConsoleShowFlag) != -1) {
+            setting.setVisibility(SaveUtils.getInt(Save_Key.ConsoleShowFlag) == 1 ? View.VISIBLE : View.GONE);
+        }
+
+        //读取本地栏目名是否显示
+        if (SaveUtils.getInt(Save_Key.CnameShowFlag) != -1) {
+            name1.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
+            name2.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
+            name3.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
+            name4.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
+        }
+
+        //读取本地 是否初始化逻辑科技
+        if (SaveUtils.getInt(Save_Key.StartLgeekFlag) == 1) {
+            LgeekTVSdkMrg.getInstance().init(MyAppliaction.context);
+        }
+
         //读取本地标题
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.TipContents))) {
             title_list = null;
@@ -200,6 +220,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         title.setBackground(new BitmapDrawable(getResources(), ImageUtils.tintBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.kuang_1), Color.parseColor(color))));
         title_2.setBackground(new BitmapDrawable(getResources(), ImageUtils.tintBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.kuang_2), Color.parseColor(color))));
         title_icon.setBackground(new BitmapDrawable(getResources(), ImageUtils.tintBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.round), Color.parseColor(color))));
+
+        name1.setTextColor(Color.parseColor(color));
+        name2.setTextColor(Color.parseColor(color));
+        name3.setTextColor(Color.parseColor(color));
+        name4.setTextColor(Color.parseColor(color));
 
     }
 
@@ -434,15 +459,34 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             title_view.setVisibility(bean.getTipShowFlag() == 1 ? View.VISIBLE : View.GONE);
             SaveUtils.setInt(Save_Key.TipShowFlag, bean.getTipShowFlag());
 
+            //是否显示控制台
+            setting.setVisibility(bean.getConsoleShowFlag() == 1 ? View.VISIBLE : View.GONE);
+            SaveUtils.setInt(Save_Key.ConsoleShowFlag, bean.getConsoleShowFlag());
+
+            //是否初始化逻辑科技
+            if (bean.getStartLgeekFlag() == 1) {
+                LgeekTVSdkMrg.getInstance().init(MyAppliaction.context);
+            }
+            SaveUtils.setInt(Save_Key.StartLgeekFlag, bean.getStartLgeekFlag());
+
+            //是否显示栏目名
+            name1.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
+            name2.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
+            name3.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
+            name4.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
+            SaveUtils.setInt(Save_Key.CnameShowFlag, bean.getCnameShowFlag());
+
             //是否启动逻辑科技服务
 
             //标题轮询时间
             int title_time = bean.getTipSwitchRate();
             SaveUtils.setInt(Save_Key.TipSwitchRate, bean.getTipSwitchRate());
-            title.setText(title_list[0]);
+            if (title_list != null && title_list.length > 0) {
+                title.setText(title_list[0]);
+            }
 
             //倒计时
-            if (title_list.length > 1) {
+            if (title_list != null && title_list.length > 1) {
                 if (titleTime != null)
                     titleTime.cancel();
                 titleTime = null;

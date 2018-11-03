@@ -71,8 +71,6 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
         super.onPostExecute(channelList);
         Loading.dismiss();
 
-        LogUtil.e(TAG, channelList.getErrormsg());
-
         switch (channelList.getErrorcode()) {
             case 1000:
                 SaveUtils.setString(Save_Key.Channe, res);
