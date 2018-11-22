@@ -66,9 +66,6 @@ public class MyAppliaction extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        LogUtil.e(TAG,Build.SERIAL);
-//        startService(new Intent(this, TimingService.class));
         context = this;
         //初始化push推送服务
         if (shouldInit()) {

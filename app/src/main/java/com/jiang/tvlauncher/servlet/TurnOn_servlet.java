@@ -10,7 +10,6 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
-import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
@@ -157,11 +156,10 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     //上电开机开关
                     if (entity.getResult().getShadowcnf().getPowerFlag() == 1) {
                         //上电开机
-                        if (entity.getResult().getShadowcnf().getPowerTurn() == 1) {
-                            MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
-                        } else {
-                            MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
-                        }
+                        boolean directboot = entity.getResult().getShadowcnf().getPowerTurn() == 1;
+
+                        LogUtil.e(TAG, "上电开机：" + directboot);
+                        MyAppliaction.apiManager.set("setPowerOnStart", String.valueOf(directboot), null, null, null);
                     }
 
                     //梯形校正开关

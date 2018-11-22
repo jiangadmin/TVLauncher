@@ -3,6 +3,7 @@ package com.jiang.tvlauncher.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,6 +31,10 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
     private static final String TAG = "ThirdpartyReceiver";
     private Context context;
 
+    int eveintId;
+    String msg = "";
+    TimeCount timeCount;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
@@ -52,14 +57,21 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
             } else if (dataObj.optInt("type") == ThirdPartyAgent.TYPE_NOTICE) {
 
                 //2=账户登录回调 3=账号退出回调  4=APP退出
-                int eveintId = dataObj.optInt("eventId");
+                eveintId = dataObj.optInt("eventId");
                 String extraJson = dataObj.optString("extra");
                 int code = -1;
-                String msg = "";
+
                 if (extraJson != null && extraJson.length() > 0) {
                     JSONObject extraObj = JsonUtils.getJsonObj(extraJson);
                     code = extraObj.optInt("code");
                     msg = extraObj.optString("msg");
+                }
+                if (eveintId == 2) {
+                    timeCount = new TimeCount(100 * 60, 1);
+                    timeCount.start();
+                } else {
+                    if (timeCount != null)
+                        timeCount.onFinish();
                 }
 
                 // 2 账户登录回调 3 退出登录 4 APP退出
@@ -128,4 +140,25 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
         }
     }
 
+    /**
+     * 计时器
+     */
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture * 1000, countDownInterval * 1000);//参数依次为总时长,和计时的时间间隔
+        }
+
+        //倒计时完成
+        @Override
+        public void onFinish() {
+            ThirdPartyAgent.getInstance().noticeClient(context, eveintId, msg);
+            if (eveintId == 2)
+                new TimeCount(100 * 60, 1).start();
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+
+        }
+    }
 }
