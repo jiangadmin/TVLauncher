@@ -450,6 +450,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             title.setTextColor(Color.parseColor(bean.getTipFontColor()));
             SaveUtils.setString(Save_Key.TipFontColor, bean.getTipFontColor());
 
+            //设置时间颜色
+            titleview.setTimeColor(bean.getTimesCtrlColor());
+
             //标题集合
             title_list = null;
             title_list = bean.getTipContents().split("#");

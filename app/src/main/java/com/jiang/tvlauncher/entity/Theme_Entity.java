@@ -67,10 +67,19 @@ public class Theme_Entity extends BaseEntity {
         private String themeName;
         private String tipContents;
         private String tipFontColor;
+        private String timesCtrlColor;
         private int tipShowFlag;
         private int tipSwitchRate;
         private String updateAuthor;
         private String updateTime;
+
+        public String getTimesCtrlColor() {
+            return timesCtrlColor;
+        }
+
+        public void setTimesCtrlColor(String timesCtrlColor) {
+            this.timesCtrlColor = timesCtrlColor;
+        }
 
         public String getBgImg() {
             return bgImg;
