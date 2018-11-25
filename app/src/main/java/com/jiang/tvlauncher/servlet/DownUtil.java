@@ -65,7 +65,11 @@ public class DownUtil {
 
         } else {
             if (showpd)
+                try {
                 pd.show();
+                }catch (Exception e){
+
+                }
             //下载的子线程
             new Thread() {
                 @Override

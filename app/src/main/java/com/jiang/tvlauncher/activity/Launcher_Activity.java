@@ -60,8 +60,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.BlurTransformation;
-
 /**
  * @author: jiangadmin
  * @date: 2018/10/12.
@@ -108,7 +106,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     WarningDialog warningDialog = null;
 
-    int i = 1;
+    int i = 0;
     String[] title_list;
 
     /**
@@ -370,7 +368,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         return;
     }
 
-
     boolean showToast = true;
     long[] mHits = new long[7];
 
@@ -414,9 +411,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             toolbar_view.setVisibility(View.GONE);
             toolbar_show = false;
         }
-
     }
-
 
     /**
      * 主题返回 网络正常情况下
@@ -428,8 +423,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (bean != null) {
             //赋值背景 前景显示
             Glide.with(this).load(bean.getBgImg()).into(main_bg);
-            //赋值背景 背景高斯模糊
-            Glide.with(this).load(bean.getBgImg()).bitmapTransform(new BlurTransformation(this, 20, 1)).into(main_bg_0);
+//            //赋值背景 背景高斯模糊
+//            Glide.with(this).load(bean.getBgImg()).bitmapTransform(new BlurTransformation(this, 20, 1)).into(main_bg_0);
 
             //图片名
             String imgname = Tools.getFileNameWithSuffix(bean.getBgImg());
