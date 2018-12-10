@@ -13,10 +13,10 @@
         tools:ignore="MissingConstraints" />
 
     <ImageView
-        android:scaleType="fitXY"
         android:id="@+id/main_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="fitXY"
         tools:ignore="MissingConstraints" />
 
     <com.jiang.tvlauncher.view.TitleView
@@ -25,15 +25,16 @@
         android:layout_height="42dp" />
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/title_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="57dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleview"
         app:layout_constraintVertical_bias="0.08"
@@ -43,7 +44,7 @@
             android:id="@+id/title_icon"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="12dp"
             android:background="@drawable/round"
             android:padding="5dp"
             android:src="@drawable/ic_yuyin"
@@ -52,7 +53,7 @@
         <TextView
             android:id="@+id/title_0"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="52dp"
             android:background="@drawable/kuang_0"
             android:gravity="center"
             android:paddingTop="5dp"
@@ -64,22 +65,20 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="52dp"
             android:background="@drawable/kuang_1"
             android:gravity="center"
-            android:paddingLeft="28dp"
+            android:minWidth="480dp"
             android:paddingTop="5dp"
-            android:paddingRight="28dp"
             android:paddingBottom="5dp"
-            android:text="尝试说：嗨，小薇，我要吃好吃的"
-            android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textColor="@color/white"
+            android:textSize="23sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/title_2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="52dp"
             android:background="@drawable/kuang_2"
             android:gravity="center"
             android:paddingTop="5dp"
@@ -92,28 +91,28 @@
 
     <ImageView
         android:id="@+id/home_1"
-        android:layout_width="230dp"
-        android:layout_height="350dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="229dp"
+        android:layout_height="318dp"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="7dp"
         android:layout_marginBottom="8dp"
         android:focusable="true"
         android:scaleType="fitXY"
-        android:src="@drawable/bg_red"
+        android:src="@drawable/show_kuang"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleview"
-        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintVertical_bias="0.535"
         tools:ignore="ContentDescription,MissingConstraints" />
 
     <ImageView
         android:id="@+id/home_2"
-        android:layout_width="230dp"
-        android:layout_height="350dp"
-        android:layout_marginStart="14dp"
+        android:layout_width="229dp"
+        android:layout_height="318dp"
+        android:layout_marginStart="13dp"
         android:focusable="true"
         android:scaleType="fitXY"
-        android:src="@drawable/bg_red"
+        android:src="@drawable/show_kuang"
         app:layout_constraintBottom_toBottomOf="@+id/home_1"
         app:layout_constraintStart_toEndOf="@+id/home_1"
         app:layout_constraintTop_toTopOf="@+id/home_1"
@@ -122,12 +121,12 @@
 
     <ImageView
         android:id="@+id/home_3"
-        android:layout_width="230dp"
-        android:layout_height="350dp"
-        android:layout_marginStart="14dp"
+        android:layout_width="229dp"
+        android:layout_height="318dp"
+        android:layout_marginStart="13dp"
         android:focusable="true"
         android:scaleType="fitXY"
-        android:src="@drawable/bg_red"
+        android:src="@drawable/show_kuang"
         app:layout_constraintBottom_toBottomOf="@+id/home_2"
         app:layout_constraintStart_toEndOf="@+id/home_2"
         app:layout_constraintTop_toTopOf="@+id/home_2"
@@ -136,12 +135,12 @@
 
     <ImageView
         android:id="@+id/home_4"
-        android:layout_width="230dp"
-        android:layout_height="350dp"
-        android:layout_marginStart="14dp"
+        android:layout_width="229dp"
+        android:layout_height="318dp"
+        android:layout_marginStart="13dp"
         android:focusable="true"
         android:scaleType="fitXY"
-        android:src="@drawable/bg_red"
+        android:src="@drawable/show_kuang"
         app:layout_constraintBottom_toBottomOf="@+id/home_3"
         app:layout_constraintStart_toEndOf="@+id/home_3"
         app:layout_constraintTop_toTopOf="@+id/home_3"
@@ -149,57 +148,57 @@
         tools:ignore="ContentDescription,MissingConstraints" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/home_1_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="home1"
+        android:layout_marginTop="16dp"
+        android:elevation="5dp"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/home_1"
         app:layout_constraintStart_toStartOf="@+id/home_1"
         app:layout_constraintTop_toBottomOf="@+id/home_1" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/home_2_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="home2"
+        android:layout_marginTop="16dp"
+        android:elevation="5dp"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/home_2"
         app:layout_constraintStart_toStartOf="@+id/home_2"
         app:layout_constraintTop_toBottomOf="@+id/home_2" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/home_3_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="home3"
+        android:layout_marginTop="16dp"
+        android:elevation="5dp"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/home_3"
         app:layout_constraintStart_toStartOf="@+id/home_3"
         app:layout_constraintTop_toBottomOf="@+id/home_3" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/home_4_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="home4"
+        android:layout_marginTop="16dp"
+        android:elevation="5dp"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/home_4"
         app:layout_constraintStart_toStartOf="@+id/home_4"
         app:layout_constraintTop_toBottomOf="@+id/home_4" />
