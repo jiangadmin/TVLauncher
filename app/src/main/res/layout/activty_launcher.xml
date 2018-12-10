@@ -34,10 +34,10 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleview"
-        app:layout_constraintVertical_bias="0.08"
+        app:layout_constraintVertical_bias="0.1"
         tools:ignore="MissingConstraints">
 
         <ImageView
@@ -91,9 +91,9 @@
 
     <ImageView
         android:id="@+id/home_1"
-        android:layout_width="229dp"
-        android:layout_height="318dp"
-        android:layout_marginStart="161dp"
+        android:layout_width="@dimen/home_item_w"
+        android:layout_height="@dimen/home_item_h"
+        android:layout_marginStart="159dp"
         android:layout_marginTop="7dp"
         android:layout_marginBottom="8dp"
         android:focusable="true"
@@ -102,13 +102,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleview"
-        app:layout_constraintVertical_bias="0.535"
+        app:layout_constraintVertical_bias="0.536"
         tools:ignore="ContentDescription,MissingConstraints" />
 
     <ImageView
         android:id="@+id/home_2"
-        android:layout_width="229dp"
-        android:layout_height="318dp"
+        android:layout_width="@dimen/home_item_w"
+        android:layout_height="@dimen/home_item_h"
         android:layout_marginStart="13dp"
         android:focusable="true"
         android:scaleType="fitXY"
@@ -121,8 +121,8 @@
 
     <ImageView
         android:id="@+id/home_3"
-        android:layout_width="229dp"
-        android:layout_height="318dp"
+        android:layout_width="@dimen/home_item_w"
+        android:layout_height="@dimen/home_item_h"
         android:layout_marginStart="13dp"
         android:focusable="true"
         android:scaleType="fitXY"
@@ -135,8 +135,8 @@
 
     <ImageView
         android:id="@+id/home_4"
-        android:layout_width="229dp"
-        android:layout_height="318dp"
+        android:layout_width="@dimen/home_item_w"
+        android:layout_height="@dimen/home_item_h"
         android:layout_marginStart="13dp"
         android:focusable="true"
         android:scaleType="fitXY"
@@ -151,7 +151,7 @@
         android:id="@+id/home_1_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/home_item_name_top"
         android:elevation="5dp"
         android:textColor="@color/white"
         android:textSize="24sp"
@@ -165,7 +165,7 @@
         android:id="@+id/home_2_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/home_item_name_top"
         android:elevation="5dp"
         android:textColor="@color/white"
         android:textSize="24sp"
@@ -179,7 +179,7 @@
         android:id="@+id/home_3_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/home_item_name_top"
         android:elevation="5dp"
         android:textColor="@color/white"
         android:textSize="24sp"
@@ -193,7 +193,7 @@
         android:id="@+id/home_4_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/home_item_name_top"
         android:elevation="5dp"
         android:textColor="@color/white"
         android:textSize="24sp"

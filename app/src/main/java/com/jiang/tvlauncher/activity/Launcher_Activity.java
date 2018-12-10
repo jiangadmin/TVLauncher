@@ -152,7 +152,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             //赋值背景 前景显示
             Glide.with(this).load(new File(file + SaveUtils.getString(Save_Key.BackGround))).into(main_bg);
             //赋值背景 背景高斯模糊
-            Glide.with(this).load(new File(file + SaveUtils.getString(Save_Key.BackGround))).into(main_bg_0);
+//            Glide.with(this).load(new File(file + SaveUtils.getString(Save_Key.BackGround))).into(main_bg_0);
         }
         //读取本地标题颜色
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.TipFontColor))) {

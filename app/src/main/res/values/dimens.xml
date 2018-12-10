@@ -12,4 +12,8 @@
     <dimen name="setting_small_w">180dp</dimen>
     <dimen name="setting_small_h">120dp</dimen>
 
+    <dimen name="home_item_w">230dp</dimen>
+    <dimen name="home_item_h">354dp</dimen>
+    <dimen name="home_item_name_top">20dp</dimen>
+
 </resources>
