@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.utils.LogUtil;
 
@@ -87,9 +87,9 @@ public class DownUtil {
                             LogUtil.e(TAG, "安装包");
 
                             //是极米设备
-                            if (MyAppliaction.isxgimi) {
+                            if (MyApp.isxgimi) {
                                 //调用极米静默安装
-                                MyAppliaction.apiManager.set("setInstallApk", file.getPath(), null, null, null);
+                                MyApp.apiManager.set("setInstallApk", file.getPath(), null, null, null);
 
                             } else {
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -102,7 +102,7 @@ public class DownUtil {
                         if (fileName.contains(".zip")) {
                             LogUtil.e(TAG, "资源文件");
 
-                            MyAppliaction.apiManager.set("setBootStartPlayer", file.getPath(), null, null, null);
+                            MyApp.apiManager.set("setBootStartPlayer", file.getPath(), null, null, null);
                         }
                     } catch (Exception e) {
                         LogUtil.e(TAG, "文件下载失败了" + e.getMessage());

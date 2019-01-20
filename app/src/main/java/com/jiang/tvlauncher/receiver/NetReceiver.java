@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;
@@ -30,14 +30,14 @@ public class NetReceiver extends BroadcastReceiver {
             if (networkInfo != null && networkInfo.isAvailable()) {
                 if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
                     LogUtil.e(TAG, "有线网络");
-                    MyAppliaction.IsLineNet = true;
+                    MyApp.IsLineNet = true;
                     if (Tools.isNetworkConnected())
                         NetDialog.dismiss();
 
                 }
                 if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                     LogUtil.e(TAG, "无线网络");
-                    MyAppliaction.IsLineNet = false;
+                    MyApp.IsLineNet = false;
                     if (Tools.isNetworkConnected())
                         NetDialog.dismiss();
                 }

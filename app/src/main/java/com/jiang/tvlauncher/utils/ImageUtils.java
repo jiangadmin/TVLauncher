@@ -260,13 +260,19 @@ public class ImageUtils {
     public static Bitmap getBitmap(File file) {
         Bitmap resizeBmp = null;
         try {
-            resizeBmp = BitmapFactory.decodeFile(file.getPath());
+            FileInputStream stream = new FileInputStream(file);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize=8;
+            resizeBmp = BitmapFactory.decodeStream(stream,null,options);
+//            resizeBmp = BitmapFactory.decodeFile(file.getPath());
         } catch (Exception e) {
             e.printStackTrace();
             LogUtil.e(TAG, e.getMessage());
         }
         return resizeBmp;
     }
+
+
 
     /**
      * 描述：获取图片尺寸
@@ -1306,28 +1312,6 @@ public class ImageUtils {
             FileInputStream fis = new FileInputStream(url);
             return BitmapFactory.decodeStream(fis);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * 根据字符串生成二维码
-     *
-     * @param str
-     * @return
-     */
-    public static Bitmap getQRcode(String str) {
-        // 生成二维码
-        String s;
-        try {
-            s = new String(str.getBytes("utf-8"), "ISO-8859-1");
-            if (s != null && s.trim().length() > 0) {
-                return EncodingHandler.createQRCode(s, 720);
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

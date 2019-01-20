@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
@@ -48,7 +48,7 @@ public class Image_Activity extends Base_Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyAppliaction.activity = this;
+        MyApp.activity = this;
         setContentView(R.layout.activity_image);
         imageView = findViewById(R.id.imageView);
         LogUtil.e(TAG, "图片展示");

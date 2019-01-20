@@ -58,7 +58,7 @@
 
     <application
         android:hardwareAccelerated="false"
-        android:name="MyAppliaction"
+        android:name=".MyApp"
         android:icon="@drawable/feekr"
         android:label="@string/app_name"
         android:theme="@style/StartTheme"

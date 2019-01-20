@@ -26,13 +26,13 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.dialog.PwdDialog;
-import com.jiang.tvlauncher.dialog.WIFIAPDialog;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -121,7 +121,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             EventBus.getDefault().register(this);
         }
         setContentView(R.layout.activty_launcher);
-        MyAppliaction.activity = this;
+        MyApp.activity = this;
 
         initview();
         initeven();
@@ -182,7 +182,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         //读取本地 是否初始化逻辑科技
         if (SaveUtils.getInt(Save_Key.StartLgeekFlag) == 1) {
-            LgeekTVSdkMrg.getInstance().init(MyAppliaction.context);
+            LgeekTVSdkMrg.getInstance().init(MyApp.context);
         }
 
         //读取本地标题
@@ -288,7 +288,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         titleview = findViewById(R.id.titleview);
 
         ver = findViewById(R.id.ver);
-        ver.setText("V " + Tools.getVersionName(MyAppliaction.context));
+        ver.setText("V " + Tools.getVersionName(MyApp.context));
 
         homelist.add(home1);
         homelist.add(home2);
@@ -422,10 +422,14 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     public void onMessage(Theme_Entity.ResultBean bean) {
         if (bean != null) {
             //赋值背景 前景显示
-            Glide.with(this).load(bean.getBgImg()).into(main_bg);
-//            //赋值背景 背景高斯模糊
-//            Glide.with(this).load(bean.getBgImg()).bitmapTransform(new BlurTransformation(this, 20, 1)).into(main_bg_0);
+            try {
+                RequestOptions builder = new RequestOptions();
+                builder.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
+                builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
+                Glide.with(this).load(bean.getBgImg()).apply(builder).into(main_bg);
+            }catch (Exception e){
 
+            }
             //图片名
             String imgname = Tools.getFileNameWithSuffix(bean.getBgImg());
             //判断图片文件是否存在
@@ -463,7 +467,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
             //是否初始化逻辑科技
             if (bean.getStartLgeekFlag() == 1) {
-                LgeekTVSdkMrg.getInstance().init(MyAppliaction.context);
+                LgeekTVSdkMrg.getInstance().init(MyApp.context);
             }
             SaveUtils.setInt(Save_Key.StartLgeekFlag, bean.getStartLgeekFlag());
 
@@ -507,13 +511,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         //更改开机动画
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
-
             //判断文件是否存在
-            if (!FileUtils.checkFileExists(Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)))) {
-                LogUtil.e(TAG, "开始下载");
-                new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
-                        Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
-            }
+            LogUtil.e(TAG, "开始下载");
+            new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
+                    Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
         }
 
         if (channelList != null) {
@@ -529,7 +530,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 //设置栏目名称
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
                 //加载图片 优先本地
-                Picasso.with(this).load(url).placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i))))).into(homelist.get(i));
+                RequestOptions options = new RequestOptions();
+                options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
+                options.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
+                Glide.with(this).load(url).apply(options).into(homelist.get(i));
+//                Picasso.with(this).load(url).placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i))))).into(homelist.get(i));
 
                 hometype.add(channelList.getResult().get(i).getContentType());
 
@@ -558,9 +563,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         }
 
         switch (view.getId()) {
-            case R.id.wifiap:
-                new WIFIAPDialog(this).show();
-                break;
             case R.id.back:
                 new PwdDialog(this, R.style.MyDialog).show();
                 break;

@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.BaseEntity;
 import com.jiang.tvlauncher.entity.Const;
@@ -33,7 +33,7 @@ public class SyncDevZoom_Servlet extends AsyncTask<String, Integer, BaseEntity> 
         BaseEntity entity;
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         try {
-            String point = MyAppliaction.apiManager.get("getKeyStoneData", null, null);
+            String point = MyApp.apiManager.get("getKeyStoneData", null, null);
             LogUtil.e(TAG,point);
             map.put("zoomVal", URLEncoder.encode(point, "UTF-8"));
         } catch (Exception e) {
@@ -62,8 +62,8 @@ public class SyncDevZoom_Servlet extends AsyncTask<String, Integer, BaseEntity> 
         super.onPostExecute(entity);
         Loading.dismiss();
         if (entity.getErrorcode() == 1000)
-            Toast.makeText(MyAppliaction.context, "同步完成", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.context, "同步完成", Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(MyAppliaction.context, "同步失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.context, "同步失败", Toast.LENGTH_SHORT).show();
     }
 }

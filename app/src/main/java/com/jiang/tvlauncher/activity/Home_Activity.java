@@ -24,12 +24,11 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.dialog.PwdDialog;
-import com.jiang.tvlauncher.dialog.WIFIAPDialog;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -44,7 +43,6 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.ShellUtils;
 import com.jiang.tvlauncher.utils.Tools;
-import com.jiang.tvlauncher.utils.WifiApUtils;
 import com.jiang.tvlauncher.view.TitleView;
 import com.squareup.picasso.Picasso;
 
@@ -108,7 +106,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         setContentView(R.layout.activty_home);
-        MyAppliaction.activity = this;
+        MyApp.activity = this;
 
         initview();
         initeven();
@@ -189,7 +187,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         titleview = findViewById(R.id.titleview);
 
         ver = findViewById(R.id.ver);
-        ver.setText("V " + Tools.getVersionName(MyAppliaction.context));
+        ver.setText("V " + Tools.getVersionName(MyApp.context));
 
         //获取屏幕宽度
         DisplayMetrics metric = new DisplayMetrics();
@@ -291,12 +289,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-//        if (WifiApUtils.getInstance(this).checkWifiApStatus())
-//            wifiap.setVisibility(View.VISIBLE);
-//        else
-//            wifiap.setVisibility(View.GONE);
-
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 return true;
@@ -386,9 +378,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         }
 
         switch (view.getId()) {
-            case R.id.wifiap:
-                new WIFIAPDialog(this).show();
-                break;
             case R.id.back:
                 new PwdDialog(this, R.style.MyDialog).show();
                 break;

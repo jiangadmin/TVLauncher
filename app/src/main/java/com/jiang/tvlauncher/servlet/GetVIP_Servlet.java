@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -40,9 +40,9 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
     protected VIP_Entity doInBackground(String... strings) {
         Map map = new HashMap();
         VIP_Entity entity;
-        if (!TextUtils.isEmpty(MyAppliaction.SN)) {
+        if (!TextUtils.isEmpty(MyApp.SN)) {
 
-            map.put("serialNum", MyAppliaction.SN);
+            map.put("serialNum", MyApp.SN);
             map.put("mac", Tools.getMacAddress());
         } else {
             entity = new VIP_Entity();
@@ -96,7 +96,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
             //启动应用
             LogUtil.e(TAG, "启动会员版");
             if (IsOpen) {
-                Tools.StartApp(MyAppliaction.activity, Const.TvViedo);
+                Tools.StartApp(MyApp.activity, Const.TvViedo);
             }
         } else {
 
@@ -104,13 +104,13 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
 
                 //启动应用
                 LogUtil.e(TAG, "启动云视听");
-                Tools.StartApp(MyAppliaction.activity, Const.TencentViedo);
+                Tools.StartApp(MyApp.activity, Const.TencentViedo);
 
             } else {
 
                 if (TextUtils.isEmpty(Const.云视听Url)){
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MyAppliaction.activity);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MyApp.activity);
                     builder.setTitle("抱歉");
                     builder.setMessage("应用 云视听 资源缺失，请联系服务人员");
                     builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
@@ -122,8 +122,8 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
                     builder.show();
 
                 }else {
-                    Loading.show(MyAppliaction.activity, "请稍后");
-                    new DownUtil(MyAppliaction.activity).downLoad(Const.云视听Url, "云视听.apk", true);
+                    Loading.show(MyApp.activity, "请稍后");
+                    new DownUtil(MyApp.activity).downLoad(Const.云视听Url, "云视听.apk", true);
                 }
             }
         }

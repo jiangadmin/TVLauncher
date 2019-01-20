@@ -37,7 +37,7 @@ import java.util.List;
  * update：
  */
 
-public class MyAppliaction extends Application {
+public class MyApp extends Application {
     private static final String TAG = "MyAppliaction";
     public static boolean LogShow = true;
     public static Context context;
@@ -60,8 +60,8 @@ public class MyAppliaction extends Application {
      * 判定是否是极米设备
      */
     public static boolean isxgimi = false;
-    private String MIPUSH_APP_ID = "2882303761517701199";
-    private String MIPUSH_APP_KEY = "5501770168199";
+    private static final String MIPUSH_APP_ID = "2882303761517701199";
+    private static final String MIPUSH_APP_KEY = "5501770168199";
 
     @Override
     public void onCreate() {
@@ -93,7 +93,7 @@ public class MyAppliaction extends Application {
         Logger.setLogger(this, newLogger);
 
         //崩溃检测
-        CrashReport.initCrashReport(getApplicationContext(), "948ab2c9a7", false);
+        CrashReport.initCrashReport(this, "948ab2c9a7", false);
 
         LogUtil.e(TAG, "有线连接：" + Tools.isLineConnected());
         Tools.setScreenOffTime(24 * 60 * 60 * 1000);
@@ -169,10 +169,8 @@ public class MyAppliaction extends Application {
                 modelNum = apiManager.get("getDeviceModel", null, null);
                 SaveUtils.setString(Save_Key.modelNum, modelNum);
 
-                if (Boolean.valueOf(apiManager.get("getPowerOnStartValue", null, null)))
-                    turnType = "1";
-                else
-                    turnType = "2";
+                //开机方式
+                turnType = Boolean.valueOf(apiManager.get("getPowerOnStartValue", null, null)) ? "1" : "2";
 
                 SaveUtils.setString(Save_Key.turnType, turnType);
 
@@ -203,22 +201,4 @@ public class MyAppliaction extends Application {
             LogUtil.e(TAG, "断开AIDL连接");
         }
     };
-
-    /**
-     * 当前应用是否处于前台
-     *
-     * @return
-     */
-    public static boolean isForeground() {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> processes = activityManager.getRunningAppProcesses();
-        for (ActivityManager.RunningAppProcessInfo processInfo : processes) {
-            if (processInfo.processName.equals(context.getPackageName())) {
-                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }

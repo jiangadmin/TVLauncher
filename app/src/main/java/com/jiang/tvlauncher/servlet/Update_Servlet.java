@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
-import com.jiang.tvlauncher.activity.Setting_Activity;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.UpdateEntity;
@@ -34,8 +33,8 @@ public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
     @Override
     protected UpdateEntity doInBackground(String... strings) {
         Map map = new HashMap();
-        map.put("versionNum", Tools.getVersionName(MyAppliaction.context));
-        map.put("buildNum", String.valueOf(Tools.getVersionCode(MyAppliaction.context)));
+        map.put("versionNum", Tools.getVersionName(MyApp.context));
+        map.put("buildNum", String.valueOf(Tools.getVersionCode(MyApp.context)));
 
         String res = HttpUtil.doPost(Const.URL + "cms/appVersionController/findNewVersion.do", map);
 
@@ -62,7 +61,7 @@ public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
         Loading.dismiss();
 
         if (entity.getErrorcode() == 1000) {
-            if (entity.getResult().getBuildNum() > Tools.getVersionCode(MyAppliaction.context)) {
+            if (entity.getResult().getBuildNum() > Tools.getVersionCode(MyApp.context)) {
                 Loading.show(activity, "安装中");
                 new DownUtil(activity).downLoad(entity.getResult().getDownloadUrl(),"Feekr"+entity.getResult().getVersionNum()+".apk",true);
             }

@@ -9,7 +9,7 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
@@ -50,11 +50,11 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         Map map = new HashMap();
         TurnOnEntity entity;
 
-        if (TextUtils.isEmpty(MyAppliaction.ID)) {
+        if (TextUtils.isEmpty(MyApp.ID)) {
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.SerialNum))) {
-                MyAppliaction.ID = SaveUtils.getString(Save_Key.SerialNum);
-                MyAppliaction.turnType = SaveUtils.getString(Save_Key.turnType);
-                MyAppliaction.modelNum = SaveUtils.getString(Save_Key.modelNum);
+                MyApp.ID = SaveUtils.getString(Save_Key.SerialNum);
+                MyApp.turnType = SaveUtils.getString(Save_Key.turnType);
+                MyApp.modelNum = SaveUtils.getString(Save_Key.modelNum);
             } else {
                 new TurnOn_servlet(context).execute();
                 entity = new TurnOnEntity();
@@ -64,9 +64,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             }
         }
 
-        map.put("serialNum", MyAppliaction.ID);
-        map.put("turnType", MyAppliaction.turnType);
-        map.put("modelNum", MyAppliaction.modelNum);
+        map.put("serialNum", MyApp.ID);
+        map.put("turnType", MyApp.turnType);
+        map.put("modelNum", MyApp.modelNum);
 
         map.put("systemVersion", Build.VERSION.INCREMENTAL);
         map.put("androidVersion", Build.VERSION.RELEASE);
@@ -95,7 +95,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         LogUtil.e(TAG, "=======================================================================================");
 
         if (entity.getErrorcode() == 1000) {
-            MyAppliaction.TurnOnS = true;
+            MyApp.TurnOnS = true;
 
             //归零
             num = 0;
@@ -143,14 +143,14 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
             try {
                 //初始化设备名称
-                MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
+                MyApp.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
 
                 //初始化上电开机
                 if (entity.getResult().getShadowcnf() != null) {
 
                     //投影方式开关
                     if (entity.getResult().getShadowcnf().getProjectModeFlag() == 1) {
-                        MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
+                        MyApp.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
                     }
 
                     //上电开机开关
@@ -159,7 +159,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                         boolean directboot = entity.getResult().getShadowcnf().getPowerTurn() == 1;
 
                         LogUtil.e(TAG, "上电开机：" + directboot);
-                        MyAppliaction.apiManager.set("setPowerOnStart", String.valueOf(directboot), null, null, null);
+                        MyApp.apiManager.set("setPowerOnStart", String.valueOf(directboot), null, null, null);
                     }
 
                     //梯形校正开关
@@ -167,7 +167,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                         //初始化梯形数据
                         Point point = new Gson().fromJson(s, Point.class);
                         for (int i = 0; i < point.getPoint().size(); i++) {
-                            MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
+                            MyApp.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
                         }
                     }
                 }
@@ -202,7 +202,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     //打开并设置热点信息.注意热点密码8-32位，只限制了英文密码位数。
                     //使用极米开启/关闭热点接口
                     try {
-                        String s1 = MyAppliaction.apiManager.set("setOpenWifiAp", SSID, APPWD, null, null);
+                        String s1 = MyApp.apiManager.set("setOpenWifiAp", SSID, APPWD, null, null);
                         if (!TextUtils.isEmpty(s1) && Boolean.valueOf(s1.toLowerCase())) {
                             LogUtil.e(TAG, "热点开机成功！");
                         }
@@ -211,7 +211,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     }
                 } else if (entity.getResult().getShadowcnf().getHotPoint() == 0) {            //关闭热点
                     try {
-                        MyAppliaction.apiManager.set("setCloseWifiAp", null, null, null, null);
+                        MyApp.apiManager.set("setCloseWifiAp", null, null, null, null);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }

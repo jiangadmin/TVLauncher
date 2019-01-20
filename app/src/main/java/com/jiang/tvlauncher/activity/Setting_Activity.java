@@ -10,7 +10,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
@@ -40,7 +40,7 @@ public class Setting_Activity extends Base_Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        MyAppliaction.activity = this;
+        MyApp.activity = this;
 
     }
 

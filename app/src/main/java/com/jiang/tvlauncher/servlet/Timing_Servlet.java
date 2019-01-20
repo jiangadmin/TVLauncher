@@ -2,19 +2,15 @@ package com.jiang.tvlauncher.servlet;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
-import com.jiang.tvlauncher.dialog.WarnDialog;
-import com.jiang.tvlauncher.entity.BaseEntity;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.MonitorResEntity;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
-import com.jiang.tvlauncher.utils.ShellUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -44,8 +40,8 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
         map.put("memoryInfo", FileUtils.getAvailMemory());
         map.put("avaSpace", FileUtils.getFreeDiskSpaceS());
         try {
-            map.put("cpuTemp", MyAppliaction.apiManager.get("getTemp", null, null));
-            map.put("fanSpeed", MyAppliaction.apiManager.get("getWindSpeed", null, null));
+            map.put("cpuTemp", MyApp.apiManager.get("getTemp", null, null));
+            map.put("fanSpeed", MyApp.apiManager.get("getWindSpeed", null, null));
         } catch (Exception e) {
             e.printStackTrace();
             map.put("cpuTemp", "0");
@@ -85,7 +81,7 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
 
                     backHome.addCategory(Intent.CATEGORY_HOME);
 
-                    MyAppliaction.context.startActivity(backHome);
+                    MyApp.context.startActivity(backHome);
 //                    try {
 //                        ShellUtils.execCommand("input keyevent 3", false);
 //                    } catch (Exception ex) {

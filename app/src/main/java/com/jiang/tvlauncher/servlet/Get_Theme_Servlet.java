@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Theme_Entity;
@@ -30,7 +30,7 @@ public class Get_Theme_Servlet extends AsyncTask<String, Integer, Theme_Entity> 
     protected Theme_Entity doInBackground(String... strings) {
         Map map = new HashMap();
 
-        map.put("serialNum", MyAppliaction.SN);
+        map.put("serialNum", MyApp.SN);
         map.put("devType", "1");
 
         String res = HttpUtil.doPost(Const.URL + "cms/themeController/findLauncherTheme.do", map);
