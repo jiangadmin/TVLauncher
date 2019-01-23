@@ -51,7 +51,6 @@ import com.jiang.tvlauncher.utils.ShellUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.view.TitleView;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
-import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -251,7 +250,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
             LogUtil.e(TAG, "有图片");
             imageView.setVisibility(View.VISIBLE);
-            Picasso.with(this).load(SaveUtils.getString(Save_Key.NewImageUrl)).into(imageView);
+            Glide.with(this).load(SaveUtils.getString(Save_Key.NewImageUrl)).into(imageView);
             timeCount = new TimeCount(5000, 1000);
             timeCount.start();
         }
@@ -360,7 +359,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     /**
      * 主题返回 网络正常情况下
      *
-     * @param bean
+     * @param entity
      */
     @Subscribe
     public void onMessage(Theme_Entity entity) {
@@ -384,7 +383,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 builder.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
                 builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
                 Glide.with(this).load(bean.getBgImg()).apply(builder).into(main_bg);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 
