@@ -238,12 +238,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
         switch (entity.getErrorcode()) {
             case 1000:
-
                 EventBus.getDefault().post("update");
-
                 break;
         }
-
     }
 
     public static int num = 0;

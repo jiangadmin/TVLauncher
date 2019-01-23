@@ -137,66 +137,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
         }
 
-        //加载本地上一次主题方案
-        local_theme();
-
-    }
-
-    /**
-     * 本地资源主题
-     */
-    private void local_theme() {
-
-        //判断图片文件是否存在
-        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BackGround)) && !FileUtils.checkFileExists(SaveUtils.getString(Save_Key.BackGround))) {
-            //赋值背景 前景显示
-            Glide.with(this).load(new File(file + SaveUtils.getString(Save_Key.BackGround))).into(main_bg);
-            //赋值背景 背景高斯模糊
-//            Glide.with(this).load(new File(file + SaveUtils.getString(Save_Key.BackGround))).into(main_bg_0);
+        //首先显示本地资源
+        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Theme))) {
+            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Theme), Theme_Entity.class));
         }
-        //读取本地标题颜色
-        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.TipFontColor))) {
-            title.setTextColor(Color.parseColor(SaveUtils.getString(Save_Key.TipFontColor)));
-        }
-        //读取本地标题框颜色
-        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.MicLogoColor))) {
-            title_color(SaveUtils.getString(Save_Key.MicLogoColor));
-        }
-        //读取本地标题是否显示
-        if (SaveUtils.getInt(Save_Key.TipShowFlag) != -1) {
-            title_view.setVisibility(SaveUtils.getInt(Save_Key.TipShowFlag) == 1 ? View.VISIBLE : View.GONE);
-        }
-
-        //读取本地控制台是否显示
-        if (SaveUtils.getInt(Save_Key.ConsoleShowFlag) != -1) {
-            setting.setVisibility(SaveUtils.getInt(Save_Key.ConsoleShowFlag) == 1 ? View.VISIBLE : View.GONE);
-        }
-
-        //读取本地栏目名是否显示
-        if (SaveUtils.getInt(Save_Key.CnameShowFlag) != -1) {
-            name1.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
-            name2.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
-            name3.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
-            name4.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
-        }
-
-        //读取本地 是否初始化逻辑科技
-        if (SaveUtils.getInt(Save_Key.StartLgeekFlag) == 1) {
-            LgeekTVSdkMrg.getInstance().init(MyApp.context);
-        }
-
-        //读取本地标题
-        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.TipContents))) {
-            title_list = null;
-            title_list = SaveUtils.getString(Save_Key.TipContents).split("#");
-            title.setText(title_list[0]);
-        }
-        //读取本地轮询时间
-        if (SaveUtils.getInt(Save_Key.TipSwitchRate) != -1) {
-            titleTime = new TitleTime(SaveUtils.getInt(Save_Key.TipSwitchRate), SaveUtils.getInt(Save_Key.TipSwitchRate));
-            titleTime.start();
-        }
-
     }
 
     @Override
@@ -419,17 +363,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * @param bean
      */
     @Subscribe
-    public void onMessage(Theme_Entity.ResultBean bean) {
+    public void onMessage(Theme_Entity entity) {
+        Theme_Entity.ResultBean bean = entity.getResult();
         if (bean != null) {
-            //赋值背景 前景显示
-            try {
-                RequestOptions builder = new RequestOptions();
-                builder.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
-                builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
-                Glide.with(this).load(bean.getBgImg()).apply(builder).into(main_bg);
-            }catch (Exception e){
 
-            }
             //图片名
             String imgname = Tools.getFileNameWithSuffix(bean.getBgImg());
             //判断图片文件是否存在
@@ -439,6 +376,16 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
                 //记录图片名
                 SaveUtils.setString(Save_Key.BackGround, imgname);
+            }
+
+            //赋值背景 前景显示
+            try {
+                RequestOptions builder = new RequestOptions();
+                builder.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
+                builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
+                Glide.with(this).load(bean.getBgImg()).apply(builder).into(main_bg);
+            }catch (Exception e){
+
             }
 
             //设置图标背景色 对话框颜色
