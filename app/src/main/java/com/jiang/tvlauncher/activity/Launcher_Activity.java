@@ -129,7 +129,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (!Tools.isNetworkConnected())
             NetDialog.showL();
 
-        onMessage("update");
+//        onMessage("update");
 
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
@@ -677,7 +677,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         @Override
         public void onFinish() {
             title.setText(title_list[i]);
-
             if (i == title_list.length - 1) {
                 i = 0;
             } else {

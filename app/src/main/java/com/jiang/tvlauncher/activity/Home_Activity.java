@@ -116,7 +116,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         if (!Tools.isNetworkConnected())
             NetDialog.showL();
 
-        onMessage("update");
+//        onMessage("update");
 
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
