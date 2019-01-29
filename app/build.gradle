@@ -22,8 +22,8 @@ android {
         applicationId "com.jiang.tvlauncher"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 204
-        versionName "2.0.4"
+        versionCode 205
+        versionName "2.0.5"
         signingConfig signingConfigs.jiang
 
         ndk {
@@ -35,6 +35,7 @@ android {
 
     buildTypes {
         release {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.jiang
@@ -65,7 +66,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     //高斯模糊
-    implementation 'jp.wasabeef:glide-transformations:2.0.2'
+//    implementation 'jp.wasabeef:glide-transformations:2.0.2'
     //腾讯
     //    implementation project(':libzxing')
     implementation files('libs/thirdagent-2.0.0.jar')

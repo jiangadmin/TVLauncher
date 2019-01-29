@@ -50,7 +50,7 @@ import java.util.List;
  */
 
 public class MyApp extends Application implements KtcpPaySDKCallback {
-    private static final String TAG = "MyAppliaction";
+    private static final String TAG = "MyApp";
     public static boolean LogShow = true;
     public static Context context;
 
@@ -242,7 +242,7 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
 
 
         //大票换小票接口
-        TvTicketTool.getVirtualTVSKey(this, true, 190997390, "vtoken", "accessToken", new TvTencentSdk.OnTVSKeyListener() {
+        TvTicketTool.getVirtualTVSKey(this, false, Long.parseLong(Const.ktcp_vuid), Const.ktcp_vtoken, Const.ktcp_accessToken, new TvTencentSdk.OnTVSKeyListener() {
             @Override
             public void OnTVSKeySuccess(String vusession, int expiredTime) {
                 LogUtil.e(TAG, "vusession=" + vusession + ",expiredTime=" + expiredTime);
@@ -261,8 +261,6 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
                 KtcpPaySdkProxy.getInstance().onLoginResponse(status, msg, JsonUtils.addJsonValue(loginData));
             }
         });
-
-
     }
 
     /**

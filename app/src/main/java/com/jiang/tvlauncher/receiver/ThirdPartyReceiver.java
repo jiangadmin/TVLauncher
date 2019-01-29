@@ -27,11 +27,11 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
 
     @Override
     public void onReceive(Context context, Intent intent) {
-//        //新增代码用来处理三方付费的回调只在一处调用
-//        if (KtcpPaySdkProxy.getInstance().getAgentVersion().compareTo("2.0.0") >= 0) {
-//            Log.i(TAG, "deal KtcpPaySDK use KtcpPaySDKCallback");
-//            return;
-//        }
+        //新增代码用来处理三方付费的回调只在一处调用
+        if (KtcpPaySdkProxy.getInstance().getAgentVersion().compareTo("2.0.0") >= 0) {
+            Log.i(TAG, "deal KtcpPaySDK use KtcpPaySDKCallback");
+            return;
+        }
 //
 //        this.context = context;
 //        if (ThirdPartyAgent.ACTION_SERVER_AGGENT.equals(intent.getAction())) {

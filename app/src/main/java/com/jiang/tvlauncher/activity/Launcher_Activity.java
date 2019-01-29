@@ -384,7 +384,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
                 Glide.with(this).load(bean.getBgImg()).apply(builder).into(main_bg);
             } catch (Exception e) {
-
+                Glide.with(this).load(bean.getBgImg()).into(main_bg);
             }
 
             //设置图标背景色 对话框颜色
@@ -475,12 +475,15 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
                 //设置栏目名称
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
-                //加载图片 优先本地
-                RequestOptions options = new RequestOptions();
-                options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
-                options.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
-                Glide.with(this).load(url).apply(options).into(homelist.get(i));
-//                Picasso.with(this).load(url).placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i))))).into(homelist.get(i));
+                try {
+                    //加载图片 优先本地
+                    RequestOptions options = new RequestOptions();
+                    options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
+                    options.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
+                    Glide.with(this).load(url).apply(options).into(homelist.get(i));
+                } catch (Exception e) {
+                    Glide.with(this).load(url).into(homelist.get(i));
+                }
 
                 hometype.add(channelList.getResult().get(i).getContentType());
 
@@ -530,6 +533,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 open(2);
                 break;
             case R.id.home_4:
+
                 open(3);
                 break;
         }
@@ -700,7 +704,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             setContentView(R.layout.dialog_warning);
             setCanceledOnTouchOutside(false);
             setCancelable(false);
-
         }
     }
 }
