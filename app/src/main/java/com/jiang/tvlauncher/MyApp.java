@@ -58,7 +58,6 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
 
     public static boolean IsLineNet = true;//是否是有线网络
     public static String modelNum = "Z5极光";
-    public static String ID = "";
     public static String SN = "";
     public static String Temp = "FFFFFF";
     public static String WindSpeed = "FFFFFF";

@@ -50,9 +50,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         Map map = new HashMap();
         TurnOnEntity entity;
 
-        if (TextUtils.isEmpty(MyApp.ID)) {
+        if (TextUtils.isEmpty(MyApp.SN)) {
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.SerialNum))) {
-                MyApp.ID = SaveUtils.getString(Save_Key.SerialNum);
+                MyApp.SN = SaveUtils.getString(Save_Key.SerialNum);
                 MyApp.turnType = SaveUtils.getString(Save_Key.turnType);
                 MyApp.modelNum = SaveUtils.getString(Save_Key.modelNum);
             } else {
@@ -64,7 +64,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             }
         }
 
-        map.put("serialNum", MyApp.ID);
+        map.put("serialNum", MyApp.SN);
         map.put("turnType", MyApp.turnType);
         map.put("modelNum", MyApp.modelNum);
 

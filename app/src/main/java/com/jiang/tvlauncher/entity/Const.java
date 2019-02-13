@@ -1,5 +1,7 @@
 package com.jiang.tvlauncher.entity;
 
+import com.jiang.tvlauncher.BuildConfig;
+
 /**
  * Created by  jiang
  * on 2017/6/19.
@@ -10,7 +12,7 @@ package com.jiang.tvlauncher.entity;
  */
 public class Const {
 
-        public static String URL = "http://api.feekrs.com/";
+    public static String URL = BuildConfig.NetUrl;
 //    public static String URL = " http://testapi.feekrs.com/";
 
     public static int Timing = 30;
