@@ -35,6 +35,7 @@ public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
         Map map = new HashMap();
         map.put("versionNum", Tools.getVersionName(MyApp.context));
         map.put("buildNum", String.valueOf(Tools.getVersionCode(MyApp.context)));
+        map.put("serialNum", MyApp.SN);
 
         String res = HttpUtil.doPost(Const.URL + "cms/appVersionController/findNewVersion.do", map);
 
