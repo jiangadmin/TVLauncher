@@ -33,7 +33,7 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
 
     @Override
     protected MonitorResEntity doInBackground(String... infos) {
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         map.put("netSpeed", "1");
         map.put("storage", FileUtils.getRomSize());
@@ -82,11 +82,7 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
                     backHome.addCategory(Intent.CATEGORY_HOME);
 
                     MyApp.context.startActivity(backHome);
-//                    try {
-//                        ShellUtils.execCommand("input keyevent 3", false);
-//                    } catch (Exception ex) {
-//                        Log.e(TAG, "onPostExecute: " + ex.getMessage());
-//                    }
+
 
                 } else if (entity.getResult().getBussFlag() == 1) {
                     Const.BussFlag = 1;
@@ -95,6 +91,5 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
                 EventBus.getDefault().post(String.valueOf(entity.getResult().getBussFlag()));
                 break;
         }
-
     }
 }
