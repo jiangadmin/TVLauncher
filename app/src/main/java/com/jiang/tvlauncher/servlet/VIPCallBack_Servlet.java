@@ -69,6 +69,7 @@ public class VIPCallBack_Servlet extends AsyncTask<VIPCallBack_Servlet.TencentVi
         private String code;
         private String msg;
         private String eventId;
+        private String guid;        //腾讯视频apk对终端的唯一标识
 
         public String getVuid() {
             return vuid;
@@ -116,6 +117,14 @@ public class VIPCallBack_Servlet extends AsyncTask<VIPCallBack_Servlet.TencentVi
 
         public void setEventId(String eventId) {
             this.eventId = eventId;
+        }
+
+        public String getGuid() {
+            return guid;
+        }
+
+        public void setGuid(String guid) {
+            this.guid = guid;
         }
     }
 }

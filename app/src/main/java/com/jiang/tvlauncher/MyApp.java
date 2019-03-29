@@ -219,6 +219,7 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
 
     private int status = -1;//接口状态码
     private String msg;//接口提示信息
+    private String guid = "";
 
     /**
      * @param channel 三方厂商对应的渠道号
@@ -226,6 +227,17 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
      */
     @Override
     public void doLogin(String channel, String extra) {
+       //解析guid
+        if(extra!=null && extra.length()>0){
+            try{
+                JSONObject jsonObject = new JSONObject(extra);
+                guid = jsonObject.getString("guid");
+            }catch (Exception e){
+                LogUtil.e(TAG, "解析guid报错" + e.getMessage());
+            }
+        }
+        LogUtil.e(TAG, "guid = " + guid);
+
 
         final HashMap<String, Object> loginData = new HashMap<>();
         // FIXME:  获取帐号   需要腾讯处理的错误码和提示请沟通好通知处理
@@ -323,6 +335,7 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
         }
 
         try {
+            LogUtil.e(TAG, "腾讯回调事件："+params);
             JSONObject extraObj = JsonUtils.getJsonObj(params);
             int code = extraObj.optInt("code");
             String message = extraObj.optString("msg");
@@ -331,6 +344,7 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
             vip.setCode(String.valueOf(code));
             vip.setMsg(message);
             vip.setEventId(String.valueOf(eventId));  // 2 账户登录回调 3 退出登录  4 APP退出
+            vip.setGuid(guid);
             new VIPCallBack_Servlet().execute(vip);
         } catch (Exception e) {
             LogUtil.e(TAG, e.getMessage());
