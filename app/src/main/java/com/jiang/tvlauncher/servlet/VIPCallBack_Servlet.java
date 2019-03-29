@@ -33,6 +33,7 @@ public class VIPCallBack_Servlet extends AsyncTask<VIPCallBack_Servlet.TencentVi
         map.put("code", vip.getCode());
         map.put("msg", vip.getMsg());
         map.put("eventId", vip.getEventId());
+        map.put("guid", vip.getGuid());
 
         String res = HttpUtil.doPost(Const.URL + "tencent/tencentVideoController/tencentNoticeCallBack.do", map);
 
