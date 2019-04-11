@@ -34,14 +34,13 @@ import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.dialog.PwdDialog;
 import com.jiang.tvlauncher.entity.Const;
-import com.jiang.tvlauncher.entity.FindChannelList;
+import com.jiang.tvlauncher.entity.FindChannelList_Model;
 import com.jiang.tvlauncher.entity.Save_Key;
-import com.jiang.tvlauncher.entity.Theme_Entity;
+import com.jiang.tvlauncher.entity.Theme_Model;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
 import com.jiang.tvlauncher.servlet.Get_Theme_Servlet;
-import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.ImageUtils;
@@ -60,10 +59,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author: jiangadmin
- * @date: 2018/10/12.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2018/10/12.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 新主页
  */
 
@@ -95,7 +94,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     boolean toolbar_show = false;
     boolean ifnet = false;//判断有无网络使用
 
-    static FindChannelList channelList;
+    static FindChannelList_Model channelList;
 
     TimeCount timeCount;
     TitleTime titleTime;
@@ -133,12 +132,12 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
-            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList_Model.class));
         }
 
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Theme))) {
-            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Theme), Theme_Entity.class));
+            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Theme), Theme_Model.class));
         }
     }
 
@@ -362,8 +361,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * @param entity
      */
     @Subscribe
-    public void onMessage(Theme_Entity entity) {
-        Theme_Entity.ResultBean bean = entity.getResult();
+    public void onMessage(Theme_Model entity) {
+        Theme_Model.ResultBean bean = entity.getResult();
         if (bean != null) {
 
             //图片名
@@ -452,7 +451,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * @param channelList
      */
     @Subscribe
-    public void onMessage(FindChannelList channelList) {
+    public void onMessage(FindChannelList_Model channelList) {
         this.channelList = channelList;
 
         //更改开机动画

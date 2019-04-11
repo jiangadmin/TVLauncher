@@ -6,8 +6,8 @@ import java.util.List;
  * Created by wwwfa on 2017/8/17.
  */
 
-public class FindChannelList extends BaseEntity {
-    private static final String TAG = "FindChannelList";
+public class FindChannelList_Model extends Base_Model {
+    private static final String TAG = "FindChannelList_Model";
 
     /**
      * errorcode : 1000

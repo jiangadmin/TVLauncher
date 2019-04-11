@@ -12,11 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jiang.tvlauncher.R;
-import com.jiang.tvlauncher.entity.FindChannelList;
+import com.jiang.tvlauncher.entity.FindChannelList_Model;
 import com.jiang.tvlauncher.utils.Tools;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * AppFragment adapter
@@ -29,11 +28,11 @@ public class NewAppAdapter extends BaseAdapter {
     private static final String TAG = "NewAppAdapter";
 
     PackageManager pm;
-    private List<FindChannelList.ResultBean.AppListBean> mAppBeanList;
+    private List<FindChannelList_Model.ResultBean.AppListBean> mAppBeanList;
     private Context mContext;
     public Holder mHolder;
 
-    public NewAppAdapter(Context context, List<FindChannelList.ResultBean.AppListBean> appBeanList) {
+    public NewAppAdapter(Context context, List<FindChannelList_Model.ResultBean.AppListBean> appBeanList) {
         mContext = context;
         mAppBeanList = appBeanList;
         pm = context.getPackageManager();
@@ -68,7 +67,7 @@ public class NewAppAdapter extends BaseAdapter {
         } else {
             mHolder = (Holder) convertView.getTag();
         }
-        final FindChannelList.ResultBean.AppListBean appBean = mAppBeanList.get(position);
+        final FindChannelList_Model.ResultBean.AppListBean appBean = mAppBeanList.get(position);
 
         //判断程序有没有
         if (Tools.isAppInstalled(appBean.getPackageName())) {

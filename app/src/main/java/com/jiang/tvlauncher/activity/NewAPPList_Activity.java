@@ -12,7 +12,7 @@ import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.adapter.NewAppAdapter;
 import com.jiang.tvlauncher.dialog.Loading;
-import com.jiang.tvlauncher.entity.FindChannelList;
+import com.jiang.tvlauncher.entity.FindChannelList_Model;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
 
@@ -31,9 +31,9 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
 
     private GridView mGridView;
     private NewAppAdapter mAdapter;
-    static List<FindChannelList.ResultBean.AppListBean> appList;
+    static List<FindChannelList_Model.ResultBean.AppListBean> appList;
 
-    public static void start(Context context, List<FindChannelList.ResultBean.AppListBean> appListBeen) {
+    public static void start(Context context, List<FindChannelList_Model.ResultBean.AppListBean> appListBeen) {
         appList = appListBeen;
         Intent intent = new Intent();
         intent.setClass(context, NewAPPList_Activity.class);

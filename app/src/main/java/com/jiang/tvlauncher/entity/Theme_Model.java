@@ -1,13 +1,13 @@
 package com.jiang.tvlauncher.entity;
 
 /**
- * @author: jiangadmin
- * @date: 2018/10/14
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2018/10/14
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 主题
  */
-public class Theme_Entity extends BaseEntity {
+public class Theme_Model extends Base_Model {
 
 
     /**

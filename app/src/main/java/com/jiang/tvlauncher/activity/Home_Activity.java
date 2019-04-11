@@ -32,12 +32,11 @@ import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.dialog.PwdDialog;
 import com.jiang.tvlauncher.entity.Const;
-import com.jiang.tvlauncher.entity.FindChannelList;
+import com.jiang.tvlauncher.entity.FindChannelList_Model;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
-import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.ImageUtils;
@@ -93,7 +92,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     boolean toolbar_show = false;
     boolean ifnet = false;//判断有无网络使用
 
-    static FindChannelList channelList;
+    static FindChannelList_Model channelList;
 
     TimeCount timeCount;
 
@@ -120,7 +119,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
-            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList_Model.class));
         }
 
     }
@@ -188,7 +187,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         titleview = findViewById(R.id.titleview);
 
         ver = findViewById(R.id.ver);
-        ver.setText("V " + Tools.getVersionName(MyApp.context));
+        ver.setText(String.format("V %s", Tools.getVersionName(MyApp.context)));
 
         //获取屏幕宽度
         DisplayMetrics metric = new DisplayMetrics();
@@ -285,7 +284,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     @Override
     public void onBackPressed() {
-        return;
     }
 
     @Override
@@ -320,11 +318,11 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     /**
      * 更新页面
      *
-     * @param channelList
+     * @param channelList 返回数据
      */
     @Subscribe
-    public void onMessage(FindChannelList channelList) {
-        this.channelList = channelList;
+    public void onMessage(FindChannelList_Model channelList) {
+        Home_Activity.channelList = channelList;
         String file = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
 
         //更改开机动画

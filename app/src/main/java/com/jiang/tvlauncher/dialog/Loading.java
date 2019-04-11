@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +13,10 @@ import android.widget.TextView;
 import com.jiang.tvlauncher.R;
 
 /**
- * @author: jiangadmin
- * @date: 2017/6/12.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/6/12.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: Loading
  */
 
@@ -55,7 +54,7 @@ public class Loading {
     public static class LoadingDialog extends Dialog {
 
         public LoadingDialog(@NonNull Context context) {
-            super(context,  R.style.LoadingDialog);
+            super(context, R.style.LoadingDialog);
         }
 
         /**
@@ -66,7 +65,7 @@ public class Loading {
                 message = "加载中...";
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View layout = inflater.inflate(R.layout.dialog_loading, null);
-            TextView txtInfo =  layout.findViewById(R.id.txt_info);
+            TextView txtInfo = layout.findViewById(R.id.txt_info);
             txtInfo.setText(message);
 
             LoadingDialog dialog = new LoadingDialog(context);

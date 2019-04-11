@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.entity.Const;
-import com.jiang.tvlauncher.entity.MonitorResEntity;
+import com.jiang.tvlauncher.entity.MonitorRes_Model;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.HttpUtil;
@@ -25,14 +25,10 @@ import java.util.Map;
  * Purpose:TODO 定时发送
  * update：
  */
-public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity> {
-
-    private static final String TAG = "Timing_Servlet";
-
-    private static boolean sleep = false;
+public class Timing_Servlet extends AsyncTask<String, Integer, MonitorRes_Model> {
 
     @Override
-    protected MonitorResEntity doInBackground(String... infos) {
+    protected MonitorRes_Model doInBackground(String... infos) {
         Map<String, String> map = new HashMap<>();
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         map.put("netSpeed", "1");
@@ -48,18 +44,18 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
             map.put("fanSpeed", "0");
         }
         String res = HttpUtil.doPost(Const.URL + "dev/devRunStateController/monitorRunState.do", map);
-        MonitorResEntity entity;
+        MonitorRes_Model entity;
         if (res != null) {
             try {
-                entity = new Gson().fromJson(res, MonitorResEntity.class);
+                entity = new Gson().fromJson(res, MonitorRes_Model.class);
             } catch (Exception e) {
-                entity = new MonitorResEntity();
+                entity = new MonitorRes_Model();
                 entity.setErrorcode(-2);
                 entity.setErrormsg("数据解析失败");
             }
 
         } else {
-            entity = new MonitorResEntity();
+            entity = new MonitorRes_Model();
             entity.setErrorcode(-1);
             entity.setErrormsg("连接服务器失败");
         }
@@ -67,7 +63,7 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
     }
 
     @Override
-    protected void onPostExecute(MonitorResEntity entity) {
+    protected void onPostExecute(MonitorRes_Model entity) {
         super.onPostExecute(entity);
         switch (entity.getErrorcode()) {
             case 1000:
@@ -82,7 +78,6 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
                     backHome.addCategory(Intent.CATEGORY_HOME);
 
                     MyApp.context.startActivity(backHome);
-
 
                 } else if (entity.getResult().getBussFlag() == 1) {
                     Const.BussFlag = 1;

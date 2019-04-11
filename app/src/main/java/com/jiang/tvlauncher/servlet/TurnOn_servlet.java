@@ -14,7 +14,7 @@ import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
-import com.jiang.tvlauncher.entity.TurnOnEntity;
+import com.jiang.tvlauncher.entity.TurnOn_Model;
 import com.jiang.tvlauncher.server.TimingService;
 import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
@@ -27,14 +27,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author: jiangadmin
- * @date: 2017/6/19.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/6/19.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 开机发送
  */
 
-public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
+public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOn_Model> {
     private static final String TAG = "TurnOn_servlet";
     Context context;
 
@@ -46,9 +46,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
     }
 
     @Override
-    protected TurnOnEntity doInBackground(String... strings) {
-        Map map = new HashMap();
-        TurnOnEntity entity;
+    protected TurnOn_Model doInBackground(String... strings) {
+        Map<String, String> map = new HashMap<>();
+        TurnOn_Model entity;
 
         if (TextUtils.isEmpty(MyApp.SN)) {
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.SerialNum))) {
@@ -57,7 +57,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 MyApp.modelNum = SaveUtils.getString(Save_Key.modelNum);
             } else {
                 new TurnOn_servlet(context).execute();
-                entity = new TurnOnEntity();
+                entity = new TurnOn_Model();
                 entity.setErrorcode(-3);
                 entity.setErrormsg("数据缺失 再来一次");
                 return entity;
@@ -74,14 +74,14 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         String res = HttpUtil.doPost(Const.URL + "dev/devTurnOffController/turnOn.do", map);
 
         if (TextUtils.isEmpty(res)) {
-            entity = new TurnOnEntity();
+            entity = new TurnOn_Model();
             entity.setErrorcode(-1);
             entity.setErrormsg("连接服务器失败");
         } else {
             try {
-                entity = new Gson().fromJson(res, TurnOnEntity.class);
+                entity = new Gson().fromJson(res, TurnOn_Model.class);
             } catch (Exception e) {
-                entity = new TurnOnEntity();
+                entity = new TurnOn_Model();
                 entity.setErrorcode(-2);
                 entity.setErrormsg("数据解析失败");
                 LogUtil.e(TAG, e.getMessage());
@@ -231,7 +231,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
     }
 
     @Override
-    protected void onPostExecute(TurnOnEntity entity) {
+    protected void onPostExecute(TurnOn_Model entity) {
         super.onPostExecute(entity);
         Const.Nets = false;
         Loading.dismiss();

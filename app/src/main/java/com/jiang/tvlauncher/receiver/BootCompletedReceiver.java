@@ -8,14 +8,11 @@ import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
- * @author: jiangadmin
- * @date: 2017/6/19.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/6/19.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 开机广播监听
  */
 

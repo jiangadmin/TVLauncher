@@ -13,18 +13,20 @@ import android.widget.TextView;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.activity.Base_Activity;
 import com.jiang.tvlauncher.server.MyDownService;
+import com.jiang.tvlauncher.utils.LogUtil;
 
 import java.io.File;
 
 /**
- * @author: jiangadmin
- * @date: 2015/12/16.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2015/12/16.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 下载更新
  */
 
 public class UpdateWindow extends Base_Activity {
+    private static final String TAG = "UpdateWindow";
 
     ProgressBar jindutiao;
     TextView jindu;
@@ -50,8 +52,8 @@ public class UpdateWindow extends Base_Activity {
     }
 
     private void initview() {
-        jindutiao =  findViewById(R.id.update_jindutiao);
-        jindu =  findViewById(R.id.update_jindu);
+        jindutiao = findViewById(R.id.update_jindutiao);
+        jindu = findViewById(R.id.update_jindu);
 
     }
 
@@ -79,6 +81,7 @@ public class UpdateWindow extends Base_Activity {
         try {
             unregisterReceiver(recceiver);
         } catch (Exception e) {
+            LogUtil.e(TAG, e.getLocalizedMessage());
         }
         super.onDestroy();
     }
@@ -111,10 +114,10 @@ public class UpdateWindow extends Base_Activity {
 
     private void installApk() {
 
-        /*********下载完成，点击安装***********/
+        //下载完成，点击安装
         Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + File.separator + fileName));
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        /**********加这个属性是因为使用Context的startActivity方法的话，就需要开启一个新的task**********/
+        //加这个属性是因为使用Context的startActivity方法的话，就需要开启一个新的task**********/
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
         this.startActivity(intent);

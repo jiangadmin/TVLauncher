@@ -9,10 +9,10 @@ import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.R;
 
 /**
- * @author: jiangadmin
- * @date: 2018/9/6
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2018/9/6
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO:
  */
 public class Log_Activity extends Base_Activity {

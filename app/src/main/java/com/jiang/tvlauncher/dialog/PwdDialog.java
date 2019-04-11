@@ -6,33 +6,29 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.activity.Launcher_Activity;
-import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.SaveUtils;
-import com.jiang.tvlauncher.utils.Tools;
 
 /**
- * @author: jiangadmin
- * @date: 2017/7/3.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/7/3.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 密码输入框
  */
 
 
 public class PwdDialog extends Dialog {
-    private static final String TAG = "PwdDialog";
 
-    ImageView pwd1, pwd2, pwd3, pwd4, pwd5, pwd6;
+    private ImageView pwd1, pwd2, pwd3, pwd4, pwd5, pwd6;
 
-    Activity activity;
+    private Activity activity;
 
-    String password = "";
+    private String password = "";
 
     public PwdDialog(Activity activity, int theme) {
         super(activity, theme);
@@ -81,7 +77,7 @@ public class PwdDialog extends Dialog {
         }
     }
 
-    public void updatepwdshow(int resid, int npwd) {
+    private void updatepwdshow(int resid, int npwd) {
         password = password + String.valueOf(npwd);
         switch (password.length()) {
             case 1:
@@ -103,18 +99,13 @@ public class PwdDialog extends Dialog {
                 pwd6.setImageResource(resid);
                 dismiss();
 
-//                if (password.equals("822228")) {
-//                    SaveUtils.setString(Const.包, null);
-//                    Toast.makeText(activity,"清楚成功",Toast.LENGTH_SHORT).show();
-//                }
-
                 if (password.equals(SaveUtils.getString(Save_Key.Password))) {
                     if (activity instanceof Home_Activity) {
                         ((Home_Activity) activity).PwdRe();
                     }
 
-                    if (activity instanceof Launcher_Activity){
-                        ((Launcher_Activity)activity).PwdRe();
+                    if (activity instanceof Launcher_Activity) {
+                        ((Launcher_Activity) activity).PwdRe();
                     }
                 }
                 break;

@@ -20,10 +20,10 @@ import com.jiang.tvlauncher.utils.Tools;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 
 /**
- * @author: jiangadmin
- * @date: 2017/7/3.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/7/3.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 控制台
  */
 

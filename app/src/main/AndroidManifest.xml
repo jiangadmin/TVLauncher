@@ -161,12 +161,6 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".receiver.ThirdPartyReceiver1">
-            <intent-filter>
-                <action android:name="action_agent_server_channel" />
-            </intent-filter>
-        </receiver>
-
         <!--广播监听 启动腾讯视频-->
         <receiver android:name=".receiver.AppBroadcastReceiver">
             <intent-filter>

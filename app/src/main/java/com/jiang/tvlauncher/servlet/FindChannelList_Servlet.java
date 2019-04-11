@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
-import com.jiang.tvlauncher.entity.FindChannelList;
+import com.jiang.tvlauncher.entity.FindChannelList_Model;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
@@ -19,27 +19,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author: jiangadmin
- * @date: 2017/8/9.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/8/9.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 获取可显示应用列表
  */
 
-public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChannelList> {
+public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChannelList_Model> {
     private static final String TAG = "FindChannelList_Servlet";
 
     public static int num = 1;
     String res;
 
-    TimeCount timeCount= new TimeCount(3000, 1000);
-
     @Override
-    protected FindChannelList doInBackground(String... strings) {
-        Map map = new HashMap();
-        FindChannelList channelList;
+    protected FindChannelList_Model doInBackground(String... strings) {
+        Map<String, String> map = new HashMap<>();
+        FindChannelList_Model channelList;
         if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.ID))) {
-            channelList = new FindChannelList();
+            channelList = new FindChannelList_Model();
             channelList.setErrorcode(-3);
             channelList.setErrormsg("数据缺失");
             return channelList;
@@ -49,15 +47,15 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
         res = HttpUtil.doPost(Const.URL + "cms/channelController/findChannelList.do", map);
 
         if (TextUtils.isEmpty(res)) {
-            channelList = new FindChannelList();
+            channelList = new FindChannelList_Model();
             channelList.setErrorcode(-1);
             channelList.setErrormsg("连接服务器失败");
         } else {
 
             try {
-                channelList = new Gson().fromJson(res, FindChannelList.class);
+                channelList = new Gson().fromJson(res, FindChannelList_Model.class);
             } catch (Exception e) {
-                channelList = new FindChannelList();
+                channelList = new FindChannelList_Model();
                 channelList.setErrorcode(-2);
                 channelList.setErrormsg("数据解析失败");
                 LogUtil.e(TAG, e.getMessage());
@@ -67,7 +65,7 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
     }
 
     @Override
-    protected void onPostExecute(FindChannelList channelList) {
+    protected void onPostExecute(FindChannelList_Model channelList) {
         super.onPostExecute(channelList);
         Loading.dismiss();
 
@@ -82,11 +80,11 @@ public class FindChannelList_Servlet extends AsyncTask<String, Integer, FindChan
             case -3:
                 if (Const.FindChannelList < 5) {
                     Const.FindChannelList++;
-                    timeCount.start();
+                    new TimeCount(3000, 1000).start();
                 }
                 break;
             case -1:
-                EventBus.getDefault().post(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+                EventBus.getDefault().post(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList_Model.class));
                 break;
         }
 
