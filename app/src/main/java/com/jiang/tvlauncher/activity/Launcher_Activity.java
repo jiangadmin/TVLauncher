@@ -598,7 +598,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 break;
             //启动展示图片
             case 3:
-                Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+//                Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage("com.ktcp.tvvideo")));
                 break;
             //启动展示视频
             case 4:

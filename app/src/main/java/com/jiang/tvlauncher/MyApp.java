@@ -238,40 +238,44 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
         }
         LogUtil.e(TAG, "guid = " + guid);
 
+        if((Const.ktcp_vuid!=null && Const.ktcp_vuid!="") &&
+                (Const.ktcp_vtoken!=null && Const.ktcp_vtoken!="") &&
+                (Const.ktcp_accessToken!=null && Const.ktcp_accessToken!="") ){
 
-        final HashMap<String, Object> loginData = new HashMap<>();
-        // FIXME:  获取帐号   需要腾讯处理的错误码和提示请沟通好通知处理
-        // status 成功返回 0 失败返回对应错误码 厂商业务错误 fixme  腾旅 902xxx 例如902001登录失败
-        // msg  错误提示
-        // data json数据
+            // FIXME:  获取帐号   需要腾讯处理的错误码和提示请沟通好通知处理
+            // status 成功返回 0 失败返回对应错误码 厂商业务错误 fixme  腾旅 902xxx 例如902001登录失败
+            // msg  错误提示
+            // data json数据
+            final HashMap<String, Object> loginData = new HashMap<>();
+            loginData.put("loginType", "vu");//登录类型 vu ,qq,wx,ph
+            loginData.put("vuid", Const.ktcp_vuid);
+            loginData.put("vtoken", Const.ktcp_vtoken);
+            loginData.put("accessToken", Const.ktcp_accessToken);
 
-        //vuid登录示例
-        loginData.put("loginType", "vu");//登录类型 vu ,qq,wx,ph
-        loginData.put("vuid", Const.ktcp_vuid);
-        loginData.put("vtoken", Const.ktcp_vtoken);
-        loginData.put("accessToken", Const.ktcp_accessToken);
+            //大票换小票接口
+            TvTicketTool.getVirtualTVSKey(this, false, Long.parseLong(Const.ktcp_vuid), Const.ktcp_vtoken, Const.ktcp_accessToken, new TvTencentSdk.OnTVSKeyListener() {
+                @Override
+                public void OnTVSKeySuccess(String vusession, int expiredTime) {
+                    LogUtil.e(TAG, "vusession=" + vusession + ",expiredTime=" + expiredTime);
+                    status = 0;
+                    msg = "login success";
+                    loginData.put("vusession", vusession);
+                    //通过onLoginResponse 将数据回传给腾讯
+                    KtcpPaySdkProxy.getInstance().onLoginResponse(status, msg, JsonUtils.addJsonValue(loginData));
+                }
 
+                @Override
+                public void OnTVSKeyFaile(int failedCode, String failedMsg) {
+                    LogUtil.e(TAG, "failedCode=" + failedCode + ",msg=" + failedMsg);
+                    status = failedCode;
+                    msg = failedMsg;
+                    KtcpPaySdkProxy.getInstance().onLoginResponse(status, msg, JsonUtils.addJsonValue(loginData));
+                }
+            });
+        }else{
 
-        //大票换小票接口
-        TvTicketTool.getVirtualTVSKey(this, false, Long.parseLong(Const.ktcp_vuid), Const.ktcp_vtoken, Const.ktcp_accessToken, new TvTencentSdk.OnTVSKeyListener() {
-            @Override
-            public void OnTVSKeySuccess(String vusession, int expiredTime) {
-                LogUtil.e(TAG, "vusession=" + vusession + ",expiredTime=" + expiredTime);
-                status = 0;
-                msg = "login success";
-                loginData.put("vusession", vusession);
-                //通过onLoginResponse 将数据回传给腾讯
-                KtcpPaySdkProxy.getInstance().onLoginResponse(status, msg, JsonUtils.addJsonValue(loginData));
-            }
-
-            @Override
-            public void OnTVSKeyFaile(int failedCode, String failedMsg) {
-                LogUtil.e(TAG, "failedCode=" + failedCode + ",msg=" + failedMsg);
-                status = failedCode;
-                msg = failedMsg;
-                KtcpPaySdkProxy.getInstance().onLoginResponse(status, msg, JsonUtils.addJsonValue(loginData));
-            }
-        });
+            //調用TencentVuidLoginEventServlet，在TencentVuidLoginEventServlet 獲取到vuid后直接調用TvTicketTool.getVirtualTVSKey
+        }
     }
 
     /**
