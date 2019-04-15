@@ -532,8 +532,13 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 open(2);
                 break;
             case R.id.home_4:
-
-                open(3);
+//                open(3);
+                Loading.show(this, "请稍后");
+                if (Const.ktcp_vuid != null && Const.ktcp_accessToken != null && Const.ktcp_vtoken != null) {
+                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(Const.TvViedo)));
+                } else {
+                    new GetVIP_Servlet(true).execute();
+                }
                 break;
         }
     }
@@ -597,8 +602,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 break;
             //启动展示图片
             case 3:
-//                Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
-                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage("com.ktcp.tvvideo")));
+                Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
                 break;
             //启动展示视频
             case 4:

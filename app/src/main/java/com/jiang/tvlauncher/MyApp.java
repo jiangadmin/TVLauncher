@@ -227,20 +227,20 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
      */
     @Override
     public void doLogin(String channel, String extra) {
-       //解析guid
-        if(extra!=null && extra.length()>0){
-            try{
+        //解析guid
+        if (extra != null && extra.length() > 0) {
+            try {
                 JSONObject jsonObject = new JSONObject(extra);
                 guid = jsonObject.getString("guid");
-            }catch (Exception e){
+            } catch (Exception e) {
                 LogUtil.e(TAG, "解析guid报错" + e.getMessage());
             }
         }
         LogUtil.e(TAG, "guid = " + guid);
 
-        if((Const.ktcp_vuid!=null && Const.ktcp_vuid!="") &&
-                (Const.ktcp_vtoken!=null && Const.ktcp_vtoken!="") &&
-                (Const.ktcp_accessToken!=null && Const.ktcp_accessToken!="") ){
+        if ((Const.ktcp_vuid != null && Const.ktcp_vuid != "") &&
+                (Const.ktcp_vtoken != null && Const.ktcp_vtoken != "") &&
+                (Const.ktcp_accessToken != null && Const.ktcp_accessToken != "")) {
 
             // FIXME:  获取帐号   需要腾讯处理的错误码和提示请沟通好通知处理
             // status 成功返回 0 失败返回对应错误码 厂商业务错误 fixme  腾旅 902xxx 例如902001登录失败
@@ -272,7 +272,7 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
                     KtcpPaySdkProxy.getInstance().onLoginResponse(status, msg, JsonUtils.addJsonValue(loginData));
                 }
             });
-        }else{
+        } else {
 
             //調用TencentVuidLoginEventServlet，在TencentVuidLoginEventServlet 獲取到vuid后直接調用TvTicketTool.getVirtualTVSKey
         }
@@ -339,7 +339,7 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
         }
 
         try {
-            LogUtil.e(TAG, "腾讯回调事件："+params);
+            LogUtil.e(TAG, "腾讯回调事件：" + params);
             JSONObject extraObj = JsonUtils.getJsonObj(params);
             int code = extraObj.optInt("code");
             String message = extraObj.optString("msg");
