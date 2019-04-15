@@ -532,13 +532,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 open(2);
                 break;
             case R.id.home_4:
-//                open(3);
-                Loading.show(this, "请稍后");
-                if (Const.ktcp_vuid != null && Const.ktcp_accessToken != null && Const.ktcp_vtoken != null) {
-                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(Const.TvViedo)));
-                } else {
-                    new GetVIP_Servlet(true).execute();
-                }
+                open(3);
                 break;
         }
     }

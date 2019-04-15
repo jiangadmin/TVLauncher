@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
+import com.jiang.tvlauncher.servlet.TencentVuidLoginEventServlet;
 import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.servlet.VIPCallBack_Servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
@@ -39,6 +40,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by  jiang
@@ -227,6 +229,7 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
      */
     @Override
     public void doLogin(String channel, String extra) {
+        LogUtil.e(TAG, "获取vuid开始");
         //解析guid
         if (extra != null && extra.length() > 0) {
             try {
@@ -238,10 +241,12 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
         }
         LogUtil.e(TAG, "guid = " + guid);
 
-        if ((Const.ktcp_vuid != null && Const.ktcp_vuid != "") &&
+        if (Const.ktcp_open_type == 1 &&
+                (Const.ktcp_vuid != null && Const.ktcp_vuid != "") &&
                 (Const.ktcp_vtoken != null && Const.ktcp_vtoken != "") &&
                 (Const.ktcp_accessToken != null && Const.ktcp_accessToken != "")) {
 
+            Const.ktcp_open_type = 0;       //标示位复位
             // FIXME:  获取帐号   需要腾讯处理的错误码和提示请沟通好通知处理
             // status 成功返回 0 失败返回对应错误码 厂商业务错误 fixme  腾旅 902xxx 例如902001登录失败
             // msg  错误提示
@@ -275,6 +280,7 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
         } else {
 
             //調用TencentVuidLoginEventServlet，在TencentVuidLoginEventServlet 獲取到vuid后直接調用TvTicketTool.getVirtualTVSKey
+            new TencentVuidLoginEventServlet(this).execute();
         }
     }
 
@@ -328,32 +334,99 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
                 break;
             //帐号登录回调
             case 2:
-                //示例  {{"extra":"{\"isVip\":false,\"vuid\":278113277,\"msg\":\"login success\",\"code\":0,\"vuSession\":\"97027a6822cce5220250ef76cd58\"}","eventId":2,"type":3}
+                onTencentLoginEvent(eventId, params);
                 break;
             case 3://退出登录回调
+                onTencentLogoutEvent(eventId, params);
                 break;
             case 4://APP退出
+                onTencentExitEvent(eventId, params);
                 break;
             default:
                 break;
         }
 
-        try {
-            LogUtil.e(TAG, "腾讯回调事件：" + params);
-            JSONObject extraObj = JsonUtils.getJsonObj(params);
-            int code = extraObj.optInt("code");
-            String message = extraObj.optString("msg");
 
-            VIPCallBack_Servlet.TencentVip vip = new VIPCallBack_Servlet.TencentVip();
-            vip.setCode(String.valueOf(code));
-            vip.setMsg(message);
-            vip.setEventId(String.valueOf(eventId));  // 2 账户登录回调 3 退出登录  4 APP退出
-            vip.setGuid(guid);
-            new VIPCallBack_Servlet().execute(vip);
+
+    }
+
+    /**
+     * 腾讯APK 退出事件
+     * @param eventId
+     * @param params
+     */
+    public void onTencentExitEvent(int eventId, String params){
+        try {
+            if(params !=null && params.length()>0){
+                //创建回调参数
+                Map<String, String> map = new HashMap<>();
+
+                //解析腾讯登录回调结果
+                JSONObject extraObj = JsonUtils.getJsonObj(params);
+                map.put("vuid",extraObj.getString("vuid"));
+                map.put("serialNum",MyApp.SN);
+                map.put("msg",extraObj.getString("msg"));
+                map.put("eventId",String.valueOf(eventId));
+                map.put("guid",guid);
+                new VIPCallBack_Servlet().execute(map);
+            }
         } catch (Exception e) {
             LogUtil.e(TAG, e.getMessage());
         }
+    }
 
+    /**
+     * 腾讯APK 账户登出（退出登录)事件
+     * @param eventId
+     * @param params
+     */
+    public void onTencentLogoutEvent(int eventId, String params){
+        try {
+            if(params !=null && params.length()>0){
+                //创建回调参数
+                Map<String, String> map = new HashMap<>();
+
+                //解析腾讯登录回调结果
+                JSONObject extraObj = JsonUtils.getJsonObj(params);
+                map.put("vuid",extraObj.getString("vuid"));
+                map.put("serialNum",MyApp.SN);
+                map.put("msg",extraObj.getString("msg"));
+                map.put("eventId",String.valueOf(eventId));
+                map.put("guid",guid);
+                new VIPCallBack_Servlet().execute(map);
+            }
+        } catch (Exception e) {
+            LogUtil.e(TAG, e.getMessage());
+        }
+    }
+
+    /**
+     * 腾讯APK 登录登录接口回调事件
+     * @param eventId
+     * @param params
+     */
+    public void onTencentLoginEvent(int eventId, String params){
+        try {
+            if(params !=null && params.length()>0){
+                //创建回调参数
+                Map<String, String> map = new HashMap<>();
+
+                //解析腾讯登录回调结果
+                JSONObject extraObj = JsonUtils.getJsonObj(params);
+                map.put("vuid",extraObj.getString("vuid"));
+                map.put("vtoken",extraObj.getString("vtoken"));
+                map.put("serialNum",MyApp.SN);
+                map.put("code",extraObj.getString("code"));
+                map.put("msg",extraObj.getString("msg"));
+                map.put("eventId",String.valueOf(eventId));
+                map.put("guid",guid);
+                map.put("vuSession",extraObj.getString("vuSession"));
+
+                new VIPCallBack_Servlet().execute(map);
+            }
+        } catch (Exception e) {
+            LogUtil.e(TAG, e.getMessage());
+        }
     }
 
 }

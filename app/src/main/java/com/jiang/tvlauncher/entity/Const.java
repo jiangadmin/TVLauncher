@@ -41,6 +41,7 @@ public class Const {
 
     public static String 资源管理器 = "com.xgimi.filemanager";//影视资源
 
+    public static int ktcp_open_type = 0;       //腾讯定制版打开方式：0=无效, 1=从栏目启动，2=直接唤起
     public static String ktcp_vuid = "";//腾讯视频ID
     public static String ktcp_vtoken = "";//腾讯视频ID
     public static String ktcp_accessToken = "";//腾讯视频ID

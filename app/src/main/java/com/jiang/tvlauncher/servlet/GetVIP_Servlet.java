@@ -86,6 +86,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Model> {
             Const.ktcp_vuid = String.valueOf(entity.getResult().getVuid());
             Const.ktcp_vtoken = entity.getResult().getVtoken();
             Const.ktcp_accessToken = entity.getResult().getAccessToken();
+            Const.ktcp_open_type = 1;
 
             params.put("vuid", entity.getResult().getVuid());
             params.put("vtoken", entity.getResult().getVtoken());
