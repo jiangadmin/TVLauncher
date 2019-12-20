@@ -238,7 +238,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOn_Model> {
 
         switch (entity.getErrorcode()) {
             case 1000:
-                new GetVIP_Servlet(false).execute();
                 EventBus.getDefault().post("update");
                 break;
         }

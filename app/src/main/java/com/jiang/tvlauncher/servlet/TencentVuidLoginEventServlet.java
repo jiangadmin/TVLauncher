@@ -1,10 +1,12 @@
 package com.jiang.tvlauncher.servlet;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
+import com.TvTicketTool.TvTicketTool;
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.dialog.Loading;
@@ -15,7 +17,9 @@ import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
+import com.ktcp.video.ktsdk.TvTencentSdk;
 import com.ktcp.video.thirdagent.JsonUtils;
+import com.ktcp.video.thirdagent.KtcpPaySdkProxy;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,16 +33,15 @@ import java.util.Map;
  */
 public class TencentVuidLoginEventServlet extends AsyncTask<String, Integer, VIP_Model> {
     private static final String TAG = "TencentVuidLoginEventServlet";
+    final Context context;
 
-    boolean IsOpen = true;
-
-    public TencentVuidLoginEventServlet(boolean isOpen) {
-        IsOpen = isOpen;
+    public TencentVuidLoginEventServlet(final Context context) {
+        this.context = context;
     }
 
     @Override
     protected VIP_Model doInBackground(String... strings) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<String, String>();
         VIP_Model entity;
         if (!TextUtils.isEmpty(MyApp.SN)) {
 
@@ -80,53 +83,34 @@ public class TencentVuidLoginEventServlet extends AsyncTask<String, Integer, VIP
         Loading.dismiss();
 
         Const.IsGetVip = true;
-        if (entity.getErrorcode() == 1000) {
-            HashMap<String, Object> params = new HashMap<>();
+        if (entity.getErrorcode() == 1000 && this.context != null) {
 
-            Const.ktcp_vuid = String.valueOf(entity.getResult().getVuid());
-            Const.ktcp_vtoken = entity.getResult().getVtoken();
-            Const.ktcp_accessToken = entity.getResult().getAccessToken();
+            final HashMap<String, Object> loginData = new HashMap<>();
+            loginData.put("loginType", "vu");//登录类型 vu ,qq,wx,ph
+            loginData.put("vuid",entity.getResult().getVuid());
+            loginData.put("vtoken", entity.getResult().getVtoken());
+            loginData.put("accessToken", entity.getResult().getAccessToken());
 
-            params.put("vuid", entity.getResult().getVuid());
-            params.put("vtoken", entity.getResult().getVtoken());
-            params.put("accessToken", entity.getResult().getAccessToken());
-            params.put("errTip", "");
-
-            SaveUtils.setString(Save_Key.PARAMS, JsonUtils.addJsonValue(params));
-
-            //启动应用
-            LogUtil.e(TAG, "启动会员版");
-            if (IsOpen) {
-                Tools.StartApp(MyApp.activity, Const.TvViedo);
-            }
-        } else {
-
-            if (Tools.isAppInstalled(Const.TencentViedo)) {
-
-                //启动应用
-                LogUtil.e(TAG, "启动云视听");
-                Tools.StartApp(MyApp.activity, Const.TencentViedo);
-
-            } else {
-
-                if (TextUtils.isEmpty(Const.云视听Url)) {
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MyApp.activity);
-                    builder.setTitle("抱歉");
-                    builder.setMessage("应用 云视听 资源缺失，请联系服务人员");
-                    builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.show();
-
-                } else {
-                    Loading.show(MyApp.activity, "请稍后");
-                    new DownUtil(MyApp.activity).downLoad(Const.云视听Url, "云视听.apk", true);
+            //大票换小票接口
+            TvTicketTool.getVirtualTVSKey(this.context, false, entity.getResult().getVuid(), entity.getResult().getVtoken(), entity.getResult().getAccessToken(), new TvTencentSdk.OnTVSKeyListener() {
+                @Override
+                public void OnTVSKeySuccess(String vusession, int expiredTime) {
+                    LogUtil.e(TAG, "vusession=" + vusession + ",expiredTime=" + expiredTime);
+                    int status = 0;
+                    String msg = "login success";
+                    loginData.put("vusession", vusession);
+                    //通过onLoginResponse 将数据回传给腾讯
+                    KtcpPaySdkProxy.getInstance().onLoginResponse(status, msg, JsonUtils.addJsonValue(loginData));
                 }
-            }
+
+                @Override
+                public void OnTVSKeyFaile(int failedCode, String failedMsg) {
+                    LogUtil.e(TAG, "failedCode=" + failedCode + ",msg=" + failedMsg);
+                    int status = failedCode;
+                    String msg = failedMsg;
+                    KtcpPaySdkProxy.getInstance().onLoginResponse(status, msg, JsonUtils.addJsonValue(loginData));
+                }
+            });
         }
     }
 }
