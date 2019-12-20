@@ -371,7 +371,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
             //判断图片文件是否存在
             if (!FileUtils.checkFileExists(imgname)) {
                 //下载图片
-                new DownUtil(this).downLoad(bean.getBgImg(), imgname, false);
+                new DownUtil().downLoad(bean.getBgImg(), imgname, false);
 
                 //记录图片名
                 SaveUtils.setString(Save_Key.BackGround, imgname);
@@ -458,7 +458,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
             //判断文件是否存在
             LogUtil.e(TAG, "开始下载");
-            new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
+            new DownUtil().downLoad(SaveUtils.getString(Save_Key.BootAn),
                     Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
         }
 
@@ -489,7 +489,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
                 //判断文件是否存在
                 if (filename != null && !FileUtils.checkFileExists(filename)) {
                     //下载图片
-                    new DownUtil(this).downLoad(url, filename, false);
+                    new DownUtil().downLoad(url, filename, false);
 
                     //记录文件名
                     SaveUtils.setString(Save_Key.ItemImage + i, filename);
@@ -584,7 +584,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
                     } else {
 
                         Loading.show(this, "请稍后");
-                        new DownUtil(this).downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
+                        new DownUtil().downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
                     }
                 } else
                     Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();

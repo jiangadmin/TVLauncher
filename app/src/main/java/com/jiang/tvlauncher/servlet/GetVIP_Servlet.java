@@ -1,12 +1,11 @@
 package com.jiang.tvlauncher.servlet;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyApp;
+import com.jiang.tvlauncher.dialog.AllDialog;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -38,7 +37,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Model> {
 
     @Override
     protected VIP_Model doInBackground(String... strings) {
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         VIP_Model entity;
         if (!TextUtils.isEmpty(MyApp.SN)) {
 
@@ -80,54 +79,55 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Model> {
         Loading.dismiss();
 
         Const.IsGetVip = true;
-        if (entity.getErrorcode() == 1000) {
-            HashMap<String, Object> params = new HashMap<>();
 
-            Const.ktcp_vuid = String.valueOf(entity.getResult().getVuid());
-            Const.ktcp_vtoken = entity.getResult().getVtoken();
-            Const.ktcp_accessToken = entity.getResult().getAccessToken();
-            Const.ktcp_open_type = 1;
+        switch (entity.getErrorcode()) {
+            case 1000:
+                HashMap<String, Object> params = new HashMap<>();
 
-            params.put("vuid", entity.getResult().getVuid());
-            params.put("vtoken", entity.getResult().getVtoken());
-            params.put("accessToken", entity.getResult().getAccessToken());
-            params.put("errTip", "");
+                Const.ktcp_vuid = String.valueOf(entity.getResult().getVuid());
+                Const.ktcp_vtoken = entity.getResult().getVtoken();
+                Const.ktcp_accessToken = entity.getResult().getAccessToken();
 
-            SaveUtils.setString(Save_Key.PARAMS, JsonUtils.addJsonValue(params));
+                params.put("vuid", entity.getResult().getVuid());
+                params.put("vtoken", entity.getResult().getVtoken());
+                params.put("accessToken", entity.getResult().getAccessToken());
+                params.put("errTip", "");
 
-            //启动应用
-            LogUtil.e(TAG, "启动会员版");
-            if (IsOpen) {
-                Tools.StartApp(MyApp.activity, Const.TvViedo);
-            }
-        } else {
-
-            if (Tools.isAppInstalled(Const.TencentViedo)) {
+                SaveUtils.setString(Save_Key.PARAMS, JsonUtils.addJsonValue(params));
 
                 //启动应用
-                LogUtil.e(TAG, "启动云视听");
-                Tools.StartApp(MyApp.activity, Const.TencentViedo);
-
-            } else {
-
-                if (TextUtils.isEmpty(Const.云视听Url)) {
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MyApp.activity);
-                    builder.setTitle("抱歉");
-                    builder.setMessage("应用 云视听 资源缺失，请联系服务人员");
-                    builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.show();
+                LogUtil.e(TAG, "启动会员版");
+                if (IsOpen) {
+                    if (Tools.isAppInstalled(Const.TvViedo)) {
+                        Tools.StartApp(MyApp.currentActivity(), Const.TvViedo);
+                    }
+                }
+                break;
+            //003004="无效设备号",表示设备不存在我们数据库中
+            case 3004:
+                //019006="设备未绑定酒店客户，表示使用VIP账号",标识设备未绑定到酒店
+            case 19006:
+                //019007="设备未开通超级影视VIP权限"，表示酒店未开通超级影视vip
+            case 19007:
+                if (Tools.isAppInstalled(Const.TencentViedo)) {
+                    //启动应用
+                    LogUtil.e(TAG, "启动云视听");
+                    Tools.StartApp(MyApp.currentActivity(), Const.TencentViedo);
 
                 } else {
-                    Loading.show(MyApp.activity, "请稍后");
-                    new DownUtil(MyApp.activity).downLoad(Const.云视听Url, "云视听.apk", true);
+
+                    if (TextUtils.isEmpty(Const.云视听Url)) {
+                        new AllDialog(MyApp.currentActivity()).appDefect();
+                    } else {
+                        Loading.show(MyApp.currentActivity(), "请稍后");
+                        new DownUtil().downLoad(Const.云视听Url, "云视听.apk", true);
+                    }
                 }
-            }
+                break;
+
+            default:
+                new AllDialog(MyApp.currentActivity()).openKtcpError();
+                break;
         }
     }
 }

@@ -50,16 +50,11 @@ public class AppBroadcastReceiver extends BroadcastReceiver {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MyApp.activity);
                 builder.setTitle("抱歉");
                 builder.setMessage("资源缺失<云视听>，请联系服务人员!");
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                builder.setPositiveButton("确定", (dialogInterface, i) -> dialogInterface.dismiss());
                 builder.show();
             } else {
                 Loading.show(MyApp.activity, "请稍后");
-                new DownUtil(MyApp.activity).downLoad(SaveUtils.getString(Const.TvViedoDow), packname + ".apk", true);
+                new DownUtil().downLoad(SaveUtils.getString(Const.TvViedoDow), packname + ".apk", true);
             }
         }
     }

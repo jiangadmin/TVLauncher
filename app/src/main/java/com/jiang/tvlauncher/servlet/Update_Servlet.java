@@ -65,10 +65,8 @@ public class Update_Servlet extends AsyncTask<String, Integer, Update_Model> {
             case 1000:
                 if (entity.getResult().getBuildNum() > Tools.getVersionCode(MyApp.context)) {
                     Loading.show(activity, "安装中");
-                    new DownUtil(activity).downLoad(entity.getResult().getDownloadUrl(), "Feekr" + entity.getResult().getVersionNum() + ".apk", true);
+                    new DownUtil().downLoad(entity.getResult().getDownloadUrl(), "Feekr" + entity.getResult().getVersionNum() + ".apk", true);
                 }
-                break;
-            case 15:
                 break;
             default:
                 break;

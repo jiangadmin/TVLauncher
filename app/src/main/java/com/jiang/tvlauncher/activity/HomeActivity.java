@@ -331,7 +331,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             //判断文件是否存在
             if (!FileUtils.checkFileExists(Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)))) {
                 LogUtil.e(TAG, "开始下载");
-                new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
+                new DownUtil().downLoad(SaveUtils.getString(Save_Key.BootAn),
                         Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
             }
         }
@@ -359,7 +359,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
                 //判断文件是否存在
                 if (!FileUtils.checkFileExists(filename)) {
                     //下载图片
-                    new DownUtil(this).downLoad(url, filename, false);
+                    new DownUtil().downLoad(url, filename, false);
 
                     //记录文件名
                     SaveUtils.setString(Save_Key.ItemImage + i, filename);
@@ -455,7 +455,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
                     } else {
 
                         Loading.show(this, "请稍后");
-                        new DownUtil(this).downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
+                        new DownUtil().downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
                     }
                 } else
                     Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();

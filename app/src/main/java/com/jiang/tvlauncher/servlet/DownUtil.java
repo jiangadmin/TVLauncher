@@ -1,8 +1,6 @@
 package com.jiang.tvlauncher.servlet;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -31,43 +29,35 @@ import java.net.URL;
 
 public class DownUtil {
     private static final String TAG = "DownUtil";
-    Activity activity;
 
     ProgressDialog pd;
 
-    public DownUtil(Activity activity) {
-        this.activity = activity;
-    }
-
     public void downLoad(final String path, final String fileName, final boolean showpd) {
         // 进度条对话框
-        pd = new ProgressDialog(activity);
+        pd = new ProgressDialog(MyApp.context);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         pd.setMessage("下载中，精彩马上呈现，请稍后...");
         pd.setCanceledOnTouchOutside(false);
         pd.setCancelable(false);
         // 监听返回键--防止下载的时候点击返回
-        pd.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+        pd.setOnKeyListener((dialog, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 //                    Toast.makeText(activity, "正在下载请稍后", Toast.LENGTH_SHORT).show();
-                    return true;
-                } else {
-                    return false;
-                }
+                return true;
+            } else {
+                return false;
             }
         });
         // Sdcard不可用
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            Toast.makeText(activity, "SD卡不可用~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.context, "SD卡不可用~", Toast.LENGTH_SHORT).show();
             Loading.dismiss();
 
         } else {
             if (showpd)
                 try {
-                pd.show();
-                }catch (Exception e){
+                    pd.show();
+                } catch (Exception e) {
 
                 }
             //下载的子线程
@@ -94,7 +84,7 @@ public class DownUtil {
                             } else {
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                                activity.startActivity(intent);
+                                MyApp.currentActivity().startActivity(intent);
                             }
 
                         }

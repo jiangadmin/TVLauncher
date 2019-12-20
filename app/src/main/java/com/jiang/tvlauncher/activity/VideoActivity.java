@@ -61,7 +61,7 @@ public class VideoActivity extends BaseActivity {
             videoName = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
             SaveUtils.setString(Save_Key.NewVideoName, videoName);
             //下载视频
-            new DownUtil(this).downLoad(videoUrl, videoName, false);
+            new DownUtil().downLoad(videoUrl, videoName, false);
         } else {
             //判断是否有记录
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.NewVideoName))) {
@@ -72,18 +72,10 @@ public class VideoActivity extends BaseActivity {
             }
         }
 
-        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                videoView.start();
-            }
-        });
-        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                finish();
-                return false;
-            }
+        videoView.setOnCompletionListener(mediaPlayer -> videoView.start());
+        videoView.setOnErrorListener((mediaPlayer, i, i1) -> {
+            finish();
+            return false;
         });
         videoView.start();
 

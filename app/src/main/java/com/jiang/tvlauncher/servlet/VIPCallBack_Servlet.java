@@ -20,12 +20,20 @@ import java.util.Map;
  * Phone: 186 6120 1018
  * TODO: 会员登录返回
  */
-public class VIPCallBack_Servlet extends AsyncTask<Map<String, String>, Integer, Base_Model> {
+public class VIPCallBack_Servlet extends AsyncTask<VIPCallBack_Servlet.TencentVip, Integer, Base_Model> {
     private static final String TAG = "VIPCallBack_Servlet";
 
     @Override
-    protected Base_Model doInBackground(Map<String,String>... params) {
-        String res = HttpUtil.doPost(Const.URL + "tencent/tencentVideoController/tencentNoticeCallBack.do", params[0]);
+    protected Base_Model doInBackground(TencentVip... tencentVips) {
+        TencentVip vip = tencentVips[0];
+        Map<String,String> map = new HashMap<>();
+        map.put("vuid", Const.ktcp_vuid);
+        map.put("vtoken", Const.ktcp_vtoken);
+        map.put("serialNum", MyApp.SN);
+        map.put("code", vip.getCode());
+        map.put("msg", vip.getMsg());
+        map.put("eventId", vip.getEventId());
+        String res = HttpUtil.doPost(Const.URL + "tencent/tencentVideoController/tencentNoticeCallBack.do", map);
 
         Base_Model entity;
         if (TextUtils.isEmpty(res)) {

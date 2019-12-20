@@ -70,7 +70,7 @@ public class ImageActivity extends BaseActivity {
             //检查本地图片是否存在
             if (!FileUtils.checkFileExists(imageName)) {
                 //下载网络图片
-                new DownUtil(this).downLoad(imageUrl, imageName, false);
+                new DownUtil().downLoad(imageUrl, imageName, false);
             }
         } else {
             //判断是否有记录
