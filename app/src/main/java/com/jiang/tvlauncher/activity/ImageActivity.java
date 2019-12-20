@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -30,17 +30,17 @@ import java.io.File;
  * TODO: 图片展示
  */
 
-public class Image_Activity extends Base_Activity {
-    private static final String TAG = "Image_Activity";
+public class ImageActivity extends BaseActivity {
+    private static final String TAG = "ImageActivity";
     private static final String URL = "url";
 
     ImageView imageView;
 
-    String imageurl, imagename;
+    String imageUrl, imageName;
 
     public static void start(Context context, String url) {
         Intent intent = new Intent();
-        intent.setClass(context, Image_Activity.class);
+        intent.setClass(context, ImageActivity.class);
         intent.putExtra(URL, url);
         context.startActivity(intent);
     }
@@ -57,20 +57,20 @@ public class Image_Activity extends Base_Activity {
 
         //如果有网络
         if (Tools.isNetworkConnected()) {
-            imageurl = getIntent().getStringExtra(URL);
-            imagename = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
-            if (TextUtils.isEmpty(imageurl)) {
+            imageUrl = getIntent().getStringExtra(URL);
+            imageName = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
+            if (TextUtils.isEmpty(imageUrl)) {
                 finish();
                 return;
             }
             //加载网络图片
-            Glide.with(this).load(imageurl).into(imageView);
-            SaveUtils.setString(Save_Key.NewImageName, imagename);
+            Glide.with(this).load(imageUrl).into(imageView);
+            SaveUtils.setString(Save_Key.NewImageName, imageName);
 
             //检查本地图片是否存在
-            if (!FileUtils.checkFileExists(imagename)) {
+            if (!FileUtils.checkFileExists(imageName)) {
                 //下载网络图片
-                new DownUtil(this).downLoad(imageurl, imagename, false);
+                new DownUtil(this).downLoad(imageUrl, imageName, false);
             }
         } else {
             //判断是否有记录

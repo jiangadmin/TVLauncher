@@ -3,7 +3,7 @@ package com.jiang.tvlauncher.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.R;

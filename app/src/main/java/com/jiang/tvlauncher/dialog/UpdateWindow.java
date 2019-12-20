@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jiang.tvlauncher.R;
-import com.jiang.tvlauncher.activity.Base_Activity;
+import com.jiang.tvlauncher.activity.BaseActivity;
 import com.jiang.tvlauncher.server.MyDownService;
 import com.jiang.tvlauncher.utils.LogUtil;
 
@@ -25,7 +25,7 @@ import java.io.File;
  * TODO: 下载更新
  */
 
-public class UpdateWindow extends Base_Activity {
+public class UpdateWindow extends BaseActivity {
     private static final String TAG = "UpdateWindow";
 
     ProgressBar jindutiao;

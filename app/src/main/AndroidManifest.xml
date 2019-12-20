@@ -73,14 +73,14 @@
         </service>
 
         <activity
-            android:name=".activity.Home_Activity"
+            android:name=".activity.HomeActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="landscape">
 
         </activity>
 
         <activity
-            android:name=".activity.Launcher_Activity"
+            android:name=".activity.LauncherActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="landscape">
             <intent-filter>
@@ -94,29 +94,29 @@
         </activity>
 
         <activity
-            android:name=".activity.Log_Activity"
+            android:name=".activity.LogActivity"
             android:screenOrientation="landscape">
 
         </activity>
 
         <activity
-            android:name=".activity.APPList_Activity"
+            android:name=".activity.APPListActivity"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".activity.NewAPPList_Activity"
+            android:name=".activity.NewAPPListActivity"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".activity.Setting_Activity"
+            android:name=".activity.SettingActivity"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".activity.Video_Activity"
+            android:name=".activity.VideoActivity"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".activity.Image_Activity"
+            android:name=".activity.ImageActivity"
             android:screenOrientation="landscape" />
 
         <activity

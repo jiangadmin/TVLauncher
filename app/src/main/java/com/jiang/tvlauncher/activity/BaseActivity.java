@@ -13,7 +13,7 @@ import com.jiang.tvlauncher.utils.AnimUtils;
  * TODO: 公共
  */
 
-public class Base_Activity extends Activity {
+public class BaseActivity extends Activity {
 
     public void enlargeAnim(View v) {
         AnimUtils.S(v, 1, 1.1F);

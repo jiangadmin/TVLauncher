@@ -13,8 +13,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,6 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -66,8 +67,8 @@ import java.util.List;
  * TODO: 新主页
  */
 
-public class Launcher_Activity extends Base_Activity implements View.OnClickListener, View.OnFocusChangeListener {
-    private static final String TAG = "Launcher_Activity";
+public class LauncherActivity extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+    private static final String TAG = "LauncherActivity";
     RelativeLayout toolbar_view;
     LinearLayout back;
     ImageView main_bg, main_bg_0, back_img;
@@ -77,8 +78,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     ImageView bg, setting_img, title_icon;
     TextView setting_txt;
 
-    LinearLayout wifiap, title_view;
-    TextView wifiap_txt;
+    LinearLayout wifiAp, title_view;
+    TextView wifiAp_txt;
 
     TitleView titleview;
 
@@ -87,9 +88,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     TextView ver;
 
-    List<ImageView> homelist = new ArrayList<>();
-    List<TextView> namelist = new ArrayList<>();
-    List<Integer> hometype = new ArrayList<>();
+    List<ImageView> homeList = new ArrayList<>();
+    List<TextView> nameList = new ArrayList<>();
+    List<Integer> homeType = new ArrayList<>();
 
     boolean toolbar_show = false;
     boolean ifnet = false;//判断有无网络使用
@@ -218,8 +219,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         toolbar_view = findViewById(R.id.toolbar_view);
         back = findViewById(R.id.back);
-        wifiap = findViewById(R.id.wifiap);
-        wifiap_txt = findViewById(R.id.wifiap_txt);
+        wifiAp = findViewById(R.id.wifiap);
+        wifiAp_txt = findViewById(R.id.wifiap_txt);
         back_img = findViewById(R.id.back_img);
         back_txt = findViewById(R.id.back_txt);
 
@@ -230,17 +231,17 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         titleview = findViewById(R.id.titleview);
 
         ver = findViewById(R.id.ver);
-        ver.setText("V " + Tools.getVersionName(MyApp.context));
+        ver.setText(String.format("V %s", Tools.getVersionName(MyApp.context)));
 
-        homelist.add(home1);
-        homelist.add(home2);
-        homelist.add(home3);
-        homelist.add(home4);
+        homeList.add(home1);
+        homeList.add(home2);
+        homeList.add(home3);
+        homeList.add(home4);
 
-        namelist.add(name1);
-        namelist.add(name2);
-        namelist.add(name3);
-        namelist.add(name4);
+        nameList.add(name1);
+        nameList.add(name2);
+        nameList.add(name3);
+        nameList.add(name4);
 
         imageView = findViewById(R.id.image);
         videoView = findViewById(R.id.video);
@@ -285,7 +286,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         home4.setOnClickListener(this);
 
         back.setOnClickListener(this);
-        wifiap.setOnClickListener(this);
+        wifiAp.setOnClickListener(this);
         setting.setOnClickListener(this);
 
         home1.setOnFocusChangeListener(this);
@@ -294,7 +295,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         home4.setOnFocusChangeListener(this);
 
         back.setOnFocusChangeListener(this);
-        wifiap.setOnFocusChangeListener(this);
+        wifiAp.setOnFocusChangeListener(this);
         setting.setOnFocusChangeListener(this);
 
         back.setVisibility(View.GONE);
@@ -307,7 +308,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-        return;
+
     }
 
     boolean showToast = true;
@@ -323,7 +324,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 if (mHits[0] >= (SystemClock.uptimeMillis() - 5000)) {
                     LogUtil.e(TAG, "Password:" + SaveUtils.getString(Save_Key.Password));
                     if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.Password))) {
-                        Setting_Activity.start(this);
+                        SettingActivity.start(this);
                     } else {
                         new PwdDialog(this, R.style.MyDialog).show();
                     }
@@ -358,11 +359,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     /**
      * 主题返回 网络正常情况下
      *
-     * @param entity
+     * @param model 数据
      */
     @Subscribe
-    public void onMessage(Theme_Model entity) {
-        Theme_Model.ResultBean bean = entity.getResult();
+    public void onMessage(Theme_Model model) {
+        Theme_Model.ResultBean bean = model.getResult();
         if (bean != null) {
 
             //图片名
@@ -378,9 +379,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
             //赋值背景 前景显示
             try {
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround))));
                 RequestOptions builder = new RequestOptions();
-                builder.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
-                builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.BackGround)))));
+                builder.placeholder(bitmapDrawable);
+                builder.error(bitmapDrawable);
                 Glide.with(this).load(bean.getBgImg()).apply(builder).into(main_bg);
             } catch (Exception e) {
                 Glide.with(this).load(bean.getBgImg()).into(main_bg);
@@ -447,12 +449,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     /**
      * 更新页面
-     *
-     * @param channelList
      */
     @Subscribe
     public void onMessage(FindChannelList_Model channelList) {
-        this.channelList = channelList;
+        LauncherActivity.channelList = channelList;
 
         //更改开机动画
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
@@ -473,21 +473,21 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 //图片文件名
                 String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
                 //设置栏目名称
-                namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
+                nameList.get(i).setText(channelList.getResult().get(i).getChannelName());
                 try {
                     //加载图片 优先本地
                     RequestOptions options = new RequestOptions();
                     options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
                     options.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
-                    Glide.with(this).load(url).apply(options).into(homelist.get(i));
+                    Glide.with(this).load(url).apply(options).into(homeList.get(i));
                 } catch (Exception e) {
-                    Glide.with(this).load(url).into(homelist.get(i));
+                    Glide.with(this).load(url).into(homeList.get(i));
                 }
 
-                hometype.add(channelList.getResult().get(i).getContentType());
+                homeType.add(channelList.getResult().get(i).getContentType());
 
                 //判断文件是否存在
-                if (!FileUtils.checkFileExists(filename)) {
+                if (filename != null && !FileUtils.checkFileExists(filename)) {
                     //下载图片
                     new DownUtil(this).downLoad(url, filename, false);
 
@@ -500,6 +500,13 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+
+
+        //判断网络
+        if (!Tools.isNetworkConnected() && view.getId() != R.id.setting) {
+            NetDialog.showW(this);
+            return;
+        }
 
         //账户（信号源）判断
         if (Const.BussFlag == 0) {
@@ -517,7 +524,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             case R.id.setting:
                 LogUtil.e(TAG, "Password:" + SaveUtils.getString(Save_Key.Password));
                 if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.Password))) {
-                    Setting_Activity.start(this);
+                    SettingActivity.start(this);
                 } else {
                     new PwdDialog(this, R.style.MyDialog).show();
                 }
@@ -545,17 +552,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     /**
      * 启动栏目
-     *
-     * @param i
      */
     public void open(int i) {
-        //数据缺失的情况
-        if (hometype.size() <= i) {
-            Toast.makeText(this, "栏目未开通！", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        //数据正常的情况
-        switch (hometype.get(i)) {
+        switch (homeType.get(i)) {
             //无操作
             case 0:
                 Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
@@ -598,15 +597,15 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 break;
             //启动APP列表
             case 2:
-                NewAPPList_Activity.start(this, channelList.getResult().get(i).getAppList());
+                NewAPPListActivity.start(this, channelList.getResult().get(i).getAppList());
                 break;
             //启动展示图片
             case 3:
-                Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+                ImageActivity.start(this, channelList.getResult().get(i).getContentUrl());
                 break;
             //启动展示视频
             case 4:
-                Video_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+                VideoActivity.start(this, channelList.getResult().get(i).getContentUrl());
                 break;
         }
     }
@@ -615,14 +614,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * 密码输入返回
      */
     public void PwdRe() {
-        Setting_Activity.start(this);
+        SettingActivity.start(this);
     }
 
     /**
      * 焦点变化
-     *
-     * @param view
-     * @param b
      */
     @Override
     public void onFocusChange(View view, boolean b) {
@@ -635,7 +631,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 back_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
                 break;
             case R.id.wifiap:
-                wifiap_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
+                wifiAp_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
                 break;
             default:
                 if (b)
@@ -650,7 +646,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * 计时器
      */
     class TimeCount extends CountDownTimer {
-        public TimeCount(long millisInFuture, long countDownInterval) {
+        TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
         }
 
@@ -673,7 +669,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      */
     class TitleTime extends CountDownTimer {
 
-        public TitleTime(long millisInFuture, long countDownInterval) {
+        TitleTime(long millisInFuture, long countDownInterval) {
             super(millisInFuture * 1000, countDownInterval * 1000);
         }
 
@@ -698,7 +694,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * 警告框
      */
     public static class WarningDialog extends Dialog {
-        public WarningDialog(@NonNull Context context) {
+        WarningDialog(@NonNull Context context) {
             super(context, R.style.MyDialog);
         }
 

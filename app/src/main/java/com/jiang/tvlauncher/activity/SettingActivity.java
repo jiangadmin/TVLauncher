@@ -7,8 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.R;
@@ -27,12 +28,11 @@ import com.lgeek.tv.jimi.LgeekTVSdkMrg;
  * TODO: 控制台
  */
 
-public class Setting_Activity extends Base_Activity {
-    private static final String TAG = "Setting_Activity";
+public class SettingActivity extends BaseActivity {
 
     public static void start(Context context) {
         Intent intent = new Intent();
-        intent.setClass(context, Setting_Activity.class);
+        intent.setClass(context, SettingActivity.class);
         context.startActivity(intent);
     }
 
@@ -99,7 +99,7 @@ public class Setting_Activity extends Base_Activity {
             builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Loading.show(Setting_Activity.this, "同步中···");
+                    Loading.show(SettingActivity.this, "同步中···");
                     new SyncDevZoom_Servlet().execute();
                 }
             });

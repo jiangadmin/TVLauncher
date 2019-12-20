@@ -6,7 +6,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -27,17 +27,17 @@ import com.jiang.tvlauncher.utils.Tools;
  * TODO: 视频播放
  */
 
-public class Video_Activity extends Base_Activity {
-    private static final String TAG = "Video_Activity";
+public class VideoActivity extends BaseActivity {
+    private static final String TAG = "VideoActivity";
     private static final String URL = "url";
 
     VideoView videoView;
 
-    String videourl, videoname;
+    String videoUrl, videoName;
 
     public static void start(Context context, String url) {
         Intent intent = new Intent();
-        intent.setClass(context, Video_Activity.class);
+        intent.setClass(context, VideoActivity.class);
         intent.putExtra(URL, url);
         context.startActivity(intent);
     }
@@ -49,23 +49,23 @@ public class Video_Activity extends Base_Activity {
         MyApp.activity = this;
         videoView = findViewById(R.id.videoView);
 
-        String videof = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/" + SaveUtils.getString(Save_Key.NewImageName);
+        String videoF = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/" + SaveUtils.getString(Save_Key.NewImageName);
 
         LogUtil.e(TAG, "视频播放");
-        videourl = getIntent().getStringExtra(URL);
+        videoUrl = getIntent().getStringExtra(URL);
 
         videoView.setZOrderOnTop(true);
         //如果有网络
         if (Tools.isNetworkConnected()) {
-            videoView.setVideoURI(Uri.parse(videourl));
-            videoname = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
-            SaveUtils.setString(Save_Key.NewVideoName, videoname);
+            videoView.setVideoURI(Uri.parse(videoUrl));
+            videoName = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
+            SaveUtils.setString(Save_Key.NewVideoName, videoName);
             //下载视频
-            new DownUtil(this).downLoad(videourl, videoname, false);
+            new DownUtil(this).downLoad(videoUrl, videoName, false);
         } else {
             //判断是否有记录
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.NewVideoName))) {
-                videoView.setVideoPath(videof);
+                videoView.setVideoPath(videoF);
             } else {
                 Toast.makeText(this, "网络异常，请联系服务人员", Toast.LENGTH_SHORT).show();
                 finish();

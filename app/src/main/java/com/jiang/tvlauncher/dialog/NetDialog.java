@@ -1,24 +1,27 @@
 package com.jiang.tvlauncher.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.jiang.tvlauncher.MyApp;
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;
 
 /**
- * @author jiangadmin
- * date: 2017/8/29.
- * Email: www.fangmu@qq.com
- * Phone: 186 6120 1018
+ * @author jiangyao
+ * Date: 2017-8-29
+ * Email: jiangmr@vip.qq.com
  * TODO: 网络状态提示
  */
 
 public class NetDialog {
+    private static final String TAG = "NetDialog";
 
     private static NetWarningDialog netWarningDialog;
     private static NetLoadingDialog netLoadingDialog;
@@ -29,12 +32,29 @@ public class NetDialog {
      * 显示警告框
      */
     public static void showW() {
-        if (MyApp.activity != null && netWarningDialog == null) {
-            netWarningDialog = new NetWarningDialog(MyApp.activity);
+        if (MyApp.currentActivity() != null && netWarningDialog == null) {
             try {
+                netWarningDialog = new NetWarningDialog(MyApp.currentActivity());
                 netWarningDialog.show();
             } catch (RuntimeException e) {
+                LogUtil.e(TAG, e.getMessage());
+            }
+        }
+    }
 
+    /**
+     * 显示警告框
+     */
+    public static void showW(Activity activity) {
+        if (netWarningDialog == null) {
+            new NetWarningDialog(activity).show();
+        } else {
+            try {
+                netWarningDialog.dismiss();
+                netWarningDialog = null;
+                new NetWarningDialog(activity).show();
+            } catch (Exception e) {
+                LogUtil.e(TAG, e.getMessage());
             }
         }
     }
@@ -43,8 +63,8 @@ public class NetDialog {
      * 显示等待框
      */
     public static void showL() {
-        if (MyApp.activity != null && netLoadingDialog == null) {
-            netLoadingDialog = new NetLoadingDialog(MyApp.activity);
+        if (MyApp.currentActivity() != null && netLoadingDialog == null) {
+            netLoadingDialog = new NetLoadingDialog(MyApp.currentActivity());
             netLoadingDialog.show();
 
             timeCount = new TimeCount(30000, 1000);

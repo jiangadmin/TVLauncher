@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Process;
 import android.os.RemoteException;
@@ -39,6 +40,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by  jiang
@@ -74,10 +76,30 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
     private static final String MIPUSH_APP_ID = "2882303761517701199";
     private static final String MIPUSH_APP_KEY = "5501770168199";
 
+    /**
+     * activity 总数
+     */
+    public int count = 0;
+
+    /**
+     * 收录的Activity
+     */
+    public static Stack<Activity> store;
+
+    /**
+     * 是否在前台
+     */
+    public static boolean isShow = true;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
+
+        store = new Stack<>();
+        registerActivityLifecycleCallbacks(new SwitchBackgroundCallbacks());
+
         //初始化push推送服务
         if (shouldInit()) {
             MiPushClient.registerPush(this, MIPUSH_APP_ID, MIPUSH_APP_KEY);
@@ -355,5 +377,90 @@ public class MyApp extends Application implements KtcpPaySDKCallback {
         }
 
     }
+
+
+    private class SwitchBackgroundCallbacks implements ActivityLifecycleCallbacks {
+
+        @Override
+        public void onActivityCreated(Activity activity, Bundle bundle) {
+//            if(activity instanceof ActivityDetail) {
+//                if(store.size() >= MAX_ACTIVITY_DETAIL_NUM){
+//                    store.peek().finish(); //移除栈底的详情页并finish,保证商品详情页个数最大为10
+//                }
+            store.add(activity);
+//            }
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+            if (count == 0) { //后台切换到前台
+                isShow = true;
+                LogUtil.v(TAG, ">>>>>>>>>>>>>>>>>>>App切到前台");
+
+                CrashReport.putUserData(context, "Application", "App切到前台");
+
+            }
+            count++;
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+            count--;
+            if (count == 0) { //前台切换到后台
+                isShow = false;
+                LogUtil.v(TAG, ">>>>>>>>>>>>>>>>>>>App切到后台");
+
+            }
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+            store.remove(activity);
+        }
+    }
+
+
+    /**
+     * get current Activity 获取当前Activity（栈中最后一个压入的）
+     */
+    public static Activity currentActivity() {
+        if (store != null && store.size() > 0) {
+            return store.lastElement();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 结束指定的Activity
+     *
+     * @param activity
+     */
+
+    public static void finishActivity(Activity activity) {
+        if (activity != null && store != null) {
+            for (Activity activity1 : store) {
+                if (activity1 == activity) {
+                    activity1.finish();
+                }
+            }
+        }
+    }
+
 
 }

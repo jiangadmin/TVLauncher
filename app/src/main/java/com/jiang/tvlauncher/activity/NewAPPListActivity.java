@@ -3,7 +3,7 @@ package com.jiang.tvlauncher.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -19,24 +19,22 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import java.util.List;
 
 /**
- * @author: jiangadmin
- * @date: 2017/6/12.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * author: jiangadmin
+ * date: 2017/6/12.
+ * Email: www.fangmu@qq.com
  * TODO: 新应用列表
  */
 
-public class NewAPPList_Activity extends Base_Activity implements AdapterView.OnItemClickListener {
-    private static final String TAG = "APPList_Activity";
+public class NewAPPListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+    private static final String TAG = "APPListActivity";
 
     private GridView mGridView;
-    private NewAppAdapter mAdapter;
     static List<FindChannelList_Model.ResultBean.AppListBean> appList;
 
     public static void start(Context context, List<FindChannelList_Model.ResultBean.AppListBean> appListBeen) {
         appList = appListBeen;
         Intent intent = new Intent();
-        intent.setClass(context, NewAPPList_Activity.class);
+        intent.setClass(context, NewAPPListActivity.class);
         context.startActivity(intent);
 
     }
@@ -46,18 +44,18 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applist);
         MyApp.activity = this;
-        initview();
-        initeven();
+        initView();
+        initEven();
 
     }
 
-    private void initview() {
+    private void initView() {
         mGridView =  findViewById(R.id.app_grid);
     }
 
-    private void initeven() {
+    private void initEven() {
 
-        mAdapter = new NewAppAdapter(this, appList);
+        NewAppAdapter mAdapter = new NewAppAdapter(this, appList);
         mGridView.setAdapter(mAdapter);
         mGridView.setFocusable(true);
         mGridView.setOnItemClickListener(this);

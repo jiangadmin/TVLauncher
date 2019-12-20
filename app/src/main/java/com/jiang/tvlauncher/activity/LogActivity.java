@@ -2,7 +2,7 @@ package com.jiang.tvlauncher.activity;
 
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.TextView;
 
 import com.jiang.tvlauncher.MyApp;
@@ -15,8 +15,8 @@ import com.jiang.tvlauncher.R;
  * Phone: 186 6120 1018
  * TODO:
  */
-public class Log_Activity extends Base_Activity {
-    private static final String TAG = "Log_Activity";
+public class LogActivity extends BaseActivity {
+    private static final String TAG = "LogActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

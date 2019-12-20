@@ -3,13 +3,13 @@ package com.jiang.tvlauncher.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 
 import com.jiang.tvlauncher.R;
-import com.jiang.tvlauncher.activity.Home_Activity;
-import com.jiang.tvlauncher.activity.Launcher_Activity;
+import com.jiang.tvlauncher.activity.HomeActivity;
+import com.jiang.tvlauncher.activity.LauncherActivity;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.SaveUtils;
 
@@ -100,12 +100,12 @@ public class PwdDialog extends Dialog {
                 dismiss();
 
                 if (password.equals(SaveUtils.getString(Save_Key.Password))) {
-                    if (activity instanceof Home_Activity) {
-                        ((Home_Activity) activity).PwdRe();
+                    if (activity instanceof HomeActivity) {
+                        ((HomeActivity) activity).PwdRe();
                     }
 
-                    if (activity instanceof Launcher_Activity) {
-                        ((Launcher_Activity) activity).PwdRe();
+                    if (activity instanceof LauncherActivity) {
+                        ((LauncherActivity) activity).PwdRe();
                     }
                 }
                 break;

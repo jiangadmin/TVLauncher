@@ -10,8 +10,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -62,8 +62,8 @@ import java.util.List;
  * TODO: 主页
  */
 
-public class Home_Activity extends Base_Activity implements View.OnClickListener, View.OnFocusChangeListener {
-    private static final String TAG = "Home_Activity";
+public class HomeActivity extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+    private static final String TAG = "HomeActivity";
     RelativeLayout toolbar_view;
     LinearLayout back;
     ImageView back_img;
@@ -322,7 +322,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
      */
     @Subscribe
     public void onMessage(FindChannelList_Model channelList) {
-        Home_Activity.channelList = channelList;
+        HomeActivity.channelList = channelList;
         String file = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
 
         //更改开机动画
@@ -387,7 +387,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             case R.id.setting:
                 LogUtil.e(TAG, "Password:" + SaveUtils.getString(Save_Key.Password));
                 if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.Password))) {
-                    Setting_Activity.start(this);
+                    SettingActivity.start(this);
                 } else {
                     new PwdDialog(this, R.style.MyDialog).show();
                 }
@@ -462,15 +462,15 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 break;
             //启动APP列表
             case 2:
-                NewAPPList_Activity.start(this, channelList.getResult().get(i).getAppList());
+                NewAPPListActivity.start(this, channelList.getResult().get(i).getAppList());
                 break;
             //启动展示图片
             case 3:
-                Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+                ImageActivity.start(this, channelList.getResult().get(i).getContentUrl());
                 break;
             //启动展示视频
             case 4:
-                Video_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+                VideoActivity.start(this, channelList.getResult().get(i).getContentUrl());
                 break;
         }
     }
@@ -479,7 +479,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
      * 密码输入返回
      */
     public void PwdRe() {
-        Setting_Activity.start(this);
+        SettingActivity.start(this);
     }
 
     @Override
