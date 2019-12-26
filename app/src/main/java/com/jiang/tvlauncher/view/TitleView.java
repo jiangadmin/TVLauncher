@@ -32,7 +32,7 @@ public class TitleView extends RelativeLayout {
     TimeCount timeCount = new TimeCount(1000, 1000);
 
     private final Runnable timeRun = new Runnable() {
-
+        @Override
         public void run() {
             setTvTimeText(TimeUtil.getTime());
             setTvDateDate(TimeUtil.getDate());
@@ -56,9 +56,9 @@ public class TitleView extends RelativeLayout {
     public void initTitleView() {
 
         view = LayoutInflater.from(context).inflate(R.layout.titleview, this, true);
-        tvTime =  view.findViewById(R.id.title_bar_hour);
-        tvDate =  view.findViewById(R.id.title_bar_date);
-        imgNetWorkState =  view.findViewById(R.id.title_bar_network_state);
+        tvTime = view.findViewById(R.id.title_bar_hour);
+        tvDate = view.findViewById(R.id.title_bar_date);
+        imgNetWorkState = view.findViewById(R.id.title_bar_network_state);
         typeface = Typeface.createFromAsset(context.getAssets(), "helvetica_neueltpro_thex.otf");
         tvTime.setTypeface(typeface);
         tvDate.setTypeface(typeface);
@@ -69,8 +69,8 @@ public class TitleView extends RelativeLayout {
 
     }
 
-    public void setTimeColor(String color){
-        if (tvTime!=null){
+    public void setTimeColor(String color) {
+        if (tvTime != null) {
             tvTime.setTextColor(Color.parseColor(color));
         }
     }
@@ -83,7 +83,7 @@ public class TitleView extends RelativeLayout {
             if (Tools.isLineConnected()) {
                 imgNetWorkState.setImageResource(R.mipmap.networkstate_ethernet);
             } else {
-                WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
+                WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(android.content.Context.WIFI_SERVICE);
                 WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                 if (wifiInfo.getBSSID() != null) {
                     // wifi信号强度

@@ -45,8 +45,9 @@ public class FileUtils {
      * @param context
      */
     public static void write(Context context, String fileName, String content) {
-        if (content == null)
+        if (content == null) {
             content = "";
+        }
 
         try {
             FileOutputStream fos = context.openFileOutput(fileName,

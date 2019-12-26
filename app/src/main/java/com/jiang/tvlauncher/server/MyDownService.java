@@ -76,7 +76,7 @@ public class MyDownService extends Service {
         msg = intent.getStringExtra("msg").trim();
         System.out.println(msg);
         new Thread() {
-
+            @Override
             public void run() {
                 download();
             }
@@ -85,7 +85,11 @@ public class MyDownService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    // 根据下载的文件名，新建文件
+    /**根据下载的文件名，新建文件*
+     *
+     * @param msg
+     * @return
+     */
     public File getNewFile(String msg) {
         String fileName = msg.substring(msg.lastIndexOf("/") + 1);
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {

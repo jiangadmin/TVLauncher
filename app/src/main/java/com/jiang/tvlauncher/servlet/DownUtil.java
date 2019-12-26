@@ -54,12 +54,13 @@ public class DownUtil {
             Loading.dismiss();
 
         } else {
-            if (showpd)
+            if (showpd) {
                 try {
                     pd.show();
                 } catch (Exception e) {
 
                 }
+            }
             //下载的子线程
             new Thread() {
                 @Override
@@ -70,8 +71,9 @@ public class DownUtil {
                         sleep(1000);
                         // 安装APK文件
                         LogUtil.e(TAG, "文件下载完成" + fileName);
-                        if (showpd)
+                        if (showpd) {
                             pd.dismiss(); // 结束掉进度条对话框
+                        }
                         //如果是安装包
                         if (fileName.contains(".apk")) {
                             LogUtil.e(TAG, "安装包");
@@ -136,8 +138,9 @@ public class DownUtil {
                 fos.write(buffer, 0, len);
                 total += len;
                 // 获取当前下载量
-                if (pd != null)
+                if (pd != null) {
                     pd.setProgress(total / 1024);
+                }
             }
             fos.close();
             bis.close();

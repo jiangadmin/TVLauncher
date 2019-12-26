@@ -122,8 +122,8 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activty_launcher);
         MyApp.activity = this;
 
-        initview();
-        initeven();
+        initView();
+        initEven();
 
         //判断网络
         if (!Tools.isNetworkConnected())
@@ -170,8 +170,8 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Subscribe
-    public void onMessage(String showwarn) {
-        switch (showwarn) {
+    public void onMessage(String shoWarn) {
+        switch (shoWarn) {
             case "0":
                 if (warningDialog == null) {
                     warningDialog = new WarningDialog(this);
@@ -197,7 +197,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void initview() {
+    private void initView() {
 
         main_bg = findViewById(R.id.main_bg);
         main_bg_0 = findViewById(R.id.main_bg_0);
@@ -261,24 +261,16 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
             videoView.setVisibility(View.VISIBLE);
             videoView.setZOrderOnTop(true);
             videoView.setVideoURI(Uri.parse(SaveUtils.getString(Save_Key.NewVideoUrl)));
-            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    videoView.setVisibility(View.GONE);
-                }
-            });
-            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                    videoView.setVisibility(View.GONE);
-                    return false;
-                }
+            videoView.setOnCompletionListener(mediaPlayer -> videoView.setVisibility(View.GONE));
+            videoView.setOnErrorListener((mediaPlayer, i, i1) -> {
+                videoView.setVisibility(View.GONE);
+                return false;
             });
             videoView.start();
         }
     }
 
-    private void initeven() {
+    private void initEven() {
 
         home1.setOnClickListener(this);
         home2.setOnClickListener(this);
@@ -367,14 +359,14 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
         if (bean != null) {
 
             //图片名
-            String imgname = Tools.getFileNameWithSuffix(bean.getBgImg());
+            String imgName = Tools.getFileNameWithSuffix(bean.getBgImg());
             //判断图片文件是否存在
-            if (!FileUtils.checkFileExists(imgname)) {
+            if (!FileUtils.checkFileExists(imgName)) {
                 //下载图片
-                new DownUtil().downLoad(bean.getBgImg(), imgname, false);
+                new DownUtil().downLoad(bean.getBgImg(), imgName, false);
 
                 //记录图片名
-                SaveUtils.setString(Save_Key.BackGround, imgname);
+                SaveUtils.setString(Save_Key.BackGround, imgName);
             }
 
             //赋值背景 前景显示
@@ -500,7 +492,6 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-
 
         //判断网络
         if (!Tools.isNetworkConnected() && view.getId() != R.id.setting) {

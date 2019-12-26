@@ -30,10 +30,11 @@ public class AppInstallReceiver extends BroadcastReceiver {
             Loading.dismiss();
 
             //如果之前被卸载过（应用自升级）
-            if (!TextUtils.isEmpty(SaveUtils.getString(Const.包)))
+            if (!TextUtils.isEmpty(SaveUtils.getString(Const.包))) {
                 if (SaveUtils.getString(Const.包).contains(packageName)) {
                     return;
                 }
+            }
             //自己的APP
             if ("com.jiang.tvlauncher".equals(packageName)) {
                 return;
@@ -60,10 +61,11 @@ public class AppInstallReceiver extends BroadcastReceiver {
             String packageName = intent.getData().getSchemeSpecificPart();
 
             //清楚数据
-            if (!TextUtils.isEmpty(SaveUtils.getString(Const.包)))
+            if (!TextUtils.isEmpty(SaveUtils.getString(Const.包))) {
                 if (SaveUtils.getString(Const.包).length() > 10000) {
                     SaveUtils.setString(Const.包, null);
                 }
+            }
             //记录卸载过的包
 
             if (TextUtils.isEmpty(SaveUtils.getString(Const.包)) || !SaveUtils.getString(Const.包).contains(packageName)) {

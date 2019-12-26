@@ -25,7 +25,7 @@ import java.util.TimerTask;
 public class TimingService extends Service {
     private static final String TAG = "MyService";
 
-    Timer timer;
+    Timer timer = null;
 
     @Nullable
     @Override
@@ -46,6 +46,7 @@ public class TimingService extends Service {
     }
 
     class RemindTask extends TimerTask {
+        @Override
         public void run() {
             new Timing_Servlet().execute();
             LogUtil.e(TAG, "定时服务");

@@ -70,6 +70,7 @@ public class AppBean {
         this.position = paramInt;
     }
 
+    @Override
     public String toString() {
         return "AppBean [packageName=" + this.packageName + ", name=" + this.name + ", dataDir=" + this.dataDir + "]";
     }

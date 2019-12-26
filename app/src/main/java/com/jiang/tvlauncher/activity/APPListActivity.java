@@ -54,8 +54,9 @@ public class APPListActivity extends BaseActivity {
         List<AppBean> mAppList = getAppInstance.getLaunchAppList();
         for (int i = 0; i < mAppList.size(); i++) {
             if (packageName.equals("ALL")) {
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < 10; j++) {
                     showlist.addAll(mAppList);
+                }
                 break;
             }
             if (packageName.contains(mAppList.get(i).getPackageName())) {
